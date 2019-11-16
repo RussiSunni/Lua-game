@@ -10,9 +10,12 @@ local fairy = love.graphics.newImage('fairy.png')
 local a = love.graphics.newImage('A.png')
 local b = love.graphics.newImage('B.png')
 local c = love.graphics.newImage('C.png')
-local isSelected = false
+local isASelected = false
+local isBSelected = false
 local ablockX = 100
 local ablockY = 100
+local bblockX = 300
+local bblockY = 300
 
 mouse = {}
 
@@ -29,6 +32,7 @@ function love.load()
     gameState = 'start'
 
     aBlock = 	{hover = false, text = "A", x = 200, y = 100, call = selectBlockA}
+    bBlock = 	{hover = false, text = "B", x = 200, y = 100, call = selectBlockB}
 end
 
 
@@ -64,18 +68,16 @@ function love.draw()
 
     elseif gameState == 'play' then
 
-      
+        -- draw stage
         love.graphics.rectangle('line', 20, 20, 900, 670)
         love.graphics.draw(fairy, 900, 300, 0, 0.3, 0.3)
 
-
-        love.graphics.printf(aBlock.text, ablockX, ablockY + 50, 200, "center")
-        love.graphics.rectangle('line', ablockX, ablockY, 200, 200)
+        -- draw block A
+        love.graphics.printf(aBlock.text, ablockX - 50, ablockY + 50 - 16, 200, "center")
+        love.graphics.rectangle('line', ablockX, ablockY, 100, 100)
            
-        if isSelected == false then
-          
-        elseif isSelected == true then
-         
+        if isASelected == false then          
+        elseif isASelected == true then         
 
             -- A block movement
             if love.keyboard.isDown('w') then
@@ -86,6 +88,26 @@ function love.draw()
                 ablockX = ablockX - 3
             elseif love.keyboard.isDown('d') then
                 ablockX = ablockX + 3
+            end
+
+        end
+
+        -- draw block B
+        love.graphics.printf(bBlock.text, bblockX - 50, bblockY + 50 - 16, 200, "center")
+        love.graphics.rectangle('line', bblockX, bblockY, 100, 100)
+
+        if isBSelected == false then          
+        elseif isBSelected == true then         
+
+            -- B block movement
+            if love.keyboard.isDown('w') then
+                bblockY = bblockY - 3
+            elseif love.keyboard.isDown('s') then
+                bblockY = bblockY + 3
+            elseif love.keyboard.isDown('a') then
+                bblockX = bblockX - 3
+            elseif love.keyboard.isDown('d') then
+                bblockX = bblockX + 3
             end
 
         end
@@ -102,35 +124,49 @@ function love.update(dt)
 	local  	down = love.mouse.isDown(1)
 	local 	mx = love.mouse.getX()	
 	local	my = love.mouse.getY()
-    menu_mousehandling(mx, my, down)
-      
-
+    menu_mousehandling(mx, my, down)   
 end
 
 
 function menu_mousehandling(mx, my, down)
 
-    if mx > aBlock.x and mx < aBlock.x + 200 and my > aBlock.y and my < aBlock.y + 200 then
+    -- A block
+    if mx > ablockX and mx < ablockX + 100 and my > ablockY and my < ablockY + 100 then
     	aBlock.hover=true
     	if down == true then aBlock.call() end
     else
-    	aBlock.hover=false
-    end
-   
+        aBlock.hover=false
+        if down == true then isASelected = false end
+    end 
+
+     -- B block
+    if mx > bblockX and mx < bblockX + 100 and my > bblockY and my < bblockY + 100 then
+    	bBlock.hover=true
+    	if down == true then bBlock.call() end
+    else
+        bBlock.hover=false
+        if down == true then isBSelected = false end
+    end 
 
 
 end
 
 function selectBlockA()
   
-    if isSelected == false then
-        isSelected = true
-
-      
+    if isASelected == false then
+        isASelected = true      
     end
-    print(isSelected)
-
+    print(isASelected)
 end
 
+
+
+function selectBlockB()
+  
+    if isBSelected == false then
+        isBSelected = true      
+    end
+    print(isBSelected)
+end
 
 
