@@ -16,6 +16,7 @@ local ablockX = 100
 local ablockY = 100
 local bblockX = 300
 local bblockY = 300
+local collision = false
 
 mouse = {}
 
@@ -75,41 +76,61 @@ function love.draw()
         -- draw block A
         love.graphics.printf(aBlock.text, ablockX - 50, ablockY + 50 - 16, 200, "center")
         love.graphics.rectangle('line', ablockX, ablockY, 100, 100)
-           
+        
+        -- A block movement
         if isASelected == false then          
-        elseif isASelected == true then         
-
-            -- A block movement
-            if love.keyboard.isDown('w') then
-                ablockY = ablockY - 3
-            elseif love.keyboard.isDown('s') then
-                ablockY = ablockY + 3
-            elseif love.keyboard.isDown('a') then
-                ablockX = ablockX - 3
-            elseif love.keyboard.isDown('d') then
-                ablockX = ablockX + 3
-            end
+        elseif isASelected == true then
+            if collision == false then         
+                if love.keyboard.isDown('w') then
+                    ablockY = ablockY - 3
+                elseif love.keyboard.isDown('s') then
+                    ablockY = ablockY + 3
+                elseif love.keyboard.isDown('a') then
+                    ablockX = ablockX - 3
+                elseif love.keyboard.isDown('d') then
+                    ablockX = ablockX + 3
+                end
+            elseif collision == true then
+                if love.keyboard.isDown('w') then
+                    ablockY = ablockY + 10
+                elseif love.keyboard.isDown('s') then
+                    ablockY = ablockY - 10
+                elseif love.keyboard.isDown('a') then
+                    ablockX = ablockX + 10
+                elseif love.keyboard.isDown('d') then
+                    ablockX = ablockX - 10
+                end
+             end
 
         end
 
         -- draw block B
         love.graphics.printf(bBlock.text, bblockX - 50, bblockY + 50 - 16, 200, "center")
         love.graphics.rectangle('line', bblockX, bblockY, 100, 100)
-
+        -- B block movement
         if isBSelected == false then          
-        elseif isBSelected == true then         
-
-            -- B block movement
-            if love.keyboard.isDown('w') then
-                bblockY = bblockY - 3
-            elseif love.keyboard.isDown('s') then
-                bblockY = bblockY + 3
-            elseif love.keyboard.isDown('a') then
-                bblockX = bblockX - 3
-            elseif love.keyboard.isDown('d') then
-                bblockX = bblockX + 3
+        elseif isBSelected == true then    
+            if collision == false then             
+                if love.keyboard.isDown('w') then
+                    bblockY = bblockY - 3
+                elseif love.keyboard.isDown('s') then
+                    bblockY = bblockY + 3
+                elseif love.keyboard.isDown('a') then
+                    bblockX = bblockX - 3
+                elseif love.keyboard.isDown('d') then
+                    bblockX = bblockX + 3
+                end
+            elseif collision == true then
+                if love.keyboard.isDown('w') then
+                    bblockY = bblockY + 10
+                elseif love.keyboard.isDown('s') then
+                    bblockY = bblockY - 10
+                elseif love.keyboard.isDown('a') then
+                    bblockX = bblockX + 10
+                elseif love.keyboard.isDown('d') then
+                    bblockX = bblockX - 10
+                end
             end
-
         end
 
     elseif gameState == 'done' then
@@ -125,6 +146,9 @@ function love.update(dt)
 	local 	mx = love.mouse.getX()	
 	local	my = love.mouse.getY()
     menu_mousehandling(mx, my, down)   
+
+    collision = CheckCollision(ablockX, ablockY, bblockX, bblockY)
+    print(collision)
 end
 
 
@@ -156,7 +180,7 @@ function selectBlockA()
     if isASelected == false then
         isASelected = true      
     end
-    print(isASelected)
+   
 end
 
 
@@ -166,7 +190,17 @@ function selectBlockB()
     if isBSelected == false then
         isBSelected = true      
     end
-    print(isBSelected)
+   
 end
 
 
+-- Collision detection function;
+-- Returns true if two boxes overlap, false if they don't;
+-- x1,y1 are the top-left coords of the first box, while w1,h1 are its width and height;
+-- x2,y2,w2 & h2 are the same, but for the second box.
+function CheckCollision(ablockX, ablockY, bblockX, bblockY)
+    return  ablockX < bblockX+100 and
+            bblockX < ablockX+100 and
+            ablockY < bblockY+100 and
+            bblockY < ablockY+100
+  end
