@@ -29,13 +29,13 @@ local bblockXfree = 300
 local bblockYfree = 300
 
 
-local ablockX = 80
-local ablockY = 0
-local bblockX = 160
-local bblockY = 0
+local ablockXset = 80
+local ablockYset = 0
+local bblockXset = 160
+local bblockYset = 0
 
-local cblockX = 240
-local cblockY = 0
+local cblockXset = 240
+local cblockYset = 0
 
 local target1 = {x = 160, y = 430}
 
@@ -45,7 +45,7 @@ local collision = false
 
 mouse = {}
 
-
+sound = love.audio.newSource("bird.mp3", "static") -- the "static" tells LÖVE to load the file into memory, good for short sound effects
 
 
 function love.load()
@@ -95,8 +95,7 @@ end
 function love.draw() 
   
     love.graphics.setFont(largeFont)
-    love.graphics.clear(0.4, 0.4, 0.8, 255)   
-    
+    love.graphics.clear(0.4, 0.4, 0.8, 255)       
 
     if gameState == 'start' then
         love.graphics.draw(secretary, 440, 20, 0, 0.4, 0.4)
@@ -142,12 +141,12 @@ function love.draw()
                     ablockXfree = ablockXfree - 10
                 end
              end
-
         end
 
         -- draw block B
         love.graphics.printf(bBlock_freeplay.text, bblockXfree - 50, bblockYfree + 50 - 16, 200, "center")
         love.graphics.rectangle('line', bblockXfree, bblockYfree, 100, 100)
+
         -- B block movement
         if isBSelected_freeplay == false then          
         elseif isBSelected_freeplay == true then    
@@ -176,130 +175,90 @@ function love.draw()
 
     elseif gameState == 'setplay' then
 
-       
-
          -- draw stage
-         love.graphics.rectangle('line', 00, 00, 950, 700)
-         love.graphics.rectangle('line', 00, 00, 600, 600)
-         love.graphics.rectangle('line', 80, 80, 440, 440)
-         love.graphics.rectangle('line', 600, 00, 350, 80)
-         love.graphics.rectangle('line', 600, 80, 350, 520)
+        love.graphics.rectangle('line', 00, 00, 950, 700)
+        love.graphics.rectangle('line', 00, 00, 600, 600)
+        love.graphics.rectangle('line', 80, 80, 440, 440)
+        love.graphics.rectangle('line', 600, 00, 350, 80)
+        love.graphics.rectangle('line', 600, 80, 350, 520)
+        love.graphics.draw(fairysprite, 600, 80, 0, 1, 1)
+        love.graphics.rectangle('line', 600, 600, 350, 100)
+        love.graphics.printf("audio", 600, 600, 100, "center")
 
 
-         love.graphics.draw(fairysprite, 600, 80, 0, 1, 1)
+
 
 
         -- draw blocks
 
-        love.graphics.rectangle('line', ablockX, ablockY, 80, 80)
-        love.graphics.printf("A", ablockX - 8, ablockY + 24, 100, "center")
+        love.graphics.rectangle('line', ablockXset, ablockYset, 80, 80)
+        love.graphics.printf("A", ablockXset - 8, ablockYset + 24, 100, "center")
 
-        love.graphics.rectangle('line', bblockX, bblockY, 80, 80)
-        love.graphics.printf("B", bblockX - 8, bblockY + 24, 100, "center")
+        love.graphics.rectangle('line', bblockXset, bblockYset, 80, 80)
+        love.graphics.printf("B", bblockXset - 8, bblockYset + 24, 100, "center")
 
-        love.graphics.rectangle('line', cblockX, cblockY, 80, 80)
-        love.graphics.printf("C", cblockX - 8, cblockY + 24, 100, "center")
-
-        -- love.graphics.rectangle('line', 80, 0, 80, 80)
-        -- love.graphics.printf("A", 80 - 8, 40 - 16, 100, "center")
-
-        -- love.graphics.rectangle('line', 160, 0, 80, 80)
-        -- love.graphics.printf("T", 160 - 8, 40 - 16, 100, "center")
+        love.graphics.rectangle('line', cblockXset, cblockYset, 80, 80)
+        love.graphics.printf("C", cblockXset - 8, cblockYset + 24, 100, "center")
 
 
-        -- A block movement
-        if isASelected == true then    
-            if collision == false then             
-                if love.keyboard.isDown('w') then
-                    ablockY = ablockY - 1
-                elseif love.keyboard.isDown('s') then
-                    ablockY = ablockY + 1
-                elseif love.keyboard.isDown('a') then
-                    ablockX = ablockX - 1
-                elseif love.keyboard.isDown('d') then
-                    ablockX = ablockX + 1
-                end
-            elseif collision == true then
-                if love.keyboard.isDown('w') then
-                    ablockY = ablockY + 10
-                elseif love.keyboard.isDown('s') then
-                    ablockY = ablockY - 10
-                elseif love.keyboard.isDown('a') then
-                    ablockX = ablockX + 10
-                elseif love.keyboard.isDown('d') then
-                    ablockX = ablockX - 10
-                end
+
+
+        -- Block movement
+
+        -- A block
+        if isASelected_setplay == true then   
+            if love.keyboard.isDown('w') then
+                ablockYset = ablockYset - 1
+            elseif love.keyboard.isDown('s') then
+                ablockYset = ablockYset + 1
+            elseif love.keyboard.isDown('a') then
+                ablockXset = ablockXset - 1
+            elseif love.keyboard.isDown('d') then
+                ablockXset = ablockXset + 1
             end
         end
 
-         -- B block movement
-         if isBSelected == true then    
-            if collision == false then             
-                if love.keyboard.isDown('w') then
-                    bblockY = bblockY - 1
-                elseif love.keyboard.isDown('s') then
-                    bblockY = bblockY + 1
-                elseif love.keyboard.isDown('a') then
-                    bblockX = bblockX - 1
-                elseif love.keyboard.isDown('d') then
-                    bblockX = bblockX + 1
-                end
-            elseif collision == true then
-                if love.keyboard.isDown('w') then
-                    bblockY = bblockY + 10
-                elseif love.keyboard.isDown('s') then
-                    bblockY = bblockY - 10
-                elseif love.keyboard.isDown('a') then
-                    bblockX = bblockX + 10
-                elseif love.keyboard.isDown('d') then
-                    bblockX = bblockX - 10
-                end
+         -- B block
+         if isBSelected_setplay == true then    
+            if love.keyboard.isDown('w') then
+                bblockYset = bblockYset - 1
+            elseif love.keyboard.isDown('s') then
+                bblockYset = bblockYset + 1
+            elseif love.keyboard.isDown('a') then
+                bblockXset = bblockXset - 1
+            elseif love.keyboard.isDown('d') then
+                bblockXset = bblockXset + 1
             end
         end
 
-        -- C block movement
-        if isCSelected == true then    
-            if collision == false then             
-                if love.keyboard.isDown('w') then
-                    cblockY = cblockY - 1
-                elseif love.keyboard.isDown('s') then
-                    cblockY = cblockY + 1
-                elseif love.keyboard.isDown('a') then
-                    cblockX = cblockX - 1
-                elseif love.keyboard.isDown('d') then
-                    cblockX = cblockX + 1
-                end
-            elseif collision == true then
-                if love.keyboard.isDown('w') then
-                    cblockY = cblockY + 10
-                elseif love.keyboard.isDown('s') then
-                    cblockY = cblockY - 10
-                elseif love.keyboard.isDown('a') then
-                    cblockX = cblockX + 10
-                elseif love.keyboard.isDown('d') then
-                    cblockX = cblockX - 10
-                end
+        -- C block
+        if isCSelected_setplay == true then         
+            if love.keyboard.isDown('w') then
+                cblockYset = cblockYset - 1
+            elseif love.keyboard.isDown('s') then
+                cblockYset = cblockYset + 1
+            elseif love.keyboard.isDown('a') then
+                cblockXset = cblockXset - 1
+            elseif love.keyboard.isDown('d') then
+                cblockXset = cblockXset + 1
             end
         end
-
-
-
 
         -- draw subject
         love.graphics.draw(cat, 200, 100, 0, 1, 1)
-
-      
         love.graphics.rectangle('line', target1.x, target1.y, 80, 80)
         love.graphics.rectangle('line', 260, 430, 80, 80)
         love.graphics.rectangle('line', 360, 430, 80, 80)
-
     end
 
-    if (cblockX == target1.x and cblockY == target1.y) then
+     -- for correct letter placement
+    if (cblockXset == target1.x and cblockYset == target1.y) then
         love.graphics.printf("match", 100, 100, 100, "center")
         fairysprite = fairysetplay002
-        isCSelected = false
+        isCSelected_setplay = false
     end
+
+    
 
 end
 
@@ -311,15 +270,8 @@ function love.update(dt)
 	local	my = love.mouse.getY()
     menu_mousehandling_freeplay(mx, my, down)   
     menu_mousehandling_setplay(mx, my, down)   
-
-
     collision = CheckCollision(ablockXfree, ablockYfree, bblockXfree, bblockYfree, cblockX, cblockY)
     print(collision)
-
-
-  
-
-
 end
 
 
@@ -354,65 +306,70 @@ end
 function menu_mousehandling_setplay(mx, my, down)
 
 --  -- A block
-    if mx > ablockX and mx < ablockX + 100 and my > ablockY and my < ablockY + 100 then
+    if mx > ablockXset and mx < ablockXset + 80 and my > ablockYset and my < ablockYset + 80 then
         aBlock_setplay.hover=true
         if down == true then aBlock_setplay.call() end
     else
         aBlock_setplay.hover=false
-        if down == true then isASelected = false end
+        if down == true then isASelected_setplay = false end
     end 
+  
+ 
 
 --     -- B block
-    if mx > bblockX and mx < bblockX + 100 and my > bblockY and my < bblockY + 100 then
+    if mx > bblockXset and mx < bblockXset + 80 and my > bblockYset and my < bblockYset + 80 then
         bBlock_setplay.hover=true
         if down == true then bBlock_setplay.call() end
     else
         bBlock_setplay.hover=false
-        if down == true then isBSelected = false end
+        if down == true then isBSelected_setplay = false end
     end 
-
+  
+    
 
     -- C block
-    if mx > cblockX and mx < cblockX + 80 and my > cblockY and my < cblockY + 80 then
+    if mx > cblockXset and mx < cblockXset + 80 and my > cblockYset and my < cblockYset + 80 then
     	cBlock_setplay.hover=true
     	if down == true then cBlock_setplay.call() end
     else
         cBlock_setplay.hover=false
-        if down == true then isCSelected = false end
+        if down == true then isCSelected_setplay = false end
     end 
 
+    -- audio
+    if mx > 600 and mx < 950 and my > 600 and my < 700 and down == true then
+     
+        sound:play()        
+
+    end 
+   
+
 end
 
 
+-- Free play mode
 
-function selectBlockAFreePlay()
-  
-        isASelected_freeplay = true      
+function selectBlockAFreePlay()  
+    isASelected_freeplay = true      
 end
 
-function selectBlockBFreePlay()
-  
-        isBSelected_freeplay = true      
-end
-
-
-function selectBlockASetPlay()
-  
-    isCSelected = true         
-  
-end
-
-function selectBlockBSetPlay()
-  
-    isCSelected = true         
-  
+function selectBlockBFreePlay()  
+    isBSelected_freeplay = true      
 end
 
 
-function selectBlockCSetPlay()
-  
-    isCSelected = true         
-  
+-- Set play mode
+
+function selectBlockASetPlay()  
+    isASelected_setplay = true        
+end
+
+function selectBlockBSetPlay()  
+    isBSelected_setplay = true   
+end
+
+function selectBlockCSetPlay()  
+    isCSelected_setplay = true         
 end
 
 
