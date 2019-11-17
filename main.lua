@@ -42,14 +42,17 @@ function love.keypressed(key)
         love.event.quit()
     elseif key == 'enter' or key == 'return' then
         if gameState == 'start' then
-            gameState = 'serve'
-        elseif gameState == 'serve' then
-            gameState = 'play'
+            gameState = 'screen2'
+        elseif gameState == 'screen2' then
+            gameState = 'freeplay'
         elseif gameState == 'done' then
             -- game is simply in a restart phase here, but will set the serving
             -- player to the opponent of whomever won for fairness!
             gameState = 'serve'
         end
+    elseif key == 'p' then
+        gameState = 'setplay'
+
     end
 end
 
@@ -58,20 +61,23 @@ function love.draw()
   
     love.graphics.setFont(largeFont)
     love.graphics.clear(0.4, 0.4, 0.8, 255)   
+    
 
     if gameState == 'start' then
         love.graphics.draw(secretary, 440, 20, 0, 0.4, 0.4)
         love.graphics.printf('Oh wonderful, a new learner.', 0, 600, WINDOW_WIDTH, 'center')
 
-    elseif gameState == 'serve' then   
+    elseif gameState == 'screen2' then   
         love.graphics.draw(teacher, 440, 20, 0, 0.4, 0.4)
         love.graphics.printf('Hurry child, there is much to do. Do not tarry.', 0, 600, WINDOW_WIDTH, 'center')
 
-    elseif gameState == 'play' then
+    elseif gameState == 'freeplay' then
 
         -- draw stage
         love.graphics.rectangle('line', 20, 20, 900, 670)
         love.graphics.draw(fairy, 900, 300, 0, 0.3, 0.3)
+        love.graphics.printf('Press "p" for', -50, 30, WINDOW_WIDTH, 'right')
+        love.graphics.printf('setplay mode', -50, 70, WINDOW_WIDTH, 'right')
 
         -- draw block A
         love.graphics.printf(aBlock.text, ablockX - 50, ablockY + 50 - 16, 200, "center")
@@ -133,8 +139,14 @@ function love.draw()
             end
         end
 
-    elseif gameState == 'done' then
-  
+    elseif gameState == 'setplay' then
+        love.graphics.printf("test", 50, 50, 200, "center")
+
+         -- draw stage
+         love.graphics.rectangle('line', 20, 20, 900, 670)
+         love.graphics.draw(fairy, 900, 300, 0, 0.3, 0.3)
+      
+
     end
 
 end
