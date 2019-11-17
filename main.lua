@@ -15,17 +15,26 @@ local fairysetplay002 = love.graphics.newImage('fairy-setplay002.png')
 -- local a = love.graphics.newImage('A.png')
 -- local b = love.graphics.newImage('B.png')
 -- local c = love.graphics.newImage('C.png')
-local isASelected = false
-local isBSelected = false
 
-local isCSelected = false
+local isASelected_freeplay = false
+local isBSelected_freeplay = false
 
-local ablockX = 100
-local ablockY = 100
-local bblockX = 300
-local bblockY = 300
+local isASelected_setplay = false
+local isBSelected_setplay = false
+local isCSelected_setplay = false
 
-local cblockX = 0
+local ablockXfree = 100
+local ablockYfree = 100
+local bblockXfree = 300
+local bblockYfree = 300
+
+
+local ablockX = 80
+local ablockY = 0
+local bblockX = 160
+local bblockY = 0
+
+local cblockX = 240
 local cblockY = 0
 
 local target1 = {x = 160, y = 430}
@@ -49,10 +58,14 @@ function love.load()
     gameState = 'start'
 
     -- for selecting
-    aBlock = 	{hover = false, text = "A", x = 200, y = 100, call = selectBlockA}
-    bBlock = 	{hover = false, text = "B", x = 200, y = 100, call = selectBlockB}
+    aBlock_freeplay = 	{hover = false, text = "A", x = 200, y = 100, call = selectBlockAFreePlay}
+    bBlock_freeplay = 	{hover = false, text = "B", x = 200, y = 100, call = selectBlockBFreePlay}
 
-    cBlock = 	{hover = false, text = "C", x = 0, y = 0, call = selectBlockC}
+  
+
+    aBlock_setplay = 	{hover = false, text = "A", x = 200, y = 100, call = selectBlockASetPlay}
+    bBlock_setplay = 	{hover = false, text = "B", x = 200, y = 100, call = selectBlockBSetPlay}
+    cBlock_setplay = 	{hover = false, text = "C", x = 0, y = 0, call = selectBlockCSetPlay}
 
     fairysprite = fairysetplay001
 
@@ -102,61 +115,61 @@ function love.draw()
         love.graphics.printf('setplay mode', -50, 70, WINDOW_WIDTH, 'right')
 
         -- draw block A
-        love.graphics.printf(aBlock.text, ablockX - 50, ablockY + 50 - 16, 200, "center")
-        love.graphics.rectangle('line', ablockX, ablockY, 100, 100)
+        love.graphics.printf(aBlock_freeplay.text, ablockXfree - 50, ablockYfree + 50 - 16, 200, "center")
+        love.graphics.rectangle('line', ablockXfree, ablockYfree, 100, 100)
         
         -- A block movement
-        if isASelected == false then          
-        elseif isASelected == true then
+        if isASelected_freeplay == false then          
+        elseif isASelected_freeplay == true then
             if collision == false then         
                 if love.keyboard.isDown('w') then
-                    ablockY = ablockY - 3
+                    ablockYfree = ablockYfree - 3
                 elseif love.keyboard.isDown('s') then
-                    ablockY = ablockY + 3
+                    ablockYfree = ablockYfree + 3
                 elseif love.keyboard.isDown('a') then
-                    ablockX = ablockX - 3
+                    ablockXfree = ablockXfree - 3
                 elseif love.keyboard.isDown('d') then
-                    ablockX = ablockX + 3
+                    ablockXfree = ablockXfree + 3
                 end
             elseif collision == true then
                 if love.keyboard.isDown('w') then
-                    ablockY = ablockY + 10
+                    ablockYfree = ablockYfree + 10
                 elseif love.keyboard.isDown('s') then
-                    ablockY = ablockY - 10
+                    ablockYfree = ablockYfree - 10
                 elseif love.keyboard.isDown('a') then
-                    ablockX = ablockX + 10
+                    ablockXfree = ablockXfree + 10
                 elseif love.keyboard.isDown('d') then
-                    ablockX = ablockX - 10
+                    ablockXfree = ablockXfree - 10
                 end
              end
 
         end
 
         -- draw block B
-        love.graphics.printf(bBlock.text, bblockX - 50, bblockY + 50 - 16, 200, "center")
-        love.graphics.rectangle('line', bblockX, bblockY, 100, 100)
+        love.graphics.printf(bBlock_freeplay.text, bblockXfree - 50, bblockYfree + 50 - 16, 200, "center")
+        love.graphics.rectangle('line', bblockXfree, bblockYfree, 100, 100)
         -- B block movement
-        if isBSelected == false then          
-        elseif isBSelected == true then    
+        if isBSelected_freeplay == false then          
+        elseif isBSelected_freeplay == true then    
             if collision == false then             
                 if love.keyboard.isDown('w') then
-                    bblockY = bblockY - 3
+                    bblockYfree = bblockYfree - 3
                 elseif love.keyboard.isDown('s') then
-                    bblockY = bblockY + 3
+                    bblockYfree = bblockYfree + 3
                 elseif love.keyboard.isDown('a') then
-                    bblockX = bblockX - 3
+                    bblockXfree = bblockXfree - 3
                 elseif love.keyboard.isDown('d') then
-                    bblockX = bblockX + 3
+                    bblockXfree = bblockXfree + 3
                 end
             elseif collision == true then
                 if love.keyboard.isDown('w') then
-                    bblockY = bblockY + 10
+                    bblockYfree = bblockYfree + 10
                 elseif love.keyboard.isDown('s') then
-                    bblockY = bblockY - 10
+                    bblockYfree = bblockYfree - 10
                 elseif love.keyboard.isDown('a') then
-                    bblockX = bblockX + 10
+                    bblockXfree = bblockXfree + 10
                 elseif love.keyboard.isDown('d') then
-                    bblockX = bblockX - 10
+                    bblockXfree = bblockXfree - 10
                 end
             end
         end
@@ -177,6 +190,13 @@ function love.draw()
 
 
         -- draw blocks
+
+        love.graphics.rectangle('line', ablockX, ablockY, 80, 80)
+        love.graphics.printf("A", ablockX - 8, ablockY + 24, 100, "center")
+
+        love.graphics.rectangle('line', bblockX, bblockY, 80, 80)
+        love.graphics.printf("B", bblockX - 8, bblockY + 24, 100, "center")
+
         love.graphics.rectangle('line', cblockX, cblockY, 80, 80)
         love.graphics.printf("C", cblockX - 8, cblockY + 24, 100, "center")
 
@@ -186,6 +206,56 @@ function love.draw()
         -- love.graphics.rectangle('line', 160, 0, 80, 80)
         -- love.graphics.printf("T", 160 - 8, 40 - 16, 100, "center")
 
+
+        -- A block movement
+        if isASelected == true then    
+            if collision == false then             
+                if love.keyboard.isDown('w') then
+                    ablockY = ablockY - 1
+                elseif love.keyboard.isDown('s') then
+                    ablockY = ablockY + 1
+                elseif love.keyboard.isDown('a') then
+                    ablockX = ablockX - 1
+                elseif love.keyboard.isDown('d') then
+                    ablockX = ablockX + 1
+                end
+            elseif collision == true then
+                if love.keyboard.isDown('w') then
+                    ablockY = ablockY + 10
+                elseif love.keyboard.isDown('s') then
+                    ablockY = ablockY - 10
+                elseif love.keyboard.isDown('a') then
+                    ablockX = ablockX + 10
+                elseif love.keyboard.isDown('d') then
+                    ablockX = ablockX - 10
+                end
+            end
+        end
+
+         -- B block movement
+         if isBSelected == true then    
+            if collision == false then             
+                if love.keyboard.isDown('w') then
+                    bblockY = bblockY - 1
+                elseif love.keyboard.isDown('s') then
+                    bblockY = bblockY + 1
+                elseif love.keyboard.isDown('a') then
+                    bblockX = bblockX - 1
+                elseif love.keyboard.isDown('d') then
+                    bblockX = bblockX + 1
+                end
+            elseif collision == true then
+                if love.keyboard.isDown('w') then
+                    bblockY = bblockY + 10
+                elseif love.keyboard.isDown('s') then
+                    bblockY = bblockY - 10
+                elseif love.keyboard.isDown('a') then
+                    bblockX = bblockX + 10
+                elseif love.keyboard.isDown('d') then
+                    bblockX = bblockX - 10
+                end
+            end
+        end
 
         -- C block movement
         if isCSelected == true then    
@@ -228,6 +298,7 @@ function love.draw()
     if (cblockX == target1.x and cblockY == target1.y) then
         love.graphics.printf("match", 100, 100, 100, "center")
         fairysprite = fairysetplay002
+        isCSelected = false
     end
 
 end
@@ -238,9 +309,11 @@ function love.update(dt)
 	local  	down = love.mouse.isDown(1)
 	local 	mx = love.mouse.getX()	
 	local	my = love.mouse.getY()
-    menu_mousehandling(mx, my, down)   
+    menu_mousehandling_freeplay(mx, my, down)   
+    menu_mousehandling_setplay(mx, my, down)   
 
-    collision = CheckCollision(ablockX, ablockY, bblockX, bblockY, cblockX, cblockY)
+
+    collision = CheckCollision(ablockXfree, ablockYfree, bblockXfree, bblockYfree, cblockX, cblockY)
     print(collision)
 
 
@@ -250,56 +323,95 @@ function love.update(dt)
 end
 
 
-function menu_mousehandling(mx, my, down)
+function menu_mousehandling_freeplay(mx, my, down)
+
+-- Selecting
+
+-- free play mode
 
     -- A block
-    if mx > ablockX and mx < ablockX + 100 and my > ablockY and my < ablockY + 100 then
-    	aBlock.hover=true
-    	if down == true then aBlock.call() end
+    if mx > ablockXfree and mx < ablockXfree + 100 and my > ablockYfree and my < ablockYfree + 100 then
+    	aBlock_freeplay.hover=true
+    	if down == true then aBlock_freeplay.call() end
     else
-        aBlock.hover=false
-        if down == true then isASelected = false end
+        aBlock_freeplay.hover=false
+        if down == true then isASelected_freeplay = false end
     end 
 
      -- B block
-    if mx > bblockX and mx < bblockX + 100 and my > bblockY and my < bblockY + 100 then
-    	bBlock.hover=true
-    	if down == true then bBlock.call() end
+    if mx > bblockXfree and mx < bblockXfree + 100 and my > bblockYfree and my < bblockYfree + 100 then
+    	bBlock_freeplay.hover=true
+    	if down == true then bBlock_freeplay.call() end
     else
-        bBlock.hover=false
+        bBlock_freeplay.hover=false
+        if down == true then isBSelected_freeplay = false end
+    end 
+end
+
+
+
+-- set play mode
+function menu_mousehandling_setplay(mx, my, down)
+
+--  -- A block
+    if mx > ablockX and mx < ablockX + 100 and my > ablockY and my < ablockY + 100 then
+        aBlock_setplay.hover=true
+        if down == true then aBlock_setplay.call() end
+    else
+        aBlock_setplay.hover=false
+        if down == true then isASelected = false end
+    end 
+
+--     -- B block
+    if mx > bblockX and mx < bblockX + 100 and my > bblockY and my < bblockY + 100 then
+        bBlock_setplay.hover=true
+        if down == true then bBlock_setplay.call() end
+    else
+        bBlock_setplay.hover=false
         if down == true then isBSelected = false end
     end 
 
 
     -- C block
     if mx > cblockX and mx < cblockX + 80 and my > cblockY and my < cblockY + 80 then
-    	cBlock.hover=true
-    	if down == true then cBlock.call() end
+    	cBlock_setplay.hover=true
+    	if down == true then cBlock_setplay.call() end
     else
-        cBlock.hover=false
+        cBlock_setplay.hover=false
         if down == true then isCSelected = false end
     end 
 
-
 end
 
-function selectBlockA()
-    if isASelected == false then
-        isASelected = true      
-    end   
-end
 
-function selectBlockB()
-    if isBSelected == false then
-        isBSelected = true      
-    end   
-    
-end
 
-function selectBlockC()
+function selectBlockAFreePlay()
   
-    isCSelected = true      
-   
+        isASelected_freeplay = true      
+end
+
+function selectBlockBFreePlay()
+  
+        isBSelected_freeplay = true      
+end
+
+
+function selectBlockASetPlay()
+  
+    isCSelected = true         
+  
+end
+
+function selectBlockBSetPlay()
+  
+    isCSelected = true         
+  
+end
+
+
+function selectBlockCSetPlay()
+  
+    isCSelected = true         
   
 end
 
