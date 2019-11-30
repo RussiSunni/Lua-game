@@ -7,7 +7,7 @@ WINDOW_HEIGHT = 720
 local secretary = love.graphics.newImage('secretary.png')
 local teacher = love.graphics.newImage('teacher.png')
 local fairy = love.graphics.newImage('fairy-small.png')
-local cat = love.graphics.newImage('cat.png')
+local cat = love.graphics.newImage('cat-3.png')
 local fairysetplay001 = love.graphics.newImage('fairy-setplay001.png')
 local fairysetplay002 = love.graphics.newImage('fairy-setplay002.png')
 local fairysetplay003 = love.graphics.newImage('fairy-setplay003.png')
@@ -96,7 +96,8 @@ function love.load()
         fullscreen = false,
         vsync = true
     })
-    largeFont = love.graphics.newFont('font.ttf', 32)
+    smallFont = love.graphics.newFont('Solway.ttf', 32)
+    largeFont = love.graphics.newFont('Solway.ttf', 70)
     gameState = 'start'
 
     -- for selecting
@@ -135,11 +136,14 @@ end
 
 function love.draw()
              
-    love.graphics.setFont(largeFont)
-    love.graphics.clear(0.4, 0.4, 0.8, 255)
+    love.graphics.setFont(smallFont)
+    love.graphics.clear(0, 0, 0, 255)
 
     if gameState == 'start' then
+      
         love.graphics.draw(secretary, 440, 20, 0, 0.4, 0.4)
+
+        love.graphics.setColor(1, 1, 1)
         love.graphics.printf('Oh wonderful, a new learner.', 0, 600, WINDOW_WIDTH, 'center')
 
     elseif gameState == 'screen2' then
@@ -225,12 +229,12 @@ function love.draw()
         end
 
     elseif gameState == 'setplay' then
+        love.graphics.setColor(0, 0, 0)
 
-         -- draw stage
+        -- draw stage
         love.graphics.rectangle('fill', 00, 00, 640, 640)
 
         -- the screen
-        love.graphics.setColor(0, 0, 0)
         love.graphics.rectangle('fill', 00, 00, 990, 720)
 
 
@@ -252,6 +256,18 @@ function love.draw()
         love.graphics.rectangle('line', 0, 640, 990, 80)
         love.graphics.setColor(100, 100, 100)
         love.graphics.printf("audio", 640, 640, 100, "center")
+
+
+        -- draw block
+        love.graphics.setColor(0.1, 0.7, 0.6)
+        love.graphics.rectangle('fill', 00, 00, 80, 80)
+        love.graphics.setColor(0.2, 1, 0.8)
+        love.graphics.rectangle('fill', 10, 10, 60, 60)
+        love.graphics.setColor(0, 0, 0)
+        love.graphics.rectangle('line', 00, 00, 80, 80)
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.setFont(largeFont)
+        love.graphics.printf("A", 0, 0, 80, "center")
 
 
 
