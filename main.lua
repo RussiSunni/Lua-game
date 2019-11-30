@@ -10,6 +10,10 @@ local fairy = love.graphics.newImage('fairy-small.png')
 local cat = love.graphics.newImage('cat.png')
 local fairysetplay001 = love.graphics.newImage('fairy-setplay001.png')
 local fairysetplay002 = love.graphics.newImage('fairy-setplay002.png')
+local fairysetplay003 = love.graphics.newImage('fairy-setplay003.png')
+
+local ablock = love.graphics.newImage('a-block.jpg')
+local bblock = love.graphics.newImage('b-block.jpg')
 
 local isASelected_freeplay = false
 local isBSelected_freeplay = false
@@ -19,10 +23,11 @@ local ablockYfree = 100
 local bblockXfree = 300
 local bblockYfree = 300
 
+
 local letters = {
-                    A = {char="A", isSelected = false, x=80, y=0}, 
+                    A = {char="A", isSelected = false, x=80, y=0, placed = false, image=ablock}, 
                     B = {char="B", isSelected = false, x=160, y=0}, 
-                    C = {char="C", isSelected = false, x=240, y=0}, 
+                    C = {char="C", isSelected = false, x=240, y=0, placed = false}, 
                     D = {char="D", isSelected = false, x=320, y=0}, 
                     E = {char="E", isSelected = false, x=400, y=0}, 
                     F = {char="F", isSelected = false, x=480, y=0}, 
@@ -39,7 +44,7 @@ local letters = {
                     Q = {char="Q", isSelected = false, x=320, y=560}, 
                     R = {char="R", isSelected = false, x=240, y=560}, 
                     S = {char="S", isSelected = false, x=160, y=560}, 
-                    T = {char="T", isSelected = false, x=80, y=560}, 
+                    T = {char="T", isSelected = false, x=80, y=560, placed = false}, 
                     U = {char="U", isSelected = false, x=0, y=560}, 
                     V = {char="V", isSelected = false, x=0, y=480}, 
                     W = {char="W", isSelected = false, x=0, y=400}, 
@@ -48,15 +53,16 @@ local letters = {
                     Z = {char="Z", isSelected = false, x=0, y=160}
                 }
       
-
 local target1 = {x = 160, y = 430}
-
+local target2 = {x = 260, y = 430}
+local target3 = {x = 360, y = 430}
 
 local collision = false
 
 mouse = {}
 
 sound = love.audio.newSource("bird.mp3", "static") -- the "static" tells LÖVE to load the file into memory, good for short sound effects
+woodblock = love.audio.newSource("woodblock.wav", "static")
 
 
 function love.load()
@@ -87,6 +93,8 @@ function love.keypressed(key)
         if gameState == 'start' then
             gameState = 'screen2'
         elseif gameState == 'screen2' then
+            gameState = 'menu'
+        elseif gameState == 'menu' then
             gameState = 'freeplay'
         elseif gameState == 'done' then
             -- game is simply in a restart phase here, but will set the serving
@@ -106,17 +114,20 @@ function love.draw()
     love.graphics.clear(0.4, 0.4, 0.8, 255)
 
     if gameState == 'start' then
-
-        -- animation
-        local spriteNum = math.floor(animation.currentTime / animation.duration * #animation.quads) + 1
-        love.graphics.draw(animation.spriteSheet, animation.quads[spriteNum])
-
         love.graphics.draw(secretary, 440, 20, 0, 0.4, 0.4)
         love.graphics.printf('Oh wonderful, a new learner.', 0, 600, WINDOW_WIDTH, 'center')
 
     elseif gameState == 'screen2' then
         love.graphics.draw(teacher, 440, 20, 0, 0.4, 0.4)
         love.graphics.printf('Hurry child, there is much to do. Do not tarry.', 0, 600, WINDOW_WIDTH, 'center')
+
+
+    elseif gameState == 'menu' then
+        love.graphics.rectangle('line', 640-200, 20, 400, 670)
+        love.graphics.printf('MENU', 0, 30, WINDOW_WIDTH, 'center')
+
+        love.graphics.printf('SETPLAY MODE', 0, 100, WINDOW_WIDTH, 'center')
+        love.graphics.printf('FREEPLAY MODE', 0, 140, WINDOW_WIDTH, 'center')
 
     elseif gameState == 'freeplay' then
 
@@ -129,6 +140,10 @@ function love.draw()
         -- draw block A
         love.graphics.printf(aBlock_freeplay.text, ablockXfree - 50, ablockYfree + 50 - 16, 200, "center")
         love.graphics.rectangle('line', ablockXfree, ablockYfree, 100, 100)
+
+        -- draw block B
+        love.graphics.printf(bBlock_freeplay.text, bblockXfree - 50, bblockYfree + 50 - 16, 200, "center")
+        love.graphics.rectangle('line', bblockXfree, bblockYfree, 100, 100)
 
         -- A block movement
         if isASelected_freeplay == false then
@@ -156,9 +171,7 @@ function love.draw()
              end
         end
 
-        -- draw block B
-        love.graphics.printf(bBlock_freeplay.text, bblockXfree - 50, bblockYfree + 50 - 16, 200, "center")
-        love.graphics.rectangle('line', bblockXfree, bblockYfree, 100, 100)
+        
 
         -- B block movement
         if isBSelected_freeplay == false then
@@ -205,6 +218,9 @@ function love.draw()
         for i, letter in pairs(letters) do
             love.graphics.rectangle('line', letter.x, letter.y, 80, 80)
             love.graphics.printf(letter.char, letter.x - 8, letter.y + 24, 100, "center")
+            if letter.image then
+                love.graphics.draw(letter.image, letter.x, letter.y, 0, 0.7, 0.7)
+            end
         end    
     
         -- Block movement
@@ -225,16 +241,42 @@ function love.draw()
         -- draw subject
         love.graphics.draw(cat, 200, 100, 0, 1, 1)
         love.graphics.rectangle('line', target1.x, target1.y, 80, 80)
-        love.graphics.rectangle('line', 260, 430, 80, 80)
-        love.graphics.rectangle('line', 360, 430, 80, 80)
+        love.graphics.rectangle('line', target2.x, target2.y, 80, 80)
+        love.graphics.rectangle('line', target3.x, target3.y, 80, 80)
     end
 
      -- for correct letter placement
-    if (letters.C.x == target1.x and letters.C.y == target1.y) then
-        love.graphics.printf("match", 100, 100, 100, "center")
-        fairysprite = fairysetplay002
-        letters.C.isSelected = false
+    if letters.C.placed == false then
+        if (letters.C.x == target1.x and letters.C.y == target1.y) then
+            letters.C.placed = true
+            fairysprite = fairysetplay003
+            letters.C.isSelected = false
+        end
     end
+
+    if letters.A.placed == false then
+        if (letters.A.x == target2.x and letters.A.y == target2.y) then
+            letters.A.placed = true
+            fairysprite = fairysetplay003
+            letters.A.isSelected = false
+        end
+    end
+
+    if letters.T.placed == false then
+        if (letters.T.x == target3.x and letters.T.y == target3.y) then
+            letters.T.placed = true
+            fairysprite = fairysetplay003
+            letters.T.isSelected = false
+        end
+    end
+
+    if (letters.C.placed == true and letters.A.placed == true and letters.T.placed == true) then
+        local spriteNum = math.floor(animation.currentTime / animation.duration * #animation.quads) + 1
+        love.graphics.draw(animation.spriteSheet, animation.quads[spriteNum])
+    end
+
+  
+
 end
 
 
@@ -253,40 +295,24 @@ function love.update(dt)
     if animation.currentTime >= animation.duration then
         animation.currentTime = animation.currentTime - animation.duration
     end
-end
 
-
-function menu_mousehandling_freeplay(mx, my, down)
-
--- Selecting
-
--- free play mode
-    -- A block
-    if mx > ablockXfree and mx < ablockXfree + 100 and my > ablockYfree and my < ablockYfree + 100 then
-    	aBlock_freeplay.hover=true
-    	if down == true then aBlock_freeplay.call() end
-    else
-        aBlock_freeplay.hover=false
-        if down == true then isASelected_freeplay = false end
-    end
-
-     -- B block
-    if mx > bblockXfree and mx < bblockXfree + 100 and my > bblockYfree and my < bblockYfree + 100 then
-    	bBlock_freeplay.hover=true
-    	if down == true then bBlock_freeplay.call() end
-    else
-        bBlock_freeplay.hover=false
-        if down == true then isBSelected_freeplay = false end
+    if (letters.C.placed == true and down == true) then
+        fairysprite = fairysetplay001
     end
 end
 
 
--- set play mode
+
+
+-- mouse
 function menu_mousehandling_setplay(mx, my, down)
     for i, letter in pairs(letters) do
         if mx > letter.x and mx < letter.x + 80 and my > letter.y and my < letter.y + 80 then
             letter.hover=true
-            if down == true then letter.isSelected = true end
+            if down == true then letter.isSelected = true
+                fairysprite = fairysetplay002
+                woodblock:play()
+        end
         else
             letter.hover=false
             if down == true then letter.isSelected = false end
@@ -299,31 +325,6 @@ function menu_mousehandling_setplay(mx, my, down)
     end
 end
 
-
--- Free play mode
-function selectBlockAFreePlay()
-    isASelected_freeplay = true      function newAnimation(image, width, height, duration)
-        local animation = {}
-        animation.spriteSheet = image;
-        return animation
-    end
-end
-
-function selectBlockBFreePlay()
-    isBSelected_freeplay = true
-end
-
-
--- Collision detection function;
--- Returns true if two boxes overlap, false if they don't;
--- x1,y1 are the top-left coords of the first box, while w1,h1 are its width and height;
--- x2,y2,w2 & h2 are the same, but for the second box.
-function CheckCollision(ablockX, ablockY, bblockX, bblockY)
-    return  ablockX < bblockX+100 and
-            bblockX < ablockX+100 and
-            ablockY < bblockY+100 and
-            bblockY < ablockY+100
-  end
 
 
 -- Animation
@@ -341,6 +342,55 @@ function newAnimation(image, width, height, duration)
 
     animation.duration = duration or 1
     animation.currentTime = 0
-
     return animation
+end
+
+
+-- free play mode
+
+function menu_mousehandling_freeplay(mx, my, down)
+
+    -- Selecting
+    
+        -- A block
+        if mx > ablockXfree and mx < ablockXfree + 100 and my > ablockYfree and my < ablockYfree + 100 then
+            aBlock_freeplay.hover=true
+            if down == true then aBlock_freeplay.call() end
+        else
+            aBlock_freeplay.hover=false
+            if down == true then isASelected_freeplay = false end
+        end
+    
+         -- B block
+        if mx > bblockXfree and mx < bblockXfree + 100 and my > bblockYfree and my < bblockYfree + 100 then
+            bBlock_freeplay.hover=true
+            if down == true then bBlock_freeplay.call() end
+        else
+            bBlock_freeplay.hover=false
+            if down == true then isBSelected_freeplay = false end
+        end
+    end
+
+
+function selectBlockAFreePlay()
+    isASelected_freeplay = true      function newAnimation(image, width, height, duration)
+        local animation = {}
+        animation.spriteSheet = image;
+        return animation
+    end
+end
+
+function selectBlockBFreePlay()
+    isBSelected_freeplay = true
+end
+
+-- Collision detection function;
+-- Returns true if two boxes overlap, false if they don't;
+-- x1,y1 are the top-left coords of the first box, while w1,h1 are its width and height;
+-- x2,y2,w2 & h2 are the same, but for the second box.
+function CheckCollision(ablockX, ablockY, bblockX, bblockY)
+    return  ablockX < bblockX+100 and
+            bblockX < ablockX+100 and
+            ablockY < bblockY+100 and
+            bblockY < ablockY+100
 end
