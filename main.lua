@@ -78,9 +78,9 @@ local letters = {
                     Z = {char="Z", isSelected = false, x=0, y=160, placed = false, image=zblock}
                 }
       
-local target1 = {x = 160, y = 430}
-local target2 = {x = 260, y = 430}
-local target3 = {x = 360, y = 430}
+local target1 = {x = 170, y = 430}
+local target2 = {x = 280, y = 430}
+local target3 = {x = 390, y = 430}
 
 local collision = false
 
@@ -105,6 +105,7 @@ function love.load()
     bBlock_freeplay = 	{hover = false, text = "B", x = 200, y = 100, call = selectBlockBFreePlay}
 
     fairysprite = fairysetplay001
+    fairySpeech = "Oi, what's this then?"
 
     -- animation
     animation = newAnimation(love.graphics.newImage("fairy-spritesheet.png"), 400, 400, 1.5)
@@ -242,6 +243,7 @@ function love.draw()
         love.graphics.setColor(0.5, 0, 0)
         love.graphics.rectangle('fill', 80, 80, 480, 480)
 
+        -- menu area
         love.graphics.setColor(100, 100, 100)
         love.graphics.rectangle('line', 640, 00, 350, 80)
         love.graphics.printf("menu", 880, 0, 100, "center")
@@ -251,31 +253,38 @@ function love.draw()
         love.graphics.rectangle('line', 640, 80, 350, 520)
         love.graphics.draw(fairysprite, 640, 80, 0, 1, 1)
 
+        love.graphics.rectangle('line', 640, 600, 350, 40)
+        love.graphics.printf(fairySpeech, 640, 600, 350, "center")
+
+
 
         -- audio area    
         love.graphics.rectangle('line', 0, 640, 990, 80)
         love.graphics.setColor(100, 100, 100)
-        love.graphics.printf("audio", 640, 640, 100, "center")
+        love.graphics.printf("audio", 0, 640, 100, "center")
 
 
         -- draw block
-        love.graphics.setColor(0.1, 0.7, 0.6)
-        love.graphics.rectangle('fill', 00, 00, 80, 80)
-        love.graphics.setColor(0.2, 1, 0.8)
-        love.graphics.rectangle('fill', 10, 10, 60, 60)
-        love.graphics.setColor(0, 0, 0)
-        love.graphics.rectangle('line', 00, 00, 80, 80)
-        love.graphics.setColor(1, 1, 1)
+
+        -- love.graphics.setColor(0.2, 1, 0.8)
+        -- love.graphics.rectangle('fill', 10, 10, 60, 60)
+    
         love.graphics.setFont(largeFont)
-        love.graphics.printf("A", 0, 0, 80, "center")
+      
 
 
 
         -- draw blocks      
         for i, letter in pairs(letters) do
-            -- love.graphics.rectangle('line', letter.x, letter.y, 80, 80)
-            love.graphics.printf(letter.char, letter.x - 8, letter.y + 24, 100, "center")
-            love.graphics.draw(letter.image, letter.x, letter.y, 0, 1, 1)
+            love.graphics.setColor(0.1, 0.7, 0.6)
+            love.graphics.rectangle('fill', letter.x, letter.y, 80, 80)
+
+            love.graphics.setColor(0, 0, 0)
+            love.graphics.rectangle('line', letter.x, letter.y, 80, 80)
+            
+            love.graphics.setColor(1, 1, 1)
+            love.graphics.printf(letter.char, letter.x, letter.y, 80, "center")
+            -- love.graphics.draw(letter.image, letter.x, letter.y, 0, 1, 1)
         end    
     
         -- Block movement
@@ -295,9 +304,11 @@ function love.draw()
 
         -- draw subject
         love.graphics.draw(cat, 200, 100, 0, 1, 1)
-        love.graphics.rectangle('line', target1.x, target1.y, 80, 80)
-        love.graphics.rectangle('line', target2.x, target2.y, 80, 80)
-        love.graphics.rectangle('line', target3.x, target3.y, 80, 80)
+        love.graphics.setColor(0.8, 0.3, 0.3)
+
+        love.graphics.rectangle('fill', target1.x, target1.y, 80, 80)
+        love.graphics.rectangle('fill', target2.x, target2.y, 80, 80)
+        love.graphics.rectangle('fill', target3.x, target3.y, 80, 80)
     end
 
      -- for correct letter placement
@@ -363,6 +374,7 @@ function menu_mousehandling_setplay(mx, my, down)
             letter.hover=true
             if down == true then letter.isSelected = true
                 fairysprite = fairysetplay002
+                fairySpeech = "Go on then"
                 woodblock:play()
         end
         else
