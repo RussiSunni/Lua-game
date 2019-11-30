@@ -14,6 +14,31 @@ local fairysetplay003 = love.graphics.newImage('fairy-setplay003.png')
 
 local ablock = love.graphics.newImage('a-block.jpg')
 local bblock = love.graphics.newImage('b-block.jpg')
+local cblock = love.graphics.newImage('c-block.jpg')
+local dblock = love.graphics.newImage('d-block.jpg')
+local eblock = love.graphics.newImage('e-block.jpg')
+local fblock = love.graphics.newImage('f-block.jpg')
+local gblock = love.graphics.newImage('g-block.jpg')
+local hblock = love.graphics.newImage('h-block.jpg')
+local iblock = love.graphics.newImage('i-block.jpg')
+local jblock = love.graphics.newImage('j-block.jpg')
+local kblock = love.graphics.newImage('k-block.jpg')
+local lblock = love.graphics.newImage('l-block.jpg')
+local mblock = love.graphics.newImage('m-block.jpg')
+local nblock = love.graphics.newImage('n-block.jpg')
+local oblock = love.graphics.newImage('o-block.jpg')
+local pblock = love.graphics.newImage('p-block.jpg')
+local qblock = love.graphics.newImage('q-block.jpg')
+local rblock = love.graphics.newImage('r-block.jpg')
+local sblock = love.graphics.newImage('s-block.jpg')
+local tblock = love.graphics.newImage('t-block.jpg')
+local ublock = love.graphics.newImage('u-block.jpg')
+local vblock = love.graphics.newImage('v-block.jpg')
+local wblock = love.graphics.newImage('w-block.jpg')
+local xblock = love.graphics.newImage('x-block.jpg')
+local yblock = love.graphics.newImage('y-block.jpg')
+local zblock = love.graphics.newImage('z-block.jpg')
+
 
 local isASelected_freeplay = false
 local isBSelected_freeplay = false
@@ -26,31 +51,31 @@ local bblockYfree = 300
 
 local letters = {
                     A = {char="A", isSelected = false, x=80, y=0, placed = false, image=ablock}, 
-                    B = {char="B", isSelected = false, x=160, y=0}, 
-                    C = {char="C", isSelected = false, x=240, y=0, placed = false}, 
-                    D = {char="D", isSelected = false, x=320, y=0}, 
-                    E = {char="E", isSelected = false, x=400, y=0}, 
-                    F = {char="F", isSelected = false, x=480, y=0}, 
-                    G = {char="G", isSelected = false, x=560, y=0}, 
-                    H = {char="H", isSelected = false, x=560, y=80}, 
-                    I = {char="I", isSelected = false, x=560, y=160}, 
-                    J = {char="J", isSelected = false, x=560, y=240}, 
-                    K = {char="K", isSelected = false, x=560, y=320},
-                    L = {char="L", isSelected = false, x=560, y=400}, 
-                    M = {char="M", isSelected = false, x=560, y=480}, 
-                    N = {char="N", isSelected = false, x=560, y=560}, 
-                    O = {char="O", isSelected = false, x=480, y=560}, 
-                    P = {char="P", isSelected = false, x=400, y=560}, 
-                    Q = {char="Q", isSelected = false, x=320, y=560}, 
-                    R = {char="R", isSelected = false, x=240, y=560}, 
-                    S = {char="S", isSelected = false, x=160, y=560}, 
-                    T = {char="T", isSelected = false, x=80, y=560, placed = false}, 
-                    U = {char="U", isSelected = false, x=0, y=560}, 
-                    V = {char="V", isSelected = false, x=0, y=480}, 
-                    W = {char="W", isSelected = false, x=0, y=400}, 
-                    X = {char="X", isSelected = false, x=0, y=320}, 
-                    Y = {char="Y", isSelected = false, x=0, y=240}, 
-                    Z = {char="Z", isSelected = false, x=0, y=160}
+                    B = {char="B", isSelected = false, x=160, y=0, placed = false, image=bblock}, 
+                    C = {char="C", isSelected = false, x=240, y=0, placed = false, image=cblock}, 
+                    D = {char="D", isSelected = false, x=320, y=0, placed = false, image=dblock}, 
+                    E = {char="E", isSelected = false, x=400, y=0, placed = false, image=eblock}, 
+                    F = {char="F", isSelected = false, x=480, y=0, placed = false, image=fblock}, 
+                    G = {char="G", isSelected = false, x=560, y=0, placed = false, image=gblock}, 
+                    H = {char="H", isSelected = false, x=560, y=80, placed = false, image=hblock}, 
+                    I = {char="I", isSelected = false, x=560, y=160, placed = false, image=iblock}, 
+                    J = {char="J", isSelected = false, x=560, y=240, placed = false, image=jblock}, 
+                    K = {char="K", isSelected = false, x=560, y=320, placed = false, image=kblock},
+                    L = {char="L", isSelected = false, x=560, y=400, placed = false, image=lblock}, 
+                    M = {char="M", isSelected = false, x=560, y=480, placed = false, image=mblock}, 
+                    N = {char="N", isSelected = false, x=560, y=560, placed = false, image=nblock}, 
+                    O = {char="O", isSelected = false, x=480, y=560, placed = false, image=oblock}, 
+                    P = {char="P", isSelected = false, x=400, y=560, placed = false, image=pblock}, 
+                    Q = {char="Q", isSelected = false, x=320, y=560, placed = false, image=qblock}, 
+                    R = {char="R", isSelected = false, x=240, y=560, placed = false, image=rblock}, 
+                    S = {char="S", isSelected = false, x=160, y=560, placed = false, image=sblock}, 
+                    T = {char="T", isSelected = false, x=80, y=560, placed = false, image=tblock}, 
+                    U = {char="U", isSelected = false, x=0, y=560, placed = false, image=ublock}, 
+                    V = {char="V", isSelected = false, x=0, y=480, placed = false, image=vblock}, 
+                    W = {char="W", isSelected = false, x=0, y=400, placed = false, image=wblock}, 
+                    X = {char="X", isSelected = false, x=0, y=320, placed = false, image=xblock}, 
+                    Y = {char="Y", isSelected = false, x=0, y=240, placed = false, image=yblock}, 
+                    Z = {char="Z", isSelected = false, x=0, y=160, placed = false, image=zblock}
                 }
       
 local target1 = {x = 160, y = 430}
@@ -218,9 +243,7 @@ function love.draw()
         for i, letter in pairs(letters) do
             love.graphics.rectangle('line', letter.x, letter.y, 80, 80)
             love.graphics.printf(letter.char, letter.x - 8, letter.y + 24, 100, "center")
-            if letter.image then
-                love.graphics.draw(letter.image, letter.x, letter.y, 0, 0.7, 0.7)
-            end
+            love.graphics.draw(letter.image, letter.x, letter.y, 0, 0.7, 0.7)
         end    
     
         -- Block movement
@@ -274,9 +297,6 @@ function love.draw()
         local spriteNum = math.floor(animation.currentTime / animation.duration * #animation.quads) + 1
         love.graphics.draw(animation.spriteSheet, animation.quads[spriteNum])
     end
-
-  
-
 end
 
 
