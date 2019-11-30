@@ -12,32 +12,32 @@ local fairysetplay001 = love.graphics.newImage('fairy-setplay001.png')
 local fairysetplay002 = love.graphics.newImage('fairy-setplay002.png')
 local fairysetplay003 = love.graphics.newImage('fairy-setplay003.png')
 
-local ablock = love.graphics.newImage('a-block.jpg')
-local bblock = love.graphics.newImage('b-block.jpg')
-local cblock = love.graphics.newImage('c-block.jpg')
-local dblock = love.graphics.newImage('d-block.jpg')
-local eblock = love.graphics.newImage('e-block.jpg')
-local fblock = love.graphics.newImage('f-block.jpg')
-local gblock = love.graphics.newImage('g-block.jpg')
-local hblock = love.graphics.newImage('h-block.jpg')
-local iblock = love.graphics.newImage('i-block.jpg')
-local jblock = love.graphics.newImage('j-block.jpg')
-local kblock = love.graphics.newImage('k-block.jpg')
-local lblock = love.graphics.newImage('l-block.jpg')
-local mblock = love.graphics.newImage('m-block.jpg')
-local nblock = love.graphics.newImage('n-block.jpg')
-local oblock = love.graphics.newImage('o-block.jpg')
-local pblock = love.graphics.newImage('p-block.jpg')
-local qblock = love.graphics.newImage('q-block.jpg')
-local rblock = love.graphics.newImage('r-block.jpg')
-local sblock = love.graphics.newImage('s-block.jpg')
-local tblock = love.graphics.newImage('t-block.jpg')
-local ublock = love.graphics.newImage('u-block.jpg')
-local vblock = love.graphics.newImage('v-block.jpg')
-local wblock = love.graphics.newImage('w-block.jpg')
-local xblock = love.graphics.newImage('x-block.jpg')
-local yblock = love.graphics.newImage('y-block.jpg')
-local zblock = love.graphics.newImage('z-block.jpg')
+local ablock = love.graphics.newImage('a-plastic.jpg')
+local bblock = love.graphics.newImage('b-plastic.jpg')
+local cblock = love.graphics.newImage('c-plastic.jpg')
+local dblock = love.graphics.newImage('d-plastic.jpg')
+local eblock = love.graphics.newImage('e-plastic.jpg')
+local fblock = love.graphics.newImage('f-plastic.jpg')
+local gblock = love.graphics.newImage('g-plastic.jpg')
+local hblock = love.graphics.newImage('h-plastic.jpg')
+local iblock = love.graphics.newImage('i-plastic.jpg')
+local jblock = love.graphics.newImage('j-plastic.jpg')
+local kblock = love.graphics.newImage('k-plastic.jpg')
+local lblock = love.graphics.newImage('l-plastic.jpg')
+local mblock = love.graphics.newImage('m-plastic.jpg')
+local nblock = love.graphics.newImage('n-plastic.jpg')
+local oblock = love.graphics.newImage('o-plastic.jpg')
+local pblock = love.graphics.newImage('p-plastic.jpg')
+local qblock = love.graphics.newImage('q-plastic.jpg')
+local rblock = love.graphics.newImage('r-plastic.jpg')
+local sblock = love.graphics.newImage('s-plastic.jpg')
+local tblock = love.graphics.newImage('t-plastic.jpg')
+local ublock = love.graphics.newImage('u-plastic.jpg')
+local vblock = love.graphics.newImage('v-plastic.jpg')
+local wblock = love.graphics.newImage('w-plastic.jpg')
+local xblock = love.graphics.newImage('x-plastic.jpg')
+local yblock = love.graphics.newImage('y-plastic.jpg')
+local zblock = love.graphics.newImage('z-plastic.jpg')
 
 
 local isASelected_freeplay = false
@@ -227,23 +227,39 @@ function love.draw()
     elseif gameState == 'setplay' then
 
          -- draw stage
-        love.graphics.rectangle('line', 00, 00, 990, 720)
-        love.graphics.rectangle('line', 00, 00, 640, 640)
-        love.graphics.rectangle('line', 80, 80, 480, 480)
+        love.graphics.rectangle('fill', 00, 00, 640, 640)
 
+        -- the screen
+        love.graphics.setColor(0, 0, 0)
+        love.graphics.rectangle('fill', 00, 00, 990, 720)
+
+
+        -- the blocks and play area
+        love.graphics.setColor(0.5, 0, 0)
+        love.graphics.rectangle('fill', 80, 80, 480, 480)
+
+        love.graphics.setColor(100, 100, 100)
         love.graphics.rectangle('line', 640, 00, 350, 80)
-        love.graphics.rectangle('line', 640, 80, 350, 520)
+        love.graphics.printf("menu", 880, 0, 100, "center")
 
+
+        -- Fairy area
+        love.graphics.rectangle('line', 640, 80, 350, 520)
         love.graphics.draw(fairysprite, 640, 80, 0, 1, 1)
-        love.graphics.rectangle('line', 640, 640, 350, 80)
+
+
+        -- audio area    
+        love.graphics.rectangle('line', 0, 640, 990, 80)
+        love.graphics.setColor(100, 100, 100)
         love.graphics.printf("audio", 640, 640, 100, "center")
+
 
 
         -- draw blocks      
         for i, letter in pairs(letters) do
-            love.graphics.rectangle('line', letter.x, letter.y, 80, 80)
+            -- love.graphics.rectangle('line', letter.x, letter.y, 80, 80)
             love.graphics.printf(letter.char, letter.x - 8, letter.y + 24, 100, "center")
-            love.graphics.draw(letter.image, letter.x, letter.y, 0, 0.7, 0.7)
+            love.graphics.draw(letter.image, letter.x, letter.y, 0, 1, 1)
         end    
     
         -- Block movement
