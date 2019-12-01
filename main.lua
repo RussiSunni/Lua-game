@@ -12,32 +12,6 @@ local fairysetplay001 = love.graphics.newImage('fairy-setplay001.png')
 local fairysetplay002 = love.graphics.newImage('fairy-setplay002.png')
 local fairysetplay003 = love.graphics.newImage('fairy-setplay003.png')
 
-local ablock = love.graphics.newImage('a-plastic.jpg')
-local bblock = love.graphics.newImage('b-plastic.jpg')
-local cblock = love.graphics.newImage('c-plastic.jpg')
-local dblock = love.graphics.newImage('d-plastic.jpg')
-local eblock = love.graphics.newImage('e-plastic.jpg')
-local fblock = love.graphics.newImage('f-plastic.jpg')
-local gblock = love.graphics.newImage('g-plastic.jpg')
-local hblock = love.graphics.newImage('h-plastic.jpg')
-local iblock = love.graphics.newImage('i-plastic.jpg')
-local jblock = love.graphics.newImage('j-plastic.jpg')
-local kblock = love.graphics.newImage('k-plastic.jpg')
-local lblock = love.graphics.newImage('l-plastic.jpg')
-local mblock = love.graphics.newImage('m-plastic.jpg')
-local nblock = love.graphics.newImage('n-plastic.jpg')
-local oblock = love.graphics.newImage('o-plastic.jpg')
-local pblock = love.graphics.newImage('p-plastic.jpg')
-local qblock = love.graphics.newImage('q-plastic.jpg')
-local rblock = love.graphics.newImage('r-plastic.jpg')
-local sblock = love.graphics.newImage('s-plastic.jpg')
-local tblock = love.graphics.newImage('t-plastic.jpg')
-local ublock = love.graphics.newImage('u-plastic.jpg')
-local vblock = love.graphics.newImage('v-plastic.jpg')
-local wblock = love.graphics.newImage('w-plastic.jpg')
-local xblock = love.graphics.newImage('x-plastic.jpg')
-local yblock = love.graphics.newImage('y-plastic.jpg')
-local zblock = love.graphics.newImage('z-plastic.jpg')
 
 
 local isASelected_freeplay = false
@@ -50,32 +24,32 @@ local bblockYfree = 300
 
 
 local letters = {
-                    A = {char="A", isSelected = false, x=80, y=0, placed = false, image=ablock}, 
-                    B = {char="B", isSelected = false, x=160, y=0, placed = false, image=bblock}, 
-                    C = {char="C", isSelected = false, x=240, y=0, placed = false, image=cblock}, 
-                    D = {char="D", isSelected = false, x=320, y=0, placed = false, image=dblock}, 
-                    E = {char="E", isSelected = false, x=400, y=0, placed = false, image=eblock}, 
-                    F = {char="F", isSelected = false, x=480, y=0, placed = false, image=fblock}, 
-                    G = {char="G", isSelected = false, x=560, y=0, placed = false, image=gblock}, 
-                    H = {char="H", isSelected = false, x=560, y=80, placed = false, image=hblock}, 
-                    I = {char="I", isSelected = false, x=560, y=160, placed = false, image=iblock}, 
-                    J = {char="J", isSelected = false, x=560, y=240, placed = false, image=jblock}, 
-                    K = {char="K", isSelected = false, x=560, y=320, placed = false, image=kblock},
-                    L = {char="L", isSelected = false, x=560, y=400, placed = false, image=lblock}, 
-                    M = {char="M", isSelected = false, x=560, y=480, placed = false, image=mblock}, 
-                    N = {char="N", isSelected = false, x=560, y=560, placed = false, image=nblock}, 
-                    O = {char="O", isSelected = false, x=480, y=560, placed = false, image=oblock}, 
-                    P = {char="P", isSelected = false, x=400, y=560, placed = false, image=pblock}, 
-                    Q = {char="Q", isSelected = false, x=320, y=560, placed = false, image=qblock}, 
-                    R = {char="R", isSelected = false, x=240, y=560, placed = false, image=rblock}, 
-                    S = {char="S", isSelected = false, x=160, y=560, placed = false, image=sblock}, 
-                    T = {char="T", isSelected = false, x=80, y=560, placed = false, image=tblock}, 
-                    U = {char="U", isSelected = false, x=0, y=560, placed = false, image=ublock}, 
-                    V = {char="V", isSelected = false, x=0, y=480, placed = false, image=vblock}, 
-                    W = {char="W", isSelected = false, x=0, y=400, placed = false, image=wblock}, 
-                    X = {char="X", isSelected = false, x=0, y=320, placed = false, image=xblock}, 
-                    Y = {char="Y", isSelected = false, x=0, y=240, placed = false, image=yblock}, 
-                    Z = {char="Z", isSelected = false, x=0, y=160, placed = false, image=zblock}
+                    A = {char="A", isSelected = false, x=80, y=0, placed = false}, 
+                    B = {char="B", isSelected = false, x=160, y=0, placed = false}, 
+                    C = {char="C", isSelected = false, x=240, y=0, placed = false}, 
+                    D = {char="D", isSelected = false, x=320, y=0, placed = false}, 
+                    E = {char="E", isSelected = false, x=400, y=0, placed = false}, 
+                    F = {char="F", isSelected = false, x=480, y=0, placed = false}, 
+                    G = {char="G", isSelected = false, x=560, y=0, placed = false}, 
+                    H = {char="H", isSelected = false, x=560, y=80, placed = false}, 
+                    I = {char="I", isSelected = false, x=560, y=160, placed = false}, 
+                    J = {char="J", isSelected = false, x=560, y=240, placed = false}, 
+                    K = {char="K", isSelected = false, x=560, y=320, placed = false},
+                    L = {char="L", isSelected = false, x=560, y=400, placed = false}, 
+                    M = {char="M", isSelected = false, x=560, y=480, placed = false}, 
+                    N = {char="N", isSelected = false, x=560, y=560, placed = false}, 
+                    O = {char="O", isSelected = false, x=480, y=560, placed = false}, 
+                    P = {char="P", isSelected = false, x=400, y=560, placed = false}, 
+                    Q = {char="Q", isSelected = false, x=320, y=560, placed = false}, 
+                    R = {char="R", isSelected = false, x=240, y=560, placed = false}, 
+                    S = {char="S", isSelected = false, x=160, y=560, placed = false}, 
+                    T = {char="T", isSelected = false, x=80, y=560, placed = false}, 
+                    U = {char="U", isSelected = false, x=0, y=560, placed = false}, 
+                    V = {char="V", isSelected = false, x=0, y=480, placed = false}, 
+                    W = {char="W", isSelected = false, x=0, y=400, placed = false}, 
+                    X = {char="X", isSelected = false, x=0, y=320, placed = false}, 
+                    Y = {char="Y", isSelected = false, x=0, y=240, placed = false}, 
+                    Z = {char="Z", isSelected = false, x=0, y=160, placed = false}
                 }
       
 local target1 = {x = 170, y = 430}
@@ -261,7 +235,7 @@ function love.draw()
         -- audio area    
         love.graphics.rectangle('line', 0, 640, 990, 80)
         love.graphics.setColor(100, 100, 100)
-        love.graphics.printf("audio", 0, 640, 100, "center")
+        love.graphics.printf("audio / familiar", 0, 640, 640, "center")
 
 
         -- draw block
@@ -305,10 +279,13 @@ function love.draw()
         -- draw subject
         love.graphics.draw(cat, 200, 100, 0, 1, 1)
         love.graphics.setColor(0.8, 0.3, 0.3)
-
         love.graphics.rectangle('fill', target1.x, target1.y, 80, 80)
         love.graphics.rectangle('fill', target2.x, target2.y, 80, 80)
         love.graphics.rectangle('fill', target3.x, target3.y, 80, 80)
+        love.graphics.setColor(0, 0, 0)
+        love.graphics.rectangle('line', target1.x, target1.y, 80, 80)
+        love.graphics.rectangle('line', target2.x, target2.y, 80, 80)
+        love.graphics.rectangle('line', target3.x, target3.y, 80, 80)
     end
 
      -- for correct letter placement
@@ -351,6 +328,73 @@ function love.update(dt)
     menu_mousehandling_setplay(mx, my, down)
     collision = CheckCollision(ablockXfree, ablockYfree, bblockXfree, bblockYfree, cblockX, cblockY)
     print(collision)
+
+
+    ----------------------- Freeplay Collision Detection-------------------------
+ 
+    
+    if love.keyboard.isDown('w') then
+        for i, letter in pairs(letters) do
+            if letter ~= letters.A then
+                if letters.A.x < letter.x + 80 and letter.x < letters.A.x + 80 and letters.A.y < letter.y + 80 and letter.y < letters.A.y + 80 then
+                    letters.A.y = letters.A.y + 5 
+                end
+            end
+            if letter ~= letters.B then
+                if letters.B.x < letter.x + 80 and letter.x < letters.B.x + 80 and letters.B.y < letter.y + 80 and letter.y < letters.B.y + 80 then
+                    letters.B.y = letters.B.y + 5 
+                end
+            end
+        end  
+    end
+
+    if love.keyboard.isDown('s') then
+        for i, letter in pairs(letters) do
+            if letter ~= letters.A then
+                if letters.A.x < letter.x + 80 and letter.x < letters.A.x + 80 and letters.A.y < letter.y + 80 and letter.y < letters.A.y + 80 then
+                    letters.A.y = letters.A.y - 5 
+                end
+            end
+            if letter ~= letters.B then
+                if letters.B.x < letter.x + 80 and letter.x < letters.B.x + 80 and letters.B.y < letter.y + 80 and letter.y < letters.B.y + 80 then
+                    letters.B.y = letters.B.y - 5 
+                end
+            end
+        end  
+    end
+
+    if love.keyboard.isDown('a') then
+        for i, letter in pairs(letters) do
+            if letter ~= letters.A then
+                if letters.A.x < letter.x + 80 and letter.x < letters.A.x + 80 and letters.A.y < letter.y + 80 and letter.y < letters.A.y + 80 then
+                    letters.A.x = letters.A.x + 5 
+                end
+            end
+            if letter ~= letters.B then
+                if letters.B.x < letter.x + 80 and letter.x < letters.B.x + 80 and letters.B.y < letter.y + 80 and letter.y < letters.B.y + 80 then
+                    letters.B.x = letters.B.x + 5 
+                end
+            end
+        end  
+    end
+
+    if love.keyboard.isDown('d') then
+        for i, letter in pairs(letters) do
+            if letter ~= letters.A then
+                if letters.A.x < letter.x + 80 and letter.x < letters.A.x + 80 and letters.A.y < letter.y + 80 and letter.y < letters.A.y + 80 then
+                    letters.A.x = letters.A.x - 5 
+                end
+            end
+            if letter ~= letters.B then
+                if letters.B.x < letter.x + 80 and letter.x < letters.B.x + 80 and letters.B.y < letter.y + 80 and letter.y < letters.B.y + 80 then
+                    letters.B.x = letters.B.x - 5 
+                end
+            end
+        end  
+    end
+
+
+
 
 
     -- animation
@@ -448,7 +492,8 @@ function selectBlockBFreePlay()
     isBSelected_freeplay = true
 end
 
--- Collision detection function;
+
+-- Free Play Collision detection function;
 -- Returns true if two boxes overlap, false if they don't;
 -- x1,y1 are the top-left coords of the first box, while w1,h1 are its width and height;
 -- x2,y2,w2 & h2 are the same, but for the second box.
@@ -458,3 +503,7 @@ function CheckCollision(ablockX, ablockY, bblockX, bblockY)
             ablockY < bblockY+100 and
             bblockY < ablockY+100
 end
+
+
+
+
