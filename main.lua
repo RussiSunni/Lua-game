@@ -6,11 +6,16 @@ WINDOW_HEIGHT = 720
 -- -- background image and starting scroll location (X axis)
 local secretary = love.graphics.newImage('secretary.png')
 local teacher = love.graphics.newImage('teacher.png')
+local bird = love.graphics.newImage('bird.png')
 local fairy = love.graphics.newImage('fairy-small.png')
 local cat = love.graphics.newImage('cat-3.png')
+local dragonStory01 = love.graphics.newImage('dragon01.jpg')
 local fairysetplay001 = love.graphics.newImage('fairy-setplay001.png')
 local fairysetplay002 = love.graphics.newImage('fairy-setplay002.png')
 local fairysetplay003 = love.graphics.newImage('fairy-setplay003.png')
+local fairysetplay003 = love.graphics.newImage('fairy-setplay003.png')
+local map = love.graphics.newImage('map.jpg')
+local dragonIntro = love.graphics.newImage('dragon-intro.jpg')
 
 
 
@@ -90,24 +95,31 @@ end
 function love.keypressed(key)
     if key == 'escape' then
         love.event.quit()
+
     elseif key == 'enter' or key == 'return' then
         if gameState == 'start' then
             gameState = 'screen2'
         elseif gameState == 'screen2' then
-            gameState = 'menu'
-        elseif gameState == 'menu' then
-            gameState = 'freeplay'
-        elseif gameState == 'done' then
-            -- game is simply in a restart phase here, but will set the serving
-            -- player to the opponent of whomever won for fairness!
-            gameState = 'serve'
-        end
-    elseif key == 'p' then
-        gameState = 'setplay'
+            gameState = 'introMode'    
+        elseif gameState == 'introMode' then          
+            gameState = 'mapMode'
+        elseif gameState == 'mapMode' then            
+            gameState = 'stageIntroMode'    
+        elseif gameState == 'stageIntroMode' then            
+            gameState = 'storyMode'    
 
+            -- gameState = 'freeplay'
+        -- elseif gameState == 'map' then
+        --     gameState = 'freeplay'
+        -- elseif gameState == 'freeplay' then
+        --     gameState = 'intro'
+        -- elseif gameState == 'intro' then
+         
+        elseif gameState == 'storyMode' then
+            gameState = 'exerciseMode'
+        end
     end
 end
-
 
 function love.draw()
              
@@ -126,12 +138,80 @@ function love.draw()
         love.graphics.printf('Hurry child, there is much to do. Do not tarry.', 0, 600, WINDOW_WIDTH, 'center')
 
 
-    elseif gameState == 'menu' then
-        love.graphics.rectangle('line', 640-200, 20, 400, 670)
-        love.graphics.printf('MENU', 0, 30, WINDOW_WIDTH, 'center')
+    elseif gameState == 'introMode' then
 
-        love.graphics.printf('SETPLAY MODE', 0, 100, WINDOW_WIDTH, 'center')
-        love.graphics.printf('FREEPLAY MODE', 0, 140, WINDOW_WIDTH, 'center')
+        love.graphics.printf("Welcome", 0, 50, 640, "center")
+        love.graphics.printf("We have been waiting for you", 0, 100, 640, "center")
+
+        love.graphics.printf("This is Wild World", 0, 200, 640, "center")
+        love.graphics.printf("All knowledge has been lost", 0, 250, 640, "center")
+        love.graphics.printf("Including the names of things", 0, 300, 640, "center")
+
+        love.graphics.printf("We need you to help us with this please", 0, 400, 640, "center")    
+
+        -- draw stage
+        love.graphics.rectangle('line', 00, 00, 640, 640)
+
+        -- the screen
+        love.graphics.rectangle('line', 00, 00, 990, 720)
+
+              -- menu area
+       love.graphics.setColor(100, 100, 100)
+       love.graphics.rectangle('line', 640, 00, 350, 80)
+       love.graphics.printf("menu", 880, 0, 100, "center")
+
+       -- Fairy area
+       love.graphics.rectangle('line', 640, 80, 350, 520)
+       love.graphics.draw(fairysprite, 640, 80, 0, 1, 1)
+
+       love.graphics.rectangle('line', 640, 600, 350, 40)
+       
+
+       -- audio area    
+       love.graphics.rectangle('line', 0, 640, 990, 80)
+       love.graphics.setColor(100, 100, 100)
+       love.graphics.printf("controls", 0, 640, 640, "center")
+
+
+
+    elseif gameState == 'mapMode' then
+
+        -- map
+        love.graphics.draw(map, 00, 0, 0, 0.7, 0.7)
+
+        love.graphics.setColor(100, 100, 100)
+
+        love.graphics.printf("This is Wild World", 0, 535, 640, "center")
+        love.graphics.printf("There are many people that need your help", 0, 585, 640, "center")
+        love.graphics.printf("Choose where you want to go first", 0, 660, 640, "center")
+
+        -- draw stage
+        -- love.graphics.rectangle('line', 00, 00, 640, 640)
+
+        -- the screen
+        love.graphics.rectangle('line', 00, 00, 990, 720)
+
+                -- menu area
+         love.graphics.setColor(100, 100, 100)
+         love.graphics.rectangle('line', 640, 00, 350, 80)
+         love.graphics.printf("menu", 880, 0, 100, "center")
+ 
+ 
+         -- Fairy area
+         love.graphics.rectangle('line', 640, 80, 350, 520)
+         love.graphics.draw(fairysprite, 640, 80, 0, 1, 1)
+ 
+         love.graphics.rectangle('line', 640, 600, 350, 40)
+         
+ 
+         -- audio area    
+         love.graphics.rectangle('line', 640, 640, 350, 80)
+         love.graphics.setColor(100, 100, 100)
+
+
+        --  love.graphics.printf("controls", 0, 640, 640, "center")
+
+
 
     elseif gameState == 'freeplay' then
 
@@ -203,7 +283,62 @@ function love.draw()
             end
         end
 
-    elseif gameState == 'setplay' then
+    elseif gameState == 'intro' then
+        love.graphics.draw(bird, 40, 100, 0, 1, 1)
+        love.graphics.printf("I have your new exercises here", 500, 200, 500, "center")
+
+
+    elseif gameState == 'stageIntroMode' then
+
+        -- stage character
+        love.graphics.draw(dragonIntro, 0, 00, 0, 0.6, 0.6)
+        love.graphics.printf("I am trying to tame a dragon", 0, 600, 640, "center")
+
+        -- Fairy area
+        love.graphics.rectangle('line', 640, 80, 350, 520)
+        love.graphics.draw(fairysprite, 640, 80, 0, 1, 1)
+
+        love.graphics.rectangle('line', 640, 600, 350, 40)
+        
+
+        -- audio area    
+        love.graphics.rectangle('line', 0, 640, 990, 80)
+        love.graphics.setColor(100, 100, 100)
+        -- love.graphics.printf("controls", 0, 640, 640, "center")
+
+
+    elseif gameState == 'storyMode' then
+
+        love.graphics.draw(dragonStory01, 00, 0, 0, 0.5, 0.5)
+
+        love.graphics.setColor(0, 0, 0)
+
+        -- draw stage
+        love.graphics.rectangle('line', 00, 00, 640, 640)
+
+        -- the screen
+        love.graphics.rectangle('line', 00, 00, 990, 720)
+
+         -- menu area
+         love.graphics.setColor(100, 100, 100)
+         love.graphics.rectangle('line', 640, 00, 350, 80)
+         love.graphics.printf("menu", 880, 0, 100, "center")
+ 
+ 
+         -- Fairy area
+         love.graphics.rectangle('line', 640, 80, 350, 520)
+         love.graphics.draw(fairysprite, 640, 80, 0, 1, 1)
+ 
+         love.graphics.rectangle('line', 640, 600, 350, 40)
+         
+ 
+         -- audio area    
+         love.graphics.rectangle('line', 0, 640, 990, 80)
+         love.graphics.setColor(100, 100, 100)
+        --  love.graphics.printf("controls", 0, 640, 640, "center")
+
+
+    elseif gameState == 'exerciseMode' then
         love.graphics.setColor(0, 0, 0)
 
         -- draw stage
@@ -230,8 +365,6 @@ function love.draw()
         love.graphics.rectangle('line', 640, 600, 350, 40)
         love.graphics.printf(fairySpeech, 640, 600, 350, "center")
 
-
-
         -- audio area    
         love.graphics.rectangle('line', 0, 640, 990, 80)
         love.graphics.setColor(100, 100, 100)
@@ -246,12 +379,43 @@ function love.draw()
         love.graphics.setFont(largeFont)
       
 
+        -- draw subject
+        love.graphics.draw(cat, 200, 100, 0, 1, 1)
+        love.graphics.setColor(0.8, 0.3, 0.3)
+        love.graphics.rectangle('fill', target1.x, target1.y, 80, 80)
+        love.graphics.rectangle('fill', target2.x, target2.y, 80, 80)
+        love.graphics.rectangle('fill', target3.x, target3.y, 80, 80)
+        love.graphics.setColor(0, 0, 0)
+        love.graphics.rectangle('line', target1.x, target1.y, 80, 80)
+        love.graphics.rectangle('line', target2.x, target2.y, 80, 80)
+        love.graphics.rectangle('line', target3.x, target3.y, 80, 80)
 
+        local counter = 1
 
         -- draw blocks      
         for i, letter in pairs(letters) do
-            love.graphics.setColor(0.1, 0.7, 0.6)
-            love.graphics.rectangle('fill', letter.x, letter.y, 80, 80)
+
+            -- love.graphics.setColor(0.1, 0.7, 0.6)
+
+            if letter.char == "A" or letter.char == "E" or letter.char == "I" or letter.char == "M" or letter.char == "Q" or letter.char == "U" or letter.char == "Y" then
+                love.graphics.setColor(0, 1, 0)
+                love.graphics.rectangle('fill', letter.x, letter.y, 80, 80)
+            end
+
+            if letter.char == "B" or letter.char == "F" or letter.char == "J" or letter.char == "N" or letter.char == "R" or letter.char == "V" or letter.char == "Z" then
+                love.graphics.setColor(0.9, 0.9, 0)
+                love.graphics.rectangle('fill', letter.x, letter.y, 80, 80)
+            end
+
+            if letter.char == "C" or letter.char == "G" or letter.char == "K" or letter.char == "O" or letter.char == "S" or letter.char == "W" then
+                love.graphics.setColor(1, 0, 0)
+                love.graphics.rectangle('fill', letter.x, letter.y, 80, 80)
+            end
+
+            if letter.char == "D" or letter.char == "H" or letter.char == "L" or letter.char == "P" or letter.char == "T" or letter.char == "X" then
+                love.graphics.setColor(0, 0, 1)
+                love.graphics.rectangle('fill', letter.x, letter.y, 80, 80)
+            end
 
             love.graphics.setColor(0, 0, 0)
             love.graphics.rectangle('line', letter.x, letter.y, 80, 80)
@@ -265,34 +429,32 @@ function love.draw()
         for i, letter in pairs(letters) do
             if letter.isSelected == true then
                 if love.keyboard.isDown('w') then
-                    letter.y = letter.y - 1
+                    letter.y = letter.y - 2
                 elseif love.keyboard.isDown('s') then
-                    letter.y = letter.y + 1
+                    letter.y = letter.y + 2
                 elseif love.keyboard.isDown('a') then
-                    letter.x = letter.x - 1
+                    letter.x = letter.x - 2
                 elseif love.keyboard.isDown('d') then
-                    letter.x = letter.x + 1
+                    letter.x = letter.x + 2
                 end
             end
         end
 
-        -- draw subject
-        love.graphics.draw(cat, 200, 100, 0, 1, 1)
-        love.graphics.setColor(0.8, 0.3, 0.3)
-        love.graphics.rectangle('fill', target1.x, target1.y, 80, 80)
-        love.graphics.rectangle('fill', target2.x, target2.y, 80, 80)
-        love.graphics.rectangle('fill', target3.x, target3.y, 80, 80)
-        love.graphics.setColor(0, 0, 0)
-        love.graphics.rectangle('line', target1.x, target1.y, 80, 80)
-        love.graphics.rectangle('line', target2.x, target2.y, 80, 80)
-        love.graphics.rectangle('line', target3.x, target3.y, 80, 80)
+    elseif gameState == 'victory' then
+
+        local spriteNum = math.floor(animation.currentTime / animation.duration * #animation.quads) + 1
+        love.graphics.draw(animation.spriteSheet, animation.quads[spriteNum])
+
     end
+
+
 
      -- for correct letter placement
     if letters.C.placed == false then
         if (letters.C.x == target1.x and letters.C.y == target1.y) then
             letters.C.placed = true
             fairysprite = fairysetplay003
+            fairySpeech = "So gifted"
             letters.C.isSelected = false
         end
     end
@@ -301,6 +463,7 @@ function love.draw()
         if (letters.A.x == target2.x and letters.A.y == target2.y) then
             letters.A.placed = true
             fairysprite = fairysetplay003
+            fairySpeech = "So gifted"
             letters.A.isSelected = false
         end
     end
@@ -309,14 +472,19 @@ function love.draw()
         if (letters.T.x == target3.x and letters.T.y == target3.y) then
             letters.T.placed = true
             fairysprite = fairysetplay003
+            fairySpeech = "So gifted"
             letters.T.isSelected = false
         end
     end
 
     if (letters.C.placed == true and letters.A.placed == true and letters.T.placed == true) then
-        local spriteNum = math.floor(animation.currentTime / animation.duration * #animation.quads) + 1
-        love.graphics.draw(animation.spriteSheet, animation.quads[spriteNum])
+      
+        fairySpeech = "Shazam!"
     end
+
+    
+
+
 end
 
 
@@ -332,17 +500,13 @@ function love.update(dt)
 
     ----------------------- Freeplay Collision Detection-------------------------
  
-    
     if love.keyboard.isDown('w') then
         for i, letter in pairs(letters) do
-            if letter ~= letters.A then
-                if letters.A.x < letter.x + 80 and letter.x < letters.A.x + 80 and letters.A.y < letter.y + 80 and letter.y < letters.A.y + 80 then
-                    letters.A.y = letters.A.y + 5 
-                end
-            end
-            if letter ~= letters.B then
-                if letters.B.x < letter.x + 80 and letter.x < letters.B.x + 80 and letters.B.y < letter.y + 80 and letter.y < letters.B.y + 80 then
-                    letters.B.y = letters.B.y + 5 
+            for i, currentLetter in pairs(letters) do
+                if letter ~= currentLetter then
+                    if currentLetter.x < letter.x + 80 and letter.x < currentLetter.x + 80 and currentLetter.y < letter.y + 80 and letter.y < currentLetter.y + 80 then
+                        currentLetter.y = currentLetter.y + 5 
+                    end
                 end
             end
         end  
@@ -350,14 +514,11 @@ function love.update(dt)
 
     if love.keyboard.isDown('s') then
         for i, letter in pairs(letters) do
-            if letter ~= letters.A then
-                if letters.A.x < letter.x + 80 and letter.x < letters.A.x + 80 and letters.A.y < letter.y + 80 and letter.y < letters.A.y + 80 then
-                    letters.A.y = letters.A.y - 5 
-                end
-            end
-            if letter ~= letters.B then
-                if letters.B.x < letter.x + 80 and letter.x < letters.B.x + 80 and letters.B.y < letter.y + 80 and letter.y < letters.B.y + 80 then
-                    letters.B.y = letters.B.y - 5 
+            for i, currentLetter in pairs(letters) do
+                if letter ~= currentLetter then
+                    if currentLetter.x < letter.x + 80 and letter.x < currentLetter.x + 80 and currentLetter.y < letter.y + 80 and letter.y < currentLetter.y + 80 then
+                        currentLetter.y = currentLetter.y - 5 
+                    end
                 end
             end
         end  
@@ -365,14 +526,11 @@ function love.update(dt)
 
     if love.keyboard.isDown('a') then
         for i, letter in pairs(letters) do
-            if letter ~= letters.A then
-                if letters.A.x < letter.x + 80 and letter.x < letters.A.x + 80 and letters.A.y < letter.y + 80 and letter.y < letters.A.y + 80 then
-                    letters.A.x = letters.A.x + 5 
-                end
-            end
-            if letter ~= letters.B then
-                if letters.B.x < letter.x + 80 and letter.x < letters.B.x + 80 and letters.B.y < letter.y + 80 and letter.y < letters.B.y + 80 then
-                    letters.B.x = letters.B.x + 5 
+            for i, currentLetter in pairs(letters) do
+                if letter ~= currentLetter then
+                    if currentLetter.x < letter.x + 80 and letter.x < currentLetter.x + 80 and currentLetter.y < letter.y + 80 and letter.y < currentLetter.y + 80 then
+                        currentLetter.x = currentLetter.x + 5 
+                    end
                 end
             end
         end  
@@ -380,20 +538,15 @@ function love.update(dt)
 
     if love.keyboard.isDown('d') then
         for i, letter in pairs(letters) do
-            if letter ~= letters.A then
-                if letters.A.x < letter.x + 80 and letter.x < letters.A.x + 80 and letters.A.y < letter.y + 80 and letter.y < letters.A.y + 80 then
-                    letters.A.x = letters.A.x - 5 
-                end
-            end
-            if letter ~= letters.B then
-                if letters.B.x < letter.x + 80 and letter.x < letters.B.x + 80 and letters.B.y < letter.y + 80 and letter.y < letters.B.y + 80 then
-                    letters.B.x = letters.B.x - 5 
+            for i, currentLetter in pairs(letters) do
+                if letter ~= currentLetter then
+                    if currentLetter.x < letter.x + 80 and letter.x < currentLetter.x + 80 and currentLetter.y < letter.y + 80 and letter.y < currentLetter.y + 80 then
+                        currentLetter.x = currentLetter.x - 5 
+                    end
                 end
             end
         end  
     end
-
-
 
 
 
