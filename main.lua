@@ -16,7 +16,7 @@ local fairysetplay003 = love.graphics.newImage('fairy-setplay003.png')
 local fairysetplay003 = love.graphics.newImage('fairy-setplay003.png')
 local map = love.graphics.newImage('map.jpg')
 local dragonIntro = love.graphics.newImage('dragon-intro.jpg')
-
+local artemisIntro = love.graphics.newImage('artemis-001.png')
 
 
 local isASelected_freeplay = false
@@ -140,77 +140,65 @@ function love.draw()
 
     elseif gameState == 'introMode' then
 
-        love.graphics.printf("Welcome", 0, 50, 640, "center")
-        love.graphics.printf("We have been waiting for you", 0, 100, 640, "center")
-
-        love.graphics.printf("This is Wild World", 0, 200, 640, "center")
-        love.graphics.printf("All knowledge has been lost", 0, 250, 640, "center")
-        love.graphics.printf("Including the names of things", 0, 300, 640, "center")
-
-        love.graphics.printf("We need you to help us with this please", 0, 400, 640, "center")    
-
         -- draw stage
-        love.graphics.rectangle('line', 00, 00, 640, 640)
+        love.graphics.rectangle('line', 00, 00, 960, 640)
 
-        -- the screen
-        love.graphics.rectangle('line', 00, 00, 990, 720)
+        -- the exercise block
+        love.graphics.rectangle('line', 320, 00, 640, 640)
 
-              -- menu area
+        love.graphics.printf("Welcome", 320, 50, 640, "center")
+        love.graphics.printf("We have been waiting for you", 320, 100, 640, "center")
+
+        love.graphics.printf("This is Wild World", 320, 200, 640, "center")
+        love.graphics.printf("All knowledge has been lost", 320, 250, 640, "center")
+        love.graphics.printf("Including the names of things", 320, 300, 640, "center")
+
+        love.graphics.printf("There are many people that need your help", 320, 400, 640, "center")
+
+
+        -- menu block
        love.graphics.setColor(100, 100, 100)
-       love.graphics.rectangle('line', 640, 00, 350, 80)
-       love.graphics.printf("menu", 880, 0, 100, "center")
+       love.graphics.rectangle('line', 960, 00, 320, 80)
+       love.graphics.printf("menu", 960, 0, 100, "center")
 
-       -- Fairy area
-       love.graphics.rectangle('line', 640, 80, 350, 520)
-       love.graphics.draw(fairysprite, 640, 80, 0, 1, 1)
+       -- Fairy block
+       love.graphics.rectangle('line', 960, 80, 320, 560)
+       love.graphics.draw(fairysprite, 960, 120, 0, 1, 1)
 
-       love.graphics.rectangle('line', 640, 600, 350, 40)
-       
-
-       -- audio area    
-       love.graphics.rectangle('line', 0, 640, 990, 80)
+       -- audio block    
+       love.graphics.rectangle('line', 0, 640, 1280, 80)
        love.graphics.setColor(100, 100, 100)
-       love.graphics.printf("controls", 0, 640, 640, "center")
 
-
-
+    
     elseif gameState == 'mapMode' then
 
-        -- map
-        love.graphics.draw(map, 00, 0, 0, 0.7, 0.7)
-
-        love.graphics.setColor(100, 100, 100)
-
-        love.graphics.printf("This is Wild World", 0, 535, 640, "center")
-        love.graphics.printf("There are many people that need your help", 0, 585, 640, "center")
-        love.graphics.printf("Choose where you want to go first", 0, 660, 640, "center")
-
-        -- draw stage
-        -- love.graphics.rectangle('line', 00, 00, 640, 640)
-
         -- the screen
-        love.graphics.rectangle('line', 00, 00, 990, 720)
+        love.graphics.rectangle('line', 00, 00, 1280, 720)
+        
+        -- draw stage
+        love.graphics.rectangle('line', 00, 00, 930, 640)
 
-                -- menu area
-         love.graphics.setColor(100, 100, 100)
-         love.graphics.rectangle('line', 640, 00, 350, 80)
-         love.graphics.printf("menu", 880, 0, 100, "center")
+        -- the exercise block
+        love.graphics.rectangle('line', 320, 00, 640, 640)
+
+        -- map
+        love.graphics.draw(map, 320, 0, 0, 1, 1)
+        love.graphics.setColor(100, 100, 100)
+      
+        love.graphics.printf("Choose where you want to go first", 320, 660, 640, "center")
+
+        -- menu block
+        love.graphics.setColor(100, 100, 100)
+        love.graphics.rectangle('line', 960, 00, 320, 80)
+        love.graphics.printf("menu", 960, 0, 100, "center")
  
- 
-         -- Fairy area
-         love.graphics.rectangle('line', 640, 80, 350, 520)
-         love.graphics.draw(fairysprite, 640, 80, 0, 1, 1)
- 
-         love.graphics.rectangle('line', 640, 600, 350, 40)
+       -- Fairy block
+       love.graphics.rectangle('line', 960, 80, 320, 560)
+       love.graphics.draw(fairysprite, 960, 120, 0, 1, 1)
          
- 
-         -- audio area    
-         love.graphics.rectangle('line', 640, 640, 350, 80)
-         love.graphics.setColor(100, 100, 100)
-
-
-        --  love.graphics.printf("controls", 0, 640, 640, "center")
-
+       -- audio block    
+       love.graphics.rectangle('line', 0, 640, 1280, 80)
+       love.graphics.setColor(100, 100, 100)
 
 
     elseif gameState == 'freeplay' then
@@ -255,8 +243,6 @@ function love.draw()
              end
         end
 
-        
-
         -- B block movement
         if isBSelected_freeplay == false then
         elseif isBSelected_freeplay == true then
@@ -291,94 +277,71 @@ function love.draw()
     elseif gameState == 'stageIntroMode' then
 
         -- stage character
-        love.graphics.draw(dragonIntro, 0, 00, 0, 0.6, 0.6)
-        love.graphics.printf("I am trying to tame a dragon", 0, 600, 640, "center")
+        love.graphics.draw(artemisIntro, 0, 00, 0, 0.7, 0.7)
+        love.graphics.printf("I need your help to name these animals please", 320, 600, 640, "center")
 
-        -- Fairy area
-        love.graphics.rectangle('line', 640, 80, 350, 520)
-        love.graphics.draw(fairysprite, 640, 80, 0, 1, 1)
+       -- Fairy block
+       love.graphics.rectangle('line', 960, 80, 320, 560)
+       love.graphics.draw(fairysprite, 960, 120, 0, 1, 1) 
 
-        love.graphics.rectangle('line', 640, 600, 350, 40)
-        
-
-        -- audio area    
-        love.graphics.rectangle('line', 0, 640, 990, 80)
-        love.graphics.setColor(100, 100, 100)
-        -- love.graphics.printf("controls", 0, 640, 640, "center")
-
+       -- audio block    
+       love.graphics.rectangle('line', 0, 640, 1280, 80)
+       love.graphics.setColor(100, 100, 100)
 
     elseif gameState == 'storyMode' then
 
-        love.graphics.draw(dragonStory01, 00, 0, 0, 0.5, 0.5)
+        -- the screen
+        love.graphics.rectangle('line', 00, 00, 1280, 720)
+
+        love.graphics.draw(dragonStory01, 320, 0, 0, 0.5, 0.5)
 
         love.graphics.setColor(0, 0, 0)
 
         -- draw stage
-        love.graphics.rectangle('line', 00, 00, 640, 640)
+        love.graphics.rectangle('line', 320, 00, 640, 640)
 
-        -- the screen
-        love.graphics.rectangle('line', 00, 00, 990, 720)
-
-         -- menu area
-         love.graphics.setColor(100, 100, 100)
-         love.graphics.rectangle('line', 640, 00, 350, 80)
-         love.graphics.printf("menu", 880, 0, 100, "center")
+        -- menu block
+        love.graphics.setColor(100, 100, 100)
+        love.graphics.rectangle('line', 960, 00, 320, 80)
+        love.graphics.printf("menu", 960, 0, 100, "center")
+  
+        -- Fairy block
+        love.graphics.rectangle('line', 960, 80, 320, 560)
+        love.graphics.draw(fairysprite, 960, 120, 0, 1, 1) 
  
- 
-         -- Fairy area
-         love.graphics.rectangle('line', 640, 80, 350, 520)
-         love.graphics.draw(fairysprite, 640, 80, 0, 1, 1)
- 
-         love.graphics.rectangle('line', 640, 600, 350, 40)
-         
- 
-         -- audio area    
-         love.graphics.rectangle('line', 0, 640, 990, 80)
-         love.graphics.setColor(100, 100, 100)
-        --  love.graphics.printf("controls", 0, 640, 640, "center")
-
+        -- audio block    
+        love.graphics.rectangle('line', 0, 640, 1280, 80)
+        love.graphics.setColor(100, 100, 100)
 
     elseif gameState == 'exerciseMode' then
         love.graphics.setColor(0, 0, 0)
 
-        -- draw stage
-        love.graphics.rectangle('fill', 00, 00, 640, 640)
-
         -- the screen
-        love.graphics.rectangle('fill', 00, 00, 990, 720)
+        love.graphics.rectangle('fill', 00, 00, 1280, 720)
 
+        -- draw stage
+        love.graphics.rectangle('fill', 320, 00, 640, 640)
 
         -- the blocks and play area
         love.graphics.setColor(0.5, 0, 0)
         love.graphics.rectangle('fill', 80, 80, 480, 480)
 
-        -- menu area
+        -- menu block
         love.graphics.setColor(100, 100, 100)
-        love.graphics.rectangle('line', 640, 00, 350, 80)
-        love.graphics.printf("menu", 880, 0, 100, "center")
+        love.graphics.rectangle('line', 960, 00, 320, 80)
+        love.graphics.printf("menu", 960, 0, 100, "center")
 
-
-        -- Fairy area
-        love.graphics.rectangle('line', 640, 80, 350, 520)
-        love.graphics.draw(fairysprite, 640, 80, 0, 1, 1)
-
-        love.graphics.rectangle('line', 640, 600, 350, 40)
-        love.graphics.printf(fairySpeech, 640, 600, 350, "center")
+        -- Fairy block
+        love.graphics.rectangle('line', 960, 80, 320, 560)
+        love.graphics.draw(fairysprite, 960, 120, 0, 1, 1)
+        love.graphics.printf(fairySpeech, 960, 600, 320, "center")
 
         -- audio area    
-        love.graphics.rectangle('line', 0, 640, 990, 80)
+        love.graphics.rectangle('line', 0, 640, 1280, 80)
         love.graphics.setColor(100, 100, 100)
-        love.graphics.printf("audio / familiar", 0, 640, 640, "center")
-
-
-        -- draw block
-
-        -- love.graphics.setColor(0.2, 1, 0.8)
-        -- love.graphics.rectangle('fill', 10, 10, 60, 60)
     
         love.graphics.setFont(largeFont)
       
-
         -- draw subject
         love.graphics.draw(cat, 200, 100, 0, 1, 1)
         love.graphics.setColor(0.8, 0.3, 0.3)
