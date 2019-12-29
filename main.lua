@@ -1,9 +1,13 @@
 
+-- variables
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
+local isASelected_freeplay = false
+local isBSelected_freeplay = false
+local collision = false
+mouse = {}
 
-
--- -- background image and starting scroll location (X axis)
+-- images
 local secretary = love.graphics.newImage('secretary.png')
 local teacher = love.graphics.newImage('teacher.png')
 local bird = love.graphics.newImage('bird.png')
@@ -18,55 +22,48 @@ local map = love.graphics.newImage('map.jpg')
 local dragonIntro = love.graphics.newImage('dragon-intro.jpg')
 local artemisIntro = love.graphics.newImage('artemis-001.png')
 
+-- sounds
+sound = love.audio.newSource("bird.mp3", "static") -- the "static" tells LÖVE to load the file into memory, good for short sound effects
+woodblock = love.audio.newSource("woodblock.wav", "static")
 
-local isASelected_freeplay = false
-local isBSelected_freeplay = false
-
+-- freeplay mode variables (not used currently)
 local ablockXfree = 100
 local ablockYfree = 100
 local bblockXfree = 300
 local bblockYfree = 300
 
 
+-- letter blocks
 local letters = {
-                    A = {char="A", isSelected = false, x=80, y=0, placed = false}, 
-                    B = {char="B", isSelected = false, x=160, y=0, placed = false}, 
-                    C = {char="C", isSelected = false, x=240, y=0, placed = false}, 
-                    D = {char="D", isSelected = false, x=320, y=0, placed = false}, 
-                    E = {char="E", isSelected = false, x=400, y=0, placed = false}, 
-                    F = {char="F", isSelected = false, x=480, y=0, placed = false}, 
-                    G = {char="G", isSelected = false, x=560, y=0, placed = false}, 
-                    H = {char="H", isSelected = false, x=560, y=80, placed = false}, 
-                    I = {char="I", isSelected = false, x=560, y=160, placed = false}, 
-                    J = {char="J", isSelected = false, x=560, y=240, placed = false}, 
-                    K = {char="K", isSelected = false, x=560, y=320, placed = false},
-                    L = {char="L", isSelected = false, x=560, y=400, placed = false}, 
-                    M = {char="M", isSelected = false, x=560, y=480, placed = false}, 
-                    N = {char="N", isSelected = false, x=560, y=560, placed = false}, 
-                    O = {char="O", isSelected = false, x=480, y=560, placed = false}, 
-                    P = {char="P", isSelected = false, x=400, y=560, placed = false}, 
-                    Q = {char="Q", isSelected = false, x=320, y=560, placed = false}, 
-                    R = {char="R", isSelected = false, x=240, y=560, placed = false}, 
-                    S = {char="S", isSelected = false, x=160, y=560, placed = false}, 
-                    T = {char="T", isSelected = false, x=80, y=560, placed = false}, 
-                    U = {char="U", isSelected = false, x=0, y=560, placed = false}, 
-                    V = {char="V", isSelected = false, x=0, y=480, placed = false}, 
-                    W = {char="W", isSelected = false, x=0, y=400, placed = false}, 
-                    X = {char="X", isSelected = false, x=0, y=320, placed = false}, 
-                    Y = {char="Y", isSelected = false, x=0, y=240, placed = false}, 
-                    Z = {char="Z", isSelected = false, x=0, y=160, placed = false}
-                }
+    A = {char="A", isSelected = false, x=400, y=0, placed = false}, 
+    B = {char="B", isSelected = false, x=480, y=0, placed = false}, 
+    C = {char="C", isSelected = false, x=560, y=0, placed = false}, 
+    D = {char="D", isSelected = false, x=640, y=0, placed = false}, 
+    E = {char="E", isSelected = false, x=720, y=0, placed = false}, 
+    F = {char="F", isSelected = false, x=800, y=0, placed = false}, 
+    G = {char="G", isSelected = false, x=880, y=0, placed = false}, 
+    H = {char="H", isSelected = false, x=880, y=80, placed = false}, 
+    I = {char="I", isSelected = false, x=880, y=160, placed = false}, 
+    J = {char="J", isSelected = false, x=880, y=240, placed = false}, 
+    K = {char="K", isSelected = false, x=880, y=320, placed = false},
+    L = {char="L", isSelected = false, x=880, y=400, placed = false}, 
+    M = {char="M", isSelected = false, x=880, y=480, placed = false}, 
+    N = {char="N", isSelected = false, x=880, y=560, placed = false}, 
+    O = {char="O", isSelected = false, x=800, y=560, placed = false}, 
+    P = {char="P", isSelected = false, x=720, y=560, placed = false}, 
+    Q = {char="Q", isSelected = false, x=640, y=560, placed = false}, 
+    R = {char="R", isSelected = false, x=560, y=560, placed = false}, 
+    S = {char="S", isSelected = false, x=480, y=560, placed = false}, 
+    T = {char="T", isSelected = false, x=400, y=560, placed = false}, 
+    U = {char="U", isSelected = false, x=320, y=560, placed = false}, 
+    V = {char="V", isSelected = false, x=320, y=480, placed = false}, 
+    W = {char="W", isSelected = false, x=320, y=400, placed = false}, 
+    X = {char="X", isSelected = false, x=320, y=320, placed = false}, 
+    Y = {char="Y", isSelected = false, x=320, y=240, placed = false}, 
+    Z = {char="Z", isSelected = false, x=320, y=160, placed = false}
+}
       
-local target1 = {x = 170, y = 430}
-local target2 = {x = 280, y = 430}
-local target3 = {x = 390, y = 430}
 
-local collision = false
-
-mouse = {}
-
-sound = love.audio.newSource("bird.mp3", "static") -- the "static" tells LÖVE to load the file into memory, good for short sound effects
-woodblock = love.audio.newSource("woodblock.wav", "static")
 
 
 function love.load()
@@ -80,8 +77,8 @@ function love.load()
     gameState = 'start'
 
     -- for selecting
-    aBlock_freeplay = 	{hover = false, text = "A", x = 200, y = 100, call = selectBlockAFreePlay}
-    bBlock_freeplay = 	{hover = false, text = "B", x = 200, y = 100, call = selectBlockBFreePlay}
+    aBlock_freeplay = 	{hover = false, text = "A", x = 520, y = 100, call = selectBlockAFreePlay}
+    bBlock_freeplay = 	{hover = false, text = "B", x = 520, y = 100, call = selectBlockBFreePlay}
 
     fairysprite = fairysetplay001
     fairySpeech = "Oi, what's this then?"
@@ -114,9 +111,11 @@ function love.keypressed(key)
         -- elseif gameState == 'freeplay' then
         --     gameState = 'intro'
         -- elseif gameState == 'intro' then
-         
-        elseif gameState == 'storyMode' then
-            gameState = 'exerciseMode'
+
+        elseif gameState == 'storyMode' then            
+            gameState = 'storytellingMode'             
+        elseif gameState == 'storytellingMode' then
+            gameState = 'spellingMode'
         end
     end
 end
@@ -154,7 +153,6 @@ function love.draw()
         love.graphics.printf("Including the names of things", 320, 300, 640, "center")
 
         love.graphics.printf("There are many people that need your help", 320, 400, 640, "center")
-
 
         -- menu block
        love.graphics.setColor(100, 100, 100)
@@ -276,17 +274,28 @@ function love.draw()
 
     elseif gameState == 'stageIntroMode' then
 
+        -- the exercise block
+        love.graphics.rectangle('line', 320, 00, 640, 640)
+
         -- stage character
-        love.graphics.draw(artemisIntro, 0, 00, 0, 0.7, 0.7)
-        love.graphics.printf("I need your help to name these animals please", 320, 600, 640, "center")
+        love.graphics.draw(artemisIntro, 320, 80, 0, 0.7, 0.7)
+        love.graphics.printf("I need your help to name these animals please", 320, 640, 640, "center")
 
-       -- Fairy block
-       love.graphics.rectangle('line', 960, 80, 320, 560)
-       love.graphics.draw(fairysprite, 960, 120, 0, 1, 1) 
+        -- menu block
+        love.graphics.setColor(100, 100, 100)
+        love.graphics.rectangle('line', 960, 00, 320, 80)
+        love.graphics.printf("menu", 960, 0, 100, "center")
 
-       -- audio block    
-       love.graphics.rectangle('line', 0, 640, 1280, 80)
-       love.graphics.setColor(100, 100, 100)
+        -- Fairy block
+        love.graphics.rectangle('line', 960, 80, 320, 560)
+        love.graphics.draw(fairysprite, 960, 120, 0, 1, 1) 
+
+        -- audio block    
+        love.graphics.rectangle('line', 0, 640, 1280, 80)
+        love.graphics.setColor(100, 100, 100)
+
+        -- left block
+        love.graphics.rectangle('line', 00, 00, 320, 640)
 
     elseif gameState == 'storyMode' then
 
@@ -295,10 +304,10 @@ function love.draw()
 
         love.graphics.draw(dragonStory01, 320, 0, 0, 0.5, 0.5)
 
-        love.graphics.setColor(0, 0, 0)
-
-        -- draw stage
+        -- the exercise block
         love.graphics.rectangle('line', 320, 00, 640, 640)
+
+        love.graphics.setColor(0, 0, 0)
 
         -- menu block
         love.graphics.setColor(100, 100, 100)
@@ -313,28 +322,41 @@ function love.draw()
         love.graphics.rectangle('line', 0, 640, 1280, 80)
         love.graphics.setColor(100, 100, 100)
 
-    elseif gameState == 'exerciseMode' then
-        love.graphics.setColor(0, 0, 0)
+
+    elseif gameState == 'storytellingMode' then
+
+        -- set variables
+        local target1 = {x = 420, y = 430}
+        local target2 = {x = 510, y = 430}
+        local target3 = {x = 600, y = 430}
+        local target4 = {x = 690, y = 430}
+        local target5 = {x = 780, y = 430}
+
+        -- The UI---------------
 
         -- the screen
+        love.graphics.setColor(0, 0, 0)
         love.graphics.rectangle('fill', 00, 00, 1280, 720)
 
         -- draw stage
         love.graphics.rectangle('fill', 320, 00, 640, 640)
 
         -- the blocks and play area
-        love.graphics.setColor(0.5, 0, 0)
-        love.graphics.rectangle('fill', 80, 80, 480, 480)
+        love.graphics.setColor(0.5, 0.5, 1)
+        love.graphics.rectangle('fill', 400, 80, 480, 480)
 
         -- menu block
         love.graphics.setColor(100, 100, 100)
         love.graphics.rectangle('line', 960, 00, 320, 80)
         love.graphics.printf("menu", 960, 0, 100, "center")
 
+        -- left block
+        love.graphics.rectangle('line', 00, 00, 320, 640)
+
         -- Fairy block
         love.graphics.rectangle('line', 960, 80, 320, 560)
         love.graphics.draw(fairysprite, 960, 120, 0, 1, 1)
-        love.graphics.printf(fairySpeech, 960, 600, 320, "center")
+        love.graphics.printf(fairySpeech, 960, 640, 320, "center")
 
         -- audio area    
         love.graphics.rectangle('line', 0, 640, 1280, 80)
@@ -343,7 +365,61 @@ function love.draw()
         love.graphics.setFont(largeFont)
       
         -- draw subject
-        love.graphics.draw(cat, 200, 100, 0, 1, 1)
+        love.graphics.setColor(0.5, 0.5, 0.8)
+        love.graphics.rectangle('fill', target1.x, target1.y, 80, 80)
+        love.graphics.rectangle('fill', target2.x, target2.y, 80, 80)
+        love.graphics.rectangle('fill', target3.x, target3.y, 80, 80)
+        love.graphics.rectangle('fill', target4.x, target3.y, 80, 80)
+        love.graphics.rectangle('fill', target5.x, target3.y, 80, 80)
+        love.graphics.setColor(0, 0, 0)
+        love.graphics.rectangle('line', target1.x, target1.y, 80, 80)
+        love.graphics.rectangle('line', target2.x, target2.y, 80, 80)
+        love.graphics.rectangle('line', target3.x, target3.y, 80, 80)
+        love.graphics.rectangle('line', target4.x, target2.y, 80, 80)
+        love.graphics.rectangle('line', target5.x, target3.y, 80, 80)
+
+
+    elseif gameState == 'spellingMode' then
+
+        -- set variables
+        local target1 = {x = 490, y = 430}
+        local target2 = {x = 600, y = 430}
+        local target3 = {x = 710, y = 430}
+
+        -- The UI---------------
+
+        -- the screen
+        love.graphics.setColor(0, 0, 0)
+        love.graphics.rectangle('fill', 00, 00, 1280, 720)
+
+        -- draw stage
+        love.graphics.rectangle('fill', 320, 00, 640, 640)
+
+        -- the blocks and play area
+        love.graphics.setColor(0.5, 0, 0)
+        love.graphics.rectangle('fill', 400, 80, 480, 480)
+
+        -- menu block
+        love.graphics.setColor(100, 100, 100)
+        love.graphics.rectangle('line', 960, 00, 320, 80)
+        love.graphics.printf("menu", 960, 0, 100, "center")
+
+        -- left block
+        love.graphics.rectangle('line', 00, 00, 320, 640)
+
+        -- Fairy block
+        love.graphics.rectangle('line', 960, 80, 320, 560)
+        love.graphics.draw(fairysprite, 960, 120, 0, 1, 1)
+        love.graphics.printf(fairySpeech, 960, 640, 320, "center")
+
+        -- audio area    
+        love.graphics.rectangle('line', 0, 640, 1280, 80)
+        love.graphics.setColor(100, 100, 100)
+    
+        love.graphics.setFont(largeFont)
+      
+        -- draw subject
+        love.graphics.draw(cat, 520, 100, 0, 1, 1)
         love.graphics.setColor(0.8, 0.3, 0.3)
         love.graphics.rectangle('fill', target1.x, target1.y, 80, 80)
         love.graphics.rectangle('fill', target2.x, target2.y, 80, 80)
@@ -403,50 +479,44 @@ function love.draw()
             end
         end
 
+        -- for correct letter placement
+        if letters.C.placed == false then
+            if (letters.C.x == target1.x and letters.C.y == target1.y) then
+                letters.C.placed = true
+                fairysprite = fairysetplay003
+                fairySpeech = "So gifted"
+                letters.C.isSelected = false
+            end
+        end
+
+        if letters.A.placed == false then
+            if (letters.A.x == target2.x and letters.A.y == target2.y) then
+                letters.A.placed = true
+                fairysprite = fairysetplay003
+                fairySpeech = "So gifted"
+                letters.A.isSelected = false
+            end
+        end
+
+        if letters.T.placed == false then
+            if (letters.T.x == target3.x and letters.T.y == target3.y) then
+                letters.T.placed = true
+                fairysprite = fairysetplay003
+                fairySpeech = "So gifted"
+                letters.T.isSelected = false
+            end
+        end
+
+        if (letters.C.placed == true and letters.A.placed == true and letters.T.placed == true) then
+            fairySpeech = "Shazam!"
+        end
+
     elseif gameState == 'victory' then
 
         local spriteNum = math.floor(animation.currentTime / animation.duration * #animation.quads) + 1
         love.graphics.draw(animation.spriteSheet, animation.quads[spriteNum])
 
     end
-
-
-
-     -- for correct letter placement
-    if letters.C.placed == false then
-        if (letters.C.x == target1.x and letters.C.y == target1.y) then
-            letters.C.placed = true
-            fairysprite = fairysetplay003
-            fairySpeech = "So gifted"
-            letters.C.isSelected = false
-        end
-    end
-
-    if letters.A.placed == false then
-        if (letters.A.x == target2.x and letters.A.y == target2.y) then
-            letters.A.placed = true
-            fairysprite = fairysetplay003
-            fairySpeech = "So gifted"
-            letters.A.isSelected = false
-        end
-    end
-
-    if letters.T.placed == false then
-        if (letters.T.x == target3.x and letters.T.y == target3.y) then
-            letters.T.placed = true
-            fairysprite = fairysetplay003
-            fairySpeech = "So gifted"
-            letters.T.isSelected = false
-        end
-    end
-
-    if (letters.C.placed == true and letters.A.placed == true and letters.T.placed == true) then
-      
-        fairySpeech = "Shazam!"
-    end
-
-    
-
 
 end
 
