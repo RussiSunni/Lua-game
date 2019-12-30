@@ -62,7 +62,73 @@ local letters = {
     Y = {char="Y", isSelected = false, x=320, y=240, placed = false}, 
     Z = {char="Z", isSelected = false, x=320, y=160, placed = false}
 }
+
+local numbersAndSymbolBlocks = {
+    A = {char="0", isSelected = false, x=400, y=0, placed = false}, 
+    B = {char="1", isSelected = false, x=480, y=0, placed = false}, 
+    C = {char="2", isSelected = false, x=560, y=0, placed = false}, 
+    D = {char="3", isSelected = false, x=640, y=0, placed = false}, 
+    E = {char="4", isSelected = false, x=720, y=0, placed = false}, 
+    F = {char="5", isSelected = false, x=800, y=0, placed = false}, 
+    G = {char="6", isSelected = false, x=880, y=0, placed = false}, 
+    H = {char="7", isSelected = false, x=880, y=80, placed = false}, 
+    I = {char="8", isSelected = false, x=880, y=160, placed = false}, 
+    J = {char="9", isSelected = false, x=880, y=240, placed = false}, 
+    K = {char="-", isSelected = false, x=880, y=320, placed = false},
+    L = {char="+", isSelected = false, x=880, y=400, placed = false}, 
+    M = {char="=", isSelected = false, x=880, y=480, placed = false}, 
+    N = {char="", isSelected = false, x=880, y=560, placed = false}, 
+    O = {char="", isSelected = false, x=800, y=560, placed = false}, 
+    P = {char="", isSelected = false, x=720, y=560, placed = false}, 
+    Q = {char="", isSelected = false, x=640, y=560, placed = false}, 
+    R = {char="", isSelected = false, x=560, y=560, placed = false}, 
+    S = {char="", isSelected = false, x=480, y=560, placed = false}, 
+    T = {char="", isSelected = false, x=400, y=560, placed = false}, 
+    U = {char="", isSelected = false, x=320, y=560, placed = false}, 
+    V = {char="", isSelected = false, x=320, y=480, placed = false}, 
+    W = {char="", isSelected = false, x=320, y=400, placed = false}, 
+    X = {char="", isSelected = false, x=320, y=320, placed = false}, 
+    Y = {char="", isSelected = false, x=320, y=240, placed = false}, 
+    Z = {char="", isSelected = false, x=320, y=160, placed = false}
+}
+
+local pictureBlocks = {
+    A = {picture="", isSelected = false, x=400, y=0, placed = false}, 
+    B = {picture="", isSelected = false, x=480, y=0, placed = false}, 
+    C = {picture="", isSelected = false, x=560, y=0, placed = false}, 
+    D = {picture="", isSelected = false, x=640, y=0, placed = false}, 
+    E = {picture="", isSelected = false, x=720, y=0, placed = false}, 
+    F = {picture="", isSelected = false, x=800, y=0, placed = false}, 
+    G = {picture="", isSelected = false, x=880, y=0, placed = false}, 
+    H = {picture="", isSelected = false, x=880, y=80, placed = false}, 
+    I = {picture="", isSelected = false, x=880, y=160, placed = false}, 
+    J = {picture="", isSelected = false, x=880, y=240, placed = false}, 
+    K = {picture="", isSelected = false, x=880, y=320, placed = false},
+    L = {picture="", isSelected = false, x=880, y=400, placed = false}, 
+    M = {picture="", isSelected = false, x=880, y=480, placed = false}, 
+    N = {picture="", isSelected = false, x=880, y=560, placed = false}, 
+    O = {picture="", isSelected = false, x=800, y=560, placed = false}, 
+    P = {picture="", isSelected = false, x=720, y=560, placed = false}, 
+    Q = {picture="", isSelected = false, x=640, y=560, placed = false}, 
+    R = {picture="", isSelected = false, x=560, y=560, placed = false}, 
+    S = {picture="", isSelected = false, x=480, y=560, placed = false}, 
+    T = {picture="", isSelected = false, x=400, y=560, placed = false}, 
+    U = {picture="", isSelected = false, x=320, y=560, placed = false}, 
+    V = {picture="", isSelected = false, x=320, y=480, placed = false}, 
+    W = {picture="", isSelected = false, x=320, y=400, placed = false}, 
+    X = {picture="", isSelected = false, x=320, y=320, placed = false}, 
+    Y = {picture="", isSelected = false, x=320, y=240, placed = false}, 
+    Z = {picture="", isSelected = false, x=320, y=160, placed = false}
+}
+
+--switching blocks
+local switchingBlocks = {
+    letters = {char="letters", isSelected = false, x=400, y=0, placed = false},
+    numbersAndSymbols = {char="num & sym", isSelected = false, x=320, y=0, placed = false},
+    pictures = {char="pictures", isSelected = false, x=320, y=80, placed = false}
+}
       
+local switchingBlocksOption = 1
 
 
 
@@ -72,6 +138,7 @@ function love.load()
         fullscreen = false,
         vsync = true
     })
+    tinyFont = love.graphics.newFont('Solway.ttf', 16)
     smallFont = love.graphics.newFont('Solway.ttf', 32)
     largeFont = love.graphics.newFont('Solway.ttf', 70)
     gameState = 'start'
@@ -381,6 +448,8 @@ function love.draw()
 
     elseif gameState == 'spellingMode' then
 
+        print(switchingBlocksOption)
+
         -- set variables
         local target1 = {x = 490, y = 430}
         local target2 = {x = 600, y = 430}
@@ -431,39 +500,91 @@ function love.draw()
 
         local counter = 1
 
-        -- draw blocks      
-        for i, letter in pairs(letters) do
+        -- draw blocks   
 
-            -- love.graphics.setColor(0.1, 0.7, 0.6)
+        -- draw switching blocks   
+        love.graphics.setColor(0, 0, 0)
+        love.graphics.rectangle('fill', switchingBlocks.numbersAndSymbols.x, switchingBlocks.numbersAndSymbols.y, 80, 80)
+        love.graphics.rectangle('fill', switchingBlocks.pictures.x, switchingBlocks.pictures.y, 80, 80)
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.setFont(tinyFont)
+        love.graphics.printf(switchingBlocks.numbersAndSymbols.char, switchingBlocks.numbersAndSymbols.x, switchingBlocks.numbersAndSymbols.y, 80, "center")
+        love.graphics.printf(switchingBlocks.pictures.char, switchingBlocks.pictures.x, switchingBlocks.pictures.y, 80, "center")
 
-            if letter.char == "A" or letter.char == "E" or letter.char == "I" or letter.char == "M" or letter.char == "Q" or letter.char == "U" or letter.char == "Y" then
-                love.graphics.setColor(0, 1, 0)
-                love.graphics.rectangle('fill', letter.x, letter.y, 80, 80)
-            end
+        -- draw letter blocks   
+        love.graphics.setFont(largeFont)
 
-            if letter.char == "B" or letter.char == "F" or letter.char == "J" or letter.char == "N" or letter.char == "R" or letter.char == "V" or letter.char == "Z" then
-                love.graphics.setColor(0.9, 0.9, 0)
-                love.graphics.rectangle('fill', letter.x, letter.y, 80, 80)
-            end
+        if switchingBlocksOption == 1 then
+            for i, letter in pairs(letters) do
 
-            if letter.char == "C" or letter.char == "G" or letter.char == "K" or letter.char == "O" or letter.char == "S" or letter.char == "W" then
-                love.graphics.setColor(1, 0, 0)
-                love.graphics.rectangle('fill', letter.x, letter.y, 80, 80)
-            end
+                -- love.graphics.setColor(0.1, 0.7, 0.6)
 
-            if letter.char == "D" or letter.char == "H" or letter.char == "L" or letter.char == "P" or letter.char == "T" or letter.char == "X" then
-                love.graphics.setColor(0, 0, 1)
-                love.graphics.rectangle('fill', letter.x, letter.y, 80, 80)
-            end
+                if letter.char == "A" or letter.char == "E" or letter.char == "I" or letter.char == "M" or letter.char == "Q" or letter.char == "U" or letter.char == "Y" then
+                    love.graphics.setColor(0, 1, 0)
+                    love.graphics.rectangle('fill', letter.x, letter.y, 80, 80)
+                end
 
-            love.graphics.setColor(0, 0, 0)
-            love.graphics.rectangle('line', letter.x, letter.y, 80, 80)
+                if letter.char == "B" or letter.char == "F" or letter.char == "J" or letter.char == "N" or letter.char == "R" or letter.char == "V" or letter.char == "Z" then
+                    love.graphics.setColor(0.9, 0.9, 0)
+                    love.graphics.rectangle('fill', letter.x, letter.y, 80, 80)
+                end
+
+                if letter.char == "C" or letter.char == "G" or letter.char == "K" or letter.char == "O" or letter.char == "S" or letter.char == "W" then
+                    love.graphics.setColor(1, 0, 0)
+                    love.graphics.rectangle('fill', letter.x, letter.y, 80, 80)
+                end
+
+                if letter.char == "D" or letter.char == "H" or letter.char == "L" or letter.char == "P" or letter.char == "T" or letter.char == "X" then
+                    love.graphics.setColor(0, 0, 1)
+                    love.graphics.rectangle('fill', letter.x, letter.y, 80, 80)
+                end
+
+                love.graphics.setColor(0, 0, 0)
+                love.graphics.rectangle('line', letter.x, letter.y, 80, 80)
+                
+                love.graphics.setColor(1, 1, 1)
+                love.graphics.printf(letter.char, letter.x, letter.y, 80, "center")
+                -- love.graphics.draw(letter.image, letter.x, letter.y, 0, 1, 1)
+            end  
+        end
             
-            love.graphics.setColor(1, 1, 1)
-            love.graphics.printf(letter.char, letter.x, letter.y, 80, "center")
-            -- love.graphics.draw(letter.image, letter.x, letter.y, 0, 1, 1)
-        end    
-    
+        if switchingBlocksOption == 2 then
+
+            for i, block in pairs(numbersAndSymbolBlocks) do
+
+                love.graphics.setColor(0.1, 0.7, 0.6)
+                love.graphics.rectangle('fill', block.x, block.y, 80, 80)
+
+                love.graphics.setColor(0, 0, 0)
+                love.graphics.rectangle('line', block.x, block.y, 80, 80)
+                
+                love.graphics.setColor(1, 1, 1)
+                love.graphics.printf(block.char, block.x, block.y, 80, "center")
+                
+            end  
+        end  
+
+
+        if switchingBlocksOption == 3 then
+            -- for i, block in pairs(pictureBlocks) do
+            -- love.graphics.setColor(0.1, 0.7, 0.6)
+            -- love.graphics.printf("test", 0, 0, 80, "center")
+
+
+                -- love.graphics.setColor(0.1, 0.7, 0.6)
+                -- love.graphics.rectangle('fill', block.x, block.y, 80, 80)
+
+                -- love.graphics.setColor(0, 0, 0)
+                -- love.graphics.rectangle('line', block.x, block.y, 80, 80)
+                
+                -- love.graphics.setColor(1, 1, 1)
+
+                -- love.graphics.draw(block.picture, block.x, block.y, 0, 1, 1)
+                
+            -- end  
+        end
+
+
         -- Block movement
         for i, letter in pairs(letters) do
             if letter.isSelected == true then
@@ -615,8 +736,18 @@ function menu_mousehandling_setplay(mx, my, down)
 
     -- audio
     if mx > 600 and mx < 950 and my > 600 and my < 700 and down == true then
-        sound:play()
+       sound:play()
     end
+
+    -- switching blocks
+    if mx > 320 and mx < 400 and my > 0 and my < 80 and down == true then
+        switchingBlocksOption = 2
+    end
+
+    if mx > 320 and mx < 400 and my > 81 and my < 160 and down == true then
+        switchingBlocksOption = 3
+    end
+
 end
 
 
