@@ -20,7 +20,10 @@ local fairysetplay001 = love.graphics.newImage('fairy-setplay001.png')
 local fairysetplay002 = love.graphics.newImage('fairy-setplay002.png')
 local fairysetplay003 = love.graphics.newImage('fairy-setplay003.png')
 
-local map = love.graphics.newImage('map.jpg')
+local map = love.graphics.newImage('map2.png')
+local map2 = love.graphics.newImage('map3.png')
+local globe = love.graphics.newImage('globe.jpg')
+
 
 local dragonIntro = love.graphics.newImage('dragon-intro.jpg')
 local artemisIntro = love.graphics.newImage('artemis-001.png')
@@ -34,6 +37,8 @@ local fourDotBlock = love.graphics.newImage('four-dot.png')
 local duckBlock = love.graphics.newImage('duck-block.png')
 local artemis = love.graphics.newImage('artemis.png')
 
+local academy_location_x = 655
+local academy_location_y = 80
 
 -- sounds
 sound = love.audio.newSource("bird.mp3", "static") -- the "static" tells LÖVE to load the file into memory, good for short sound effects
@@ -179,21 +184,13 @@ function love.keypressed(key)
             gameState = 'screen2'
         elseif gameState == 'screen2' then
             gameState = 'introMode'    
-        elseif gameState == 'introMode' then          
+        elseif gameState == 'introMode' then  
+            gameState = 'mapMode2'    
+        elseif gameState == 'mapMode2' then  
             gameState = 'mapMode'
         elseif gameState == 'mapMode' then            
             gameState = 'stageIntroMode'    
-        elseif gameState == 'stageIntroMode' then            
-            gameState = 'storyMode'    
-
-            -- gameState = 'freeplay'
-        -- elseif gameState == 'map' then
-        --     gameState = 'freeplay'
-        -- elseif gameState == 'freeplay' then
-        --     gameState = 'intro'
-        -- elseif gameState == 'intro' then
-
-        elseif gameState == 'storyMode' then            
+        elseif gameState == 'stageIntroMode' then                      
             gameState = 'storytellingMode'             
         elseif gameState == 'storytellingMode' then
             gameState = 'spellingMode'
@@ -223,17 +220,16 @@ function love.draw()
         -- draw stage
         love.graphics.rectangle('line', 00, 00, 960, 640)
 
-        -- the exercise block
-        love.graphics.rectangle('line', 320, 00, 640, 640)
 
-        love.graphics.printf("Welcome", 320, 50, 640, "center")
-        love.graphics.printf("We have been waiting for you", 320, 100, 640, "center")
 
-        love.graphics.printf("This is Wild World", 320, 200, 640, "center")
-        love.graphics.printf("All knowledge has been lost", 320, 250, 640, "center")
-        love.graphics.printf("Including the names of things", 320, 300, 640, "center")
+        love.graphics.rectangle('line', 0, 00, 320, 640)
 
-        love.graphics.printf("There are many people that need your help", 320, 400, 640, "center")
+        love.graphics.printf("Welcome", 0, 50, 320, "center")
+        love.graphics.printf("We have been waiting for you", 0, 100, 320, "center")
+
+        -- map
+        love.graphics.draw(globe, 320, 0, 0, 1, 1)
+        love.graphics.setColor(100, 100, 100)
 
         -- menu block
        love.graphics.setColor(100, 100, 100)
@@ -242,9 +238,6 @@ function love.draw()
 
        -- Fairy block
        love.graphics.rectangle('line', 960, 80, 320, 560)
-       --love.graphics.draw(fairysprite, 960, 120, 0, 1, 1)
-       --love.graphics.draw(fairyWave, 960, 160, 0, 1, 1)
-
        local spriteNum = math.floor(animation.currentTime / animation.duration * #animation.quads) + 1
        love.graphics.draw(animation.spriteSheet, animation.quads[spriteNum], 960, 160, 0, 1)
 
@@ -252,11 +245,47 @@ function love.draw()
        love.graphics.rectangle('line', 0, 640, 1280, 80)
        love.graphics.setColor(100, 100, 100)
 
+    elseif gameState == 'mapMode2' then
+
+        -- draw stage
+        love.graphics.rectangle('line', 00, 00, 960, 640)
+
+        love.graphics.rectangle('line', 0, 00, 320, 640)
+
+        love.graphics.printf("Welcome", 0, 50, 320, "center")
+        love.graphics.printf("We have been waiting for you", 0, 100, 320, "center")
+
+        love.graphics.printf("This is Wild World", 0, 250, 320, "center")
+        love.graphics.printf("All knowledge has been lost", 0, 300, 320, "center")
+
+        -- map
+        love.graphics.draw(map2, 320, 0, 0, 1, 1)
+        love.graphics.setColor(100, 100, 100)
+
+        -- menu block
+       love.graphics.setColor(100, 100, 100)
+       love.graphics.rectangle('line', 960, 00, 320, 80)
+       love.graphics.printf("menu", 960, 0, 100, "center")
+
+       -- Fairy block
+       love.graphics.rectangle('line', 960, 80, 320, 560)
+       local spriteNum = math.floor(animation.currentTime / animation.duration * #animation.quads) + 1
+       love.graphics.draw(animation.spriteSheet, animation.quads[spriteNum], 960, 160, 0, 1)
+
+       -- audio block    
+       love.graphics.rectangle('line', 0, 640, 1280, 80)
+       love.graphics.setColor(100, 100, 100)
     
     elseif gameState == 'mapMode' then
 
         -- the screen
         love.graphics.rectangle('line', 00, 00, 1280, 720)
+
+        love.graphics.printf("Welcome", 0, 50, 320, "center")
+        love.graphics.printf("We have been waiting for you", 0, 100, 320, "center")
+        love.graphics.printf("This is Wild World", 0, 250, 320, "center")
+        love.graphics.printf("All knowledge has been lost", 0, 300, 320, "center")
+        love.graphics.printf("There are many people that need your help", 0, 450, 320, "center")
         
         -- draw stage
         love.graphics.rectangle('line', 00, 00, 930, 640)
@@ -281,8 +310,23 @@ function love.draw()
          
        -- audio block    
        love.graphics.rectangle('line', 0, 640, 1280, 80)
-       love.graphics.setColor(100, 100, 100)
+                 
+        -- --character icon
+        -- love.graphics.setColor(.5, .5, 1)
 
+        -- if academy_location_x > 450 then
+        --     academy_location_x = academy_location_x - 1
+        -- end
+
+        -- if academy_location_y < 285 then
+        --     academy_location_y = academy_location_y + 1
+        -- end
+
+        -- love.graphics.circle('fill', academy_location_x, academy_location_y, 20, 20)
+        -- love.graphics.setColor(0, 0, 0)
+        -- love.graphics.circle('line', academy_location_x, academy_location_y, 20, 20)
+
+       love.graphics.setColor(1, 1, 1)
 
     elseif gameState == 'freeplay' then
 
@@ -362,8 +406,12 @@ function love.draw()
         -- the exercise block
         love.graphics.rectangle('line', 320, 00, 640, 640)
 
+        -- map
+        love.graphics.draw(map, 320, 0, 0, 1, 1)
+        love.graphics.setColor(100, 100, 100)
+
         -- stage character
-        love.graphics.draw(artemisIntro, 320, 80, 0, 0.7, 0.7)
+        love.graphics.draw(artemis, 0, 140, 0, 1, 1)
         love.graphics.printf("I need your help to name these animals please", 320, 640, 640, "center")
 
         -- menu block
@@ -381,6 +429,7 @@ function love.draw()
 
         -- left block
         love.graphics.rectangle('line', 00, 00, 320, 640)
+        
 
     elseif gameState == 'storyMode' then
 
@@ -641,6 +690,10 @@ function love.draw()
                 love.graphics.setColor(1, 1, 1)
                 love.graphics.draw(artemis, 0, 140, 0, 1, 1)
 
+                love.graphics.setFont(smallFont)
+                love.graphics.printf("I'm thinking of calling it a 'dog'", 0, 640, 320, "center")
+
+
 
         -- Block movement
         for i, letter in pairs(letters) do
@@ -827,7 +880,7 @@ function newAnimation(image, width, height, duration)
         end
     end
 
-    animation.duration = duration or 1
+    animation.duration = 3
     animation.currentTime = 0
     return animation
 end
