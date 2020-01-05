@@ -54,7 +54,8 @@ local targetBlocks = {
     B = {x=600, y=430}, 
     C = {x=710, y=430}
 }
-local artemisText = "I'm thinking of calling it a 'dog'"
+local artemisSpeech = "I'm thinking of calling it a 'dog'"
+local fairySpeech = "Oi, what's this then?"
 
 
 --blocks
@@ -78,6 +79,7 @@ local ablockYfree = 100
 local bblockXfree = 300
 local bblockYfree = 300
 
+local mouseMode = start
 
 -- letter blocks
 local letters = {
@@ -192,7 +194,6 @@ function love.load()
     bBlock_freeplay = 	{hover = false, text = "B", x = 520, y = 100, call = selectBlockBFreePlay}
 
     fairysprite = fairysetplay001
-    fairySpeech = "Oi, what's this then?"
 
     -- animation
     animation = newAnimation(love.graphics.newImage("fairy-wave-spritesheet-small.png"), 320, 480, 2)
@@ -432,7 +433,7 @@ function love.draw()
 
     elseif gameState == 'artemisExercise' then
    
-        -- The UI---------------
+        -- The UI-------------------------------------------------------
 
         -- the screen
         love.graphics.setColor(0, 0, 0)
@@ -454,23 +455,25 @@ function love.draw()
  
         -- bottom area    
         love.graphics.rectangle('line', 0, 640, 1280, 80)
+        -- buttons to go to next question
         love.graphics.rectangle('line', 480, 640, 80, 80)
         love.graphics.polygon( 'fill', 480, 680, 560, 640, 560, 720)
         love.graphics.rectangle('line', 720, 640, 80, 80)
         love.graphics.polygon( 'fill', 800, 680, 720, 640, 720, 720)  
  
-        -- variable area
 
-        -- the blocks and play area
+        -- variable area ---------------------------------------------------------------
+
+        -- background
         love.graphics.setColor(artemisAnimalBgColourR, artemisAnimalBgColourG, artemisAnimalBgColourB)
         love.graphics.rectangle('fill', 400, 80, 480, 480)
       
-        -- draw subject
+        -- subject
         love.graphics.setColor(1, 1, 1)
         love.graphics.draw(artemisAnimal, artemisAnimalx, artemisAnimaly, 0, 1, 1)
         love.graphics.setColor(artemisAnimalBgColourR, artemisAnimalBgColourG, artemisAnimalBgColourB)
         
-        -- create target blocks
+        -- target blocks
         for i, targetBlock in pairs(targetBlocks) do
             love.graphics.setColor(artemisAnimalTargetColourR, artemisAnimalTargetColourG, artemisAnimalTargetColourB)
             love.graphics.rectangle('fill', targetBlock.x, targetBlock.y, 80, 80)
@@ -481,13 +484,15 @@ function love.draw()
         -- artemis
         love.graphics.setColor(1, 1, 1)
         love.graphics.draw(artemis, 0, 140, 0, 1, 1)
-        love.graphics.printf(artemisText, 0, 640, 320, "center")
+        love.graphics.printf(artemisSpeech, 0, 640, 320, "center")
 
         -- Fairy
         love.graphics.draw(fairysprite, 960, 120, 0, 1, 1)
         love.graphics.printf(fairySpeech, 960, 640, 320, "center")
 
         local counter = 1
+
+        ---------------------------------------------------------------------------
 
         -- draw blocks   
 
@@ -653,54 +658,8 @@ function love.draw()
             fairySpeech = "Shazam!"            
         end
 
-        -- mouse
-        function menu_mousehandling_setplay(mx, my, down)
-        
-            -- going through exercises
-            if mx > 480 and mx < 560 and my > 640 and my < 720 and down == true then
-                artemisAnimal = cat
-                artemisAnimalx = 520
-                artemisAnimaly = 100
-                artemisAnimalBgColourR = 0.5
-                artemisAnimalBgColourG = 0
-                artemisAnimalBgColourB = 0
-                artemisAnimalTargetColourR = 0.8
-                artemisAnimalTargetColourG = 0.3
-                artemisAnimalTargetColourB = 0.3
-                targetBlocks = {
-                    A = {x=490, y=430}, 
-                    B = {x=600, y=430}, 
-                    C = {x=710, y=430}
-                }  
-                artemisText = "I'm thinking of calling it a 'dog'"
-
-            end
-
-            if mx > 720 and mx < 800 and my > 640 and my < 720 and down == true then
-                artemisAnimal = horse
-                artemisAnimalx = 400
-                artemisAnimaly = 80
-                artemisAnimalBgColourR = 0.5
-                artemisAnimalBgColourG = 0.5
-                artemisAnimalBgColourB = 1
-                artemisAnimalTargetColourR = 0.5
-                artemisAnimalTargetColourG = 0.5
-                artemisAnimalTargetColourB = 0.8
-                targetBlocks = {
-                    A = {x=420, y=430}, 
-                    B = {x=510, y=430},   
-                    C = {x=600, y=430}, 
-                    D = {x=690, y=430}, 
-                    E = {x=780, y=430}
-                }        
-                artemisText = "horse text"
-          
-
-
-                --love.graphics.printf("Ever seen one of these before?", 960, 640, 320, "center")
-               
-            end
-        end
+        -- mouse handling
+        mouseMode = mouseModeArtemis
 
 
     elseif gameState == 'victory' then
@@ -714,7 +673,7 @@ function love.update(dt)
 	local 	mx = love.mouse.getX()
 	local	my = love.mouse.getY()
     menu_mousehandling_freeplay(mx, my, down)
-    menu_mousehandling_setplay(mx, my, down)
+    menu_mousehandling(mx, my, down)
     collision = CheckCollision(ablockXfree, ablockYfree, bblockXfree, bblockYfree, cblockX, cblockY)
     print(collision)
 
@@ -781,40 +740,80 @@ function love.update(dt)
 end
 
 -- mouse
-function menu_mousehandling_setplay(mx, my, down)
-    for i, letter in pairs(letters) do
-        if mx > letter.x and mx < letter.x + 80 and my > letter.y and my < letter.y + 80 then
-            letter.hover=true
-            if down == true then letter.isSelected = true
-                fairysprite = fairysetplay002
-                fairySpeech = "Go on then"
-                woodblock:play()
-        end
-        else
-            letter.hover=false
-            if down == true then letter.isSelected = false end
-        end
-    end
 
-    -- audio
-    -- if mx > 600 and mx < 950 and my > 600 and my < 700 and down == true then
-    --    sound:play()
-    -- end
-
-    -- switching blocks
-    if mx > switchingBlocks.letters.x and mx < switchingBlocks.letters.x + 80 and my > switchingBlocks.letters.y and my < switchingBlocks.letters.y + 80 and down == true then
-        switchingBlocksOption = 1
-    end
-
-    if mx > switchingBlocks.numbersAndSymbols.x and mx < switchingBlocks.numbersAndSymbols.x + 80 and my > switchingBlocks.numbersAndSymbols.y and my < switchingBlocks.numbersAndSymbols.y + 80 and down == true then
-        switchingBlocksOption = 2
-    end
-
-    if mx > switchingBlocks.pictures.x and mx < switchingBlocks.pictures.x + 80 and my > switchingBlocks.pictures.y and my < switchingBlocks.pictures.y + 80 and down == true then
-        switchingBlocksOption = 3
-    end
-
+function menu_mousehandling(mx, my, down)   
     
+    if mouseMode == mouseModeArtemis then
+        -- use switching blocks
+        if mx > switchingBlocks.letters.x and mx < switchingBlocks.letters.x + 80 and my > switchingBlocks.letters.y and my < switchingBlocks.letters.y + 80 and down == true then
+            switchingBlocksOption = 1
+        end
+
+        if mx > switchingBlocks.numbersAndSymbols.x and mx < switchingBlocks.numbersAndSymbols.x + 80 and my > switchingBlocks.numbersAndSymbols.y and my < switchingBlocks.numbersAndSymbols.y + 80 and down == true then
+            switchingBlocksOption = 2
+        end
+
+        if mx > switchingBlocks.pictures.x and mx < switchingBlocks.pictures.x + 80 and my > switchingBlocks.pictures.y and my < switchingBlocks.pictures.y + 80 and down == true then
+            switchingBlocksOption = 3
+        end
+
+
+        -- move blocks
+        for i, letter in pairs(letters) do
+            if mx > letter.x and mx < letter.x + 80 and my > letter.y and my < letter.y + 80 then
+                letter.hover=true
+                if down == true then letter.isSelected = true
+                    fairysprite = fairysetplay002
+                    fairySpeech = "Go on then"
+                    woodblock:play()
+                end
+            else
+                letter.hover=false
+                if down == true then letter.isSelected = false end
+            end            
+        end
+
+        -- going through exercises
+        if mx > 480 and mx < 560 and my > 640 and my < 720 and down == true then
+            artemisAnimal = cat
+            artemisAnimalx = 520
+            artemisAnimaly = 100
+            artemisAnimalBgColourR = 0.5
+            artemisAnimalBgColourG = 0
+            artemisAnimalBgColourB = 0
+            artemisAnimalTargetColourR = 0.8
+            artemisAnimalTargetColourG = 0.3
+            artemisAnimalTargetColourB = 0.3
+            targetBlocks = {
+                A = {x=490, y=430}, 
+                B = {x=600, y=430}, 
+                C = {x=710, y=430}
+            }  
+            artemisSpeech = "I'm thinking of calling it a 'dog'"
+            fairySpeech = "Oi, what's this then?"
+        end
+
+        if mx > 720 and mx < 800 and my > 640 and my < 720 and down == true then
+            artemisAnimal = horse
+            artemisAnimalx = 400
+            artemisAnimaly = 80
+            artemisAnimalBgColourR = 0.5
+            artemisAnimalBgColourG = 0.5
+            artemisAnimalBgColourB = 1
+            artemisAnimalTargetColourR = 0.5
+            artemisAnimalTargetColourG = 0.5
+            artemisAnimalTargetColourB = 0.8
+            targetBlocks = {
+                A = {x=420, y=430}, 
+                B = {x=510, y=430},   
+                C = {x=600, y=430}, 
+                D = {x=690, y=430}, 
+                E = {x=780, y=430}
+            }        
+            artemisSpeech = "horse text"  
+            fairySpeech = "Ever seen one of these before?"               
+        end  
+    end
 end
 
 
