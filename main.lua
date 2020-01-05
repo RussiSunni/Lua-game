@@ -8,34 +8,52 @@ local collision = false
 mouse = {}
 
 -- images
+
+-- characters
 local secretary = love.graphics.newImage('secretary.png')
 local teacher = love.graphics.newImage('teacher.png')
 local bird = love.graphics.newImage('bird.png')
 local fairy = love.graphics.newImage('fairy-small.png')
-local cat = love.graphics.newImage('cat-3.png')
-local dragonStory01 = love.graphics.newImage('dragon01.jpg')
-
 local fairyWave = love.graphics.newImage('fairy-wave.png')
 local fairysetplay001 = love.graphics.newImage('fairy-setplay001.png')
 local fairysetplay002 = love.graphics.newImage('fairy-setplay002.png')
 local fairysetplay003 = love.graphics.newImage('fairy-setplay003.png')
+local artemisIntro = love.graphics.newImage('artemis-001.png')
+local artemis = love.graphics.newImage('artemis.png')
+local artemisColour = love.graphics.newImage('artemis-colour.png')
 
+
+--map
 local map = love.graphics.newImage('map2.png')
 local map2 = love.graphics.newImage('map3.png')
 local globe = love.graphics.newImage('globe.jpg')
 
+--animals
+local cat = love.graphics.newImage('cat-3.png')
+local horse = love.graphics.newImage('horse.png')
+local bear = love.graphics.newImage('bear.png')
+local lion = love.graphics.newImage('lion.png')
+local dog = love.graphics.newImage('dog.png')
+local alligator = love.graphics.newImage('alligator.png')
+local wolf = love.graphics.newImage('wolf.png')
+local zebra = love.graphics.newImage('zebra.png')
+local monkey = love.graphics.newImage('monkey.png')
 
-local dragonIntro = love.graphics.newImage('dragon-intro.jpg')
-local artemisIntro = love.graphics.newImage('artemis-001.png')
+--set initial animal
+artemisAnimal = cat
+artemisAnimalx = 520
+artemisAnimaly = 100
+artemisAnimalColourR = 0.8
+artemisAnimalColourG = 0.3
+artemisAnimalColourB = 0.3
 
-
+--blocks
 local blockTemplate = love.graphics.newImage('template.png')
 local oneDotBlock = love.graphics.newImage('one-dot.png')
 local twoDotBlock = love.graphics.newImage('two-dot.png')
 local threeDotBlock = love.graphics.newImage('three-dot.png')
 local fourDotBlock = love.graphics.newImage('four-dot.png')
 local duckBlock = love.graphics.newImage('duck-block.png')
-local artemis = love.graphics.newImage('artemis.png')
 
 local academy_location_x = 655
 local academy_location_y = 80
@@ -148,8 +166,6 @@ local switchingBlocks = {
       
 local switchingBlocksOption = 1
 
-
-
 function love.load()
 
     love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, {
@@ -159,7 +175,7 @@ function love.load()
     tinyFont = love.graphics.newFont('Solway.ttf', 16)
     smallFont = love.graphics.newFont('Solway.ttf', 32)
     largeFont = love.graphics.newFont('Solway.ttf', 70)
-    gameState = 'start'
+    gameState = 'screen1'
 
     -- for selecting
     aBlock_freeplay = 	{hover = false, text = "A", x = 520, y = 100, call = selectBlockAFreePlay}
@@ -169,7 +185,6 @@ function love.load()
     fairySpeech = "Oi, what's this then?"
 
     -- animation
-    --animation = newAnimation(love.graphics.newImage("fairy-spritesheet.png"), 400, 400, 1.5)
     animation = newAnimation(love.graphics.newImage("fairy-wave-spritesheet-small.png"), 320, 480, 2)
 
 end
@@ -180,20 +195,26 @@ function love.keypressed(key)
         love.event.quit()
 
     elseif key == 'enter' or key == 'return' then
-        if gameState == 'start' then
+        if gameState == 'screen1' then
             gameState = 'screen2'
         elseif gameState == 'screen2' then
-            gameState = 'introMode'    
-        elseif gameState == 'introMode' then  
-            gameState = 'mapMode2'    
-        elseif gameState == 'mapMode2' then  
-            gameState = 'mapMode'
-        elseif gameState == 'mapMode' then            
-            gameState = 'stageIntroMode'    
-        elseif gameState == 'stageIntroMode' then                      
-            gameState = 'storytellingMode'             
-        elseif gameState == 'storytellingMode' then
-            gameState = 'spellingMode'
+            gameState = 'intro1'    
+        elseif gameState == 'intro1' then  
+            gameState = 'intro2'    
+        elseif gameState == 'intro2' then  
+            gameState = 'intro3'
+        elseif gameState == 'intro3' then    
+            gameState = 'map'    
+        elseif gameState == 'map' then           
+            gameState = 'artemisIntro'    
+        elseif gameState == 'artemisIntro' then                      
+            gameState = 'artemisExercise'
+        elseif gameState == 'artemisExercise' then
+            gameState = 'horse'             
+        elseif gameState == 'horse' then
+            gameState = 'wolf'
+        elseif gameState == 'wolf' then   
+
         end
     end
 end
@@ -203,24 +224,23 @@ function love.draw()
     love.graphics.setFont(smallFont)
     love.graphics.clear(0, 0, 0, 255)
 
-    if gameState == 'start' then
+    if gameState == 'screen1' then
       
         love.graphics.draw(secretary, 440, 20, 0, 0.4, 0.4)
 
         love.graphics.setColor(1, 1, 1)
         love.graphics.printf('Oh wonderful, a new learner.', 0, 600, WINDOW_WIDTH, 'center')
+        timePassed = 0
 
     elseif gameState == 'screen2' then
         love.graphics.draw(teacher, 440, 20, 0, 0.4, 0.4)
         love.graphics.printf('Hurry child, there is much to do. Do not tarry.', 0, 600, WINDOW_WIDTH, 'center')
 
 
-    elseif gameState == 'introMode' then
+    elseif gameState == 'intro1' then
 
         -- draw stage
         love.graphics.rectangle('line', 00, 00, 960, 640)
-
-
 
         love.graphics.rectangle('line', 0, 00, 320, 640)
 
@@ -245,7 +265,7 @@ function love.draw()
        love.graphics.rectangle('line', 0, 640, 1280, 80)
        love.graphics.setColor(100, 100, 100)
 
-    elseif gameState == 'mapMode2' then
+    elseif gameState == 'intro2' then
 
         -- draw stage
         love.graphics.rectangle('line', 00, 00, 960, 640)
@@ -276,7 +296,7 @@ function love.draw()
        love.graphics.rectangle('line', 0, 640, 1280, 80)
        love.graphics.setColor(100, 100, 100)
     
-    elseif gameState == 'mapMode' then
+    elseif gameState == 'intro3' then
 
         -- the screen
         love.graphics.rectangle('line', 00, 00, 1280, 720)
@@ -297,8 +317,6 @@ function love.draw()
         love.graphics.draw(map, 320, 0, 0, 1, 1)
         love.graphics.setColor(100, 100, 100)
       
-        love.graphics.printf("Choose where you want to go first", 320, 660, 640, "center")
-
         -- menu block
         love.graphics.setColor(100, 100, 100)
         love.graphics.rectangle('line', 960, 00, 320, 80)
@@ -306,102 +324,45 @@ function love.draw()
  
        -- Fairy block
        love.graphics.rectangle('line', 960, 80, 320, 560)
-       love.graphics.draw(fairysprite, 960, 120, 0, 1, 1)
-         
+       local spriteNum = math.floor(animation.currentTime / animation.duration * #animation.quads) + 1
+       love.graphics.draw(animation.spriteSheet, animation.quads[spriteNum], 960, 160, 0, 1)   
+             
        -- audio block    
        love.graphics.rectangle('line', 0, 640, 1280, 80)
-                 
-        -- --character icon
-        -- love.graphics.setColor(.5, .5, 1)
-
-        -- if academy_location_x > 450 then
-        --     academy_location_x = academy_location_x - 1
-        -- end
-
-        -- if academy_location_y < 285 then
-        --     academy_location_y = academy_location_y + 1
-        -- end
-
-        -- love.graphics.circle('fill', academy_location_x, academy_location_y, 20, 20)
-        -- love.graphics.setColor(0, 0, 0)
-        -- love.graphics.circle('line', academy_location_x, academy_location_y, 20, 20)
-
+  
        love.graphics.setColor(1, 1, 1)
 
-    elseif gameState == 'freeplay' then
+    
+    elseif gameState == 'map' then
 
-        -- draw stage
-        love.graphics.rectangle('line', 20, 20, 900, 670)
-        love.graphics.draw(fairy, 930, 150, 0, 1, 1)
-        love.graphics.printf('Press "p" for', -50, 30, WINDOW_WIDTH, 'right')
-        love.graphics.printf('setplay mode', -50, 70, WINDOW_WIDTH, 'right')
+        love.graphics.draw(bird, 10, 10, 0, 1, 1)
+        love.graphics.printf("Fairy, Artemis is asking for help.", 0, 350, 320, "center")
 
-        -- draw block A
-        love.graphics.printf(aBlock_freeplay.text, ablockXfree - 50, ablockYfree + 50 - 16, 200, "center")
-        love.graphics.rectangle('line', ablockXfree, ablockYfree, 100, 100)
+        -- the exercise block
+        love.graphics.rectangle('line', 320, 00, 640, 640)
 
-        -- draw block B
-        love.graphics.printf(bBlock_freeplay.text, bblockXfree - 50, bblockYfree + 50 - 16, 200, "center")
-        love.graphics.rectangle('line', bblockXfree, bblockYfree, 100, 100)
+        -- map
+        love.graphics.draw(map, 320, 0, 0, 1, 1)
+        love.graphics.setColor(100, 100, 100)
 
-        -- A block movement
-        if isASelected_freeplay == false then
-        elseif isASelected_freeplay == true then
-            if collision == false then
-                if love.keyboard.isDown('w') then
-                    ablockYfree = ablockYfree - 3
-                elseif love.keyboard.isDown('s') then
-                    ablockYfree = ablockYfree + 3
-                elseif love.keyboard.isDown('a') then
-                    ablockXfree = ablockXfree - 3
-                elseif love.keyboard.isDown('d') then
-                    ablockXfree = ablockXfree + 3
-                end
-            elseif collision == true then
-                if love.keyboard.isDown('w') then
-                    ablockYfree = ablockYfree + 10
-                elseif love.keyboard.isDown('s') then
-                    ablockYfree = ablockYfree - 10
-                elseif love.keyboard.isDown('a') then
-                    ablockXfree = ablockXfree + 10
-                elseif love.keyboard.isDown('d') then
-                    ablockXfree = ablockXfree - 10
-                end
-             end
-        end
+        -- menu block
+        love.graphics.setColor(100, 100, 100)
+        love.graphics.rectangle('line', 960, 00, 320, 80)
+        love.graphics.printf("menu", 960, 0, 100, "center")
 
-        -- B block movement
-        if isBSelected_freeplay == false then
-        elseif isBSelected_freeplay == true then
-            if collision == false then
-                if love.keyboard.isDown('w') then
-                    bblockYfree = bblockYfree - 3
-                elseif love.keyboard.isDown('s') then
-                    bblockYfree = bblockYfree + 3
-                elseif love.keyboard.isDown('a') then
-                    bblockXfree = bblockXfree - 3
-                elseif love.keyboard.isDown('d') then
-                    bblockXfree = bblockXfree + 3
-                end
-            elseif collision == true then
-                if love.keyboard.isDown('w') then
-                    bblockYfree = bblockYfree + 10
-                elseif love.keyboard.isDown('s') then
-                    bblockYfree = bblockYfree - 10
-                elseif love.keyboard.isDown('a') then
-                    bblockXfree = bblockXfree + 10
-                elseif love.keyboard.isDown('d') then
-                    bblockXfree = bblockXfree - 10
-                end
-            end
-        end
+        -- Fairy block
+        love.graphics.rectangle('line', 960, 80, 320, 560)
+        love.graphics.draw(fairyWave, 960, 120, 0, 1, 1) 
 
-    elseif gameState == 'intro' then
-        love.graphics.draw(bird, 40, 100, 0, 1, 1)
-        love.graphics.printf("I have your new exercises here", 500, 200, 500, "center")
+        -- audio block    
+        love.graphics.rectangle('line', 0, 640, 1280, 80)
+        love.graphics.setColor(100, 100, 100)
+
+        -- left block
+        love.graphics.rectangle('line', 00, 00, 320, 640)
 
 
-    elseif gameState == 'stageIntroMode' then
+    elseif gameState == 'artemisIntro' then
 
         -- the exercise block
         love.graphics.rectangle('line', 320, 00, 640, 640)
@@ -411,7 +372,9 @@ function love.draw()
         love.graphics.setColor(100, 100, 100)
 
         -- stage character
-        love.graphics.draw(artemis, 0, 140, 0, 1, 1)
+        --love.graphics.draw(artemis, 0, 140, 0, 1, 1)
+        love.graphics.draw(artemisColour, 0, 140, 0, 1, 1)
+
         love.graphics.printf("I need your help to name these animals please", 320, 640, 640, "center")
 
         -- menu block
@@ -421,7 +384,7 @@ function love.draw()
 
         -- Fairy block
         love.graphics.rectangle('line', 960, 80, 320, 560)
-        love.graphics.draw(fairysprite, 960, 120, 0, 1, 1) 
+        love.graphics.draw(fairyWave, 960, 120, 0, 1, 1) 
 
         -- audio block    
         love.graphics.rectangle('line', 0, 640, 1280, 80)
@@ -457,7 +420,7 @@ function love.draw()
         love.graphics.setColor(100, 100, 100)
 
 
-    elseif gameState == 'storytellingMode' then
+    elseif gameState == 'horse' then
 
         -- set variables
         local target1 = {x = 420, y = 430}
@@ -466,55 +429,11 @@ function love.draw()
         local target4 = {x = 690, y = 430}
         local target5 = {x = 780, y = 430}
 
-        -- The UI---------------
+        love.graphics.printf("Ever seen one of these before?", 960, 640, 320, "center")
 
-        -- the screen
-        love.graphics.setColor(0, 0, 0)
-        love.graphics.rectangle('fill', 00, 00, 1280, 720)
+       
 
-        -- draw stage
-        love.graphics.rectangle('fill', 320, 00, 640, 640)
-
-        -- the blocks and play area
-        love.graphics.setColor(0.5, 0.5, 1)
-        love.graphics.rectangle('fill', 400, 80, 480, 480)
-
-        -- menu block
-        love.graphics.setColor(100, 100, 100)
-        love.graphics.rectangle('line', 960, 00, 320, 80)
-        love.graphics.printf("menu", 960, 0, 100, "center")
-
-        -- left block
-        love.graphics.rectangle('line', 00, 00, 320, 640)
-
-        -- Fairy block
-        love.graphics.rectangle('line', 960, 80, 320, 560)
-        love.graphics.draw(fairysprite, 960, 120, 0, 1, 1)
-        love.graphics.printf(fairySpeech, 960, 640, 320, "center")
-
-        -- audio area    
-        love.graphics.rectangle('line', 0, 640, 1280, 80)
-        love.graphics.setColor(100, 100, 100)
-    
-        love.graphics.setFont(largeFont)
-      
-        -- draw subject
-        love.graphics.setColor(0.5, 0.5, 0.8)
-        love.graphics.rectangle('fill', target1.x, target1.y, 80, 80)
-        love.graphics.rectangle('fill', target2.x, target2.y, 80, 80)
-        love.graphics.rectangle('fill', target3.x, target3.y, 80, 80)
-        love.graphics.rectangle('fill', target4.x, target3.y, 80, 80)
-        love.graphics.rectangle('fill', target5.x, target3.y, 80, 80)
-        love.graphics.setColor(0, 0, 0)
-        love.graphics.rectangle('line', target1.x, target1.y, 80, 80)
-        love.graphics.rectangle('line', target2.x, target2.y, 80, 80)
-        love.graphics.rectangle('line', target3.x, target3.y, 80, 80)
-        love.graphics.rectangle('line', target4.x, target2.y, 80, 80)
-        love.graphics.rectangle('line', target5.x, target3.y, 80, 80)
-
-
-    elseif gameState == 'spellingMode' then
-
+    elseif gameState == 'artemisExercise' then
    
         -- set variables
         local target1 = {x = 490, y = 430}
@@ -538,22 +457,25 @@ function love.draw()
         love.graphics.setColor(100, 100, 100)
         love.graphics.rectangle('line', 960, 00, 320, 80)
         love.graphics.printf("menu", 960, 0, 100, "center")
-
  
         -- Fairy block
         love.graphics.rectangle('line', 960, 80, 320, 560)
         love.graphics.draw(fairysprite, 960, 120, 0, 1, 1)
         love.graphics.printf(fairySpeech, 960, 640, 320, "center")
 
-        -- audio area    
+        -- bottom area    
         love.graphics.rectangle('line', 0, 640, 1280, 80)
-        love.graphics.setColor(100, 100, 100)
-    
-        love.graphics.setFont(largeFont)
+        love.graphics.rectangle('line', 480, 640, 80, 80)
+        love.graphics.polygon( 'fill', 480, 680, 560, 640, 560, 720)
+        love.graphics.rectangle('line', 720, 640, 80, 80)
+        love.graphics.polygon( 'fill', 800, 680, 720, 640, 720, 720)           
       
         -- draw subject
-        love.graphics.draw(cat, 520, 100, 0, 1, 1)
-        love.graphics.setColor(0.8, 0.3, 0.3)
+        love.graphics.setFont(largeFont)
+
+        love.graphics.draw(artemisAnimal, artemisAnimalx, artemisAnimaly, 0, 1, 1)
+
+        love.graphics.setColor(artemisAnimalColourR, artemisAnimalColourG, artemisAnimalColourB)
         love.graphics.rectangle('fill', target1.x, target1.y, 80, 80)
         love.graphics.rectangle('fill', target2.x, target2.y, 80, 80)
         love.graphics.rectangle('fill', target3.x, target3.y, 80, 80)
@@ -633,7 +555,6 @@ function love.draw()
              love.graphics.printf(switchingBlocks.pictures.char, switchingBlocks.pictures.x, switchingBlocks.pictures.y, 80, "center")
              love.graphics.setFont(largeFont)
 
-
             for i, block in pairs(numbersAndSymbolBlocks) do
 
                 love.graphics.setColor(0.1, 0.7, 0.6)
@@ -645,14 +566,11 @@ function love.draw()
                 love.graphics.setColor(1, 1, 1)
                 love.graphics.printf(block.char, block.x, block.y, 80, "center")
                 
-                if block.picture then
-                   
+                if block.picture then                   
                     love.graphics.draw(block.picture, block.x, block.y, 0, 1, 1)
-                end
-                
+                end                
             end  
         end  
-
 
         if switchingBlocksOption == 3 then
             -- draw switching block buttons
@@ -667,8 +585,7 @@ function love.draw()
             love.graphics.setFont(tinyFont)
             love.graphics.printf(switchingBlocks.letters.char, switchingBlocks.letters.x, switchingBlocks.letters.y, 80, "center")
             love.graphics.printf(switchingBlocks.numbersAndSymbols.char, switchingBlocks.numbersAndSymbols.x, switchingBlocks.numbersAndSymbols.y, 80, "center")
-            love.graphics.setFont(largeFont)
-   
+            love.graphics.setFont(largeFont)   
 
             for i, block in pairs(pictureBlocks) do
 
@@ -680,20 +597,17 @@ function love.draw()
                 
                 love.graphics.setColor(1, 1, 1)
                 love.graphics.setColor(1, 1, 0)
-                love.graphics.draw(block.picture, block.x, block.y, 0, 1, 1)
-                
+                love.graphics.draw(block.picture, block.x, block.y, 0, 1, 1)                
             end  
         end
 
-                -- left block
-                love.graphics.rectangle('line', 00, 00, 320, 640)
-                love.graphics.setColor(1, 1, 1)
-                love.graphics.draw(artemis, 0, 140, 0, 1, 1)
+        -- left block
+        love.graphics.rectangle('line', 00, 00, 320, 640)
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.draw(artemis, 0, 140, 0, 1, 1)
 
-                love.graphics.setFont(smallFont)
-                love.graphics.printf("I'm thinking of calling it a 'dog'", 0, 640, 320, "center")
-
-
+        love.graphics.setFont(smallFont)
+        love.graphics.printf("I'm thinking of calling it a 'dog'", 0, 640, 320, "center")
 
         -- Block movement
         for i, letter in pairs(letters) do
@@ -739,18 +653,45 @@ function love.draw()
         end
 
         if (letters.C.placed == true and letters.A.placed == true and letters.T.placed == true) then
-            fairySpeech = "Shazam!"
+            fairySpeech = "Shazam!"            
         end
 
-    elseif gameState == 'victory' then
-
-        local spriteNum = math.floor(animation.currentTime / animation.duration * #animation.quads) + 1
-        love.graphics.draw(animation.spriteSheet, animation.quads[spriteNum])
-
+        -- mouse
+function menu_mousehandling_setplay(mx, my, down)
+  
+    -- going through exercises
+    if mx > 480 and mx < 560 and my > 640 and my < 720 and down == true then
+        artemisAnimal = cat
+        artemisAnimalx = 520
+        artemisAnimaly = 100
     end
 
+    if mx > 720 and mx < 800 and my > 640 and my < 720 and down == true then
+        artemisAnimal = horse
+        artemisAnimalx = 400
+        artemisAnimaly = 80
+        -- love.graphics.setColor(0.5, 0.5, 0.8)
+        -- love.graphics.rectangle('fill', target1.x, target1.y, 80, 80)
+        -- love.graphics.rectangle('fill', target2.x, target2.y, 80, 80)
+        -- love.graphics.rectangle('fill', target3.x, target3.y, 80, 80)
+        -- love.graphics.rectangle('fill', target4.x, target3.y, 80, 80)
+        -- love.graphics.rectangle('fill', target5.x, target3.y, 80, 80)
+        -- love.graphics.setColor(0, 0, 0)
+        -- love.graphics.rectangle('line', target1.x, target1.y, 80, 80)
+        -- love.graphics.rectangle('line', target2.x, target2.y, 80, 80)
+        -- love.graphics.rectangle('line', target3.x, target3.y, 80, 80)
+        -- love.graphics.rectangle('line', target4.x, target2.y, 80, 80)
+        -- love.graphics.rectangle('line', target5.x, target3.y, 80, 80)
+    end
 end
 
+
+
+    elseif gameState == 'victory' then
+        local spriteNum = math.floor(animation.currentTime / animation.duration * #animation.quads) + 1
+        love.graphics.draw(animation.spriteSheet, animation.quads[spriteNum])
+    end
+end
 
 function love.update(dt)
 	local  	down = love.mouse.isDown(1)
@@ -812,8 +753,6 @@ function love.update(dt)
         end  
     end
 
-
-
     -- animation
     animation.currentTime = animation.currentTime + dt
     if animation.currentTime >= animation.duration then
@@ -824,9 +763,6 @@ function love.update(dt)
         fairysprite = fairysetplay001
     end
 end
-
-
-
 
 -- mouse
 function menu_mousehandling_setplay(mx, my, down)
@@ -845,9 +781,9 @@ function menu_mousehandling_setplay(mx, my, down)
     end
 
     -- audio
-    if mx > 600 and mx < 950 and my > 600 and my < 700 and down == true then
-       sound:play()
-    end
+    -- if mx > 600 and mx < 950 and my > 600 and my < 700 and down == true then
+    --    sound:play()
+    -- end
 
     -- switching blocks
     if mx > switchingBlocks.letters.x and mx < switchingBlocks.letters.x + 80 and my > switchingBlocks.letters.y and my < switchingBlocks.letters.y + 80 and down == true then
@@ -939,3 +875,70 @@ end
 
 
 
+-- elseif gameState == 'freeplay' then
+
+--     -- draw stage
+--     love.graphics.rectangle('line', 20, 20, 900, 670)
+--     love.graphics.draw(fairy, 930, 150, 0, 1, 1)
+--     love.graphics.printf('Press "p" for', -50, 30, WINDOW_WIDTH, 'right')
+--     love.graphics.printf('setplay mode', -50, 70, WINDOW_WIDTH, 'right')
+
+--     -- draw block A
+--     love.graphics.printf(aBlock_freeplay.text, ablockXfree - 50, ablockYfree + 50 - 16, 200, "center")
+--     love.graphics.rectangle('line', ablockXfree, ablockYfree, 100, 100)
+
+--     -- draw block B
+--     love.graphics.printf(bBlock_freeplay.text, bblockXfree - 50, bblockYfree + 50 - 16, 200, "center")
+--     love.graphics.rectangle('line', bblockXfree, bblockYfree, 100, 100)
+
+--     -- A block movement
+--     if isASelected_freeplay == false then
+--     elseif isASelected_freeplay == true then
+--         if collision == false then
+--             if love.keyboard.isDown('w') then
+--                 ablockYfree = ablockYfree - 3
+--             elseif love.keyboard.isDown('s') then
+--                 ablockYfree = ablockYfree + 3
+--             elseif love.keyboard.isDown('a') then
+--                 ablockXfree = ablockXfree - 3
+--             elseif love.keyboard.isDown('d') then
+--                 ablockXfree = ablockXfree + 3
+--             end
+--         elseif collision == true then
+--             if love.keyboard.isDown('w') then
+--                 ablockYfree = ablockYfree + 10
+--             elseif love.keyboard.isDown('s') then
+--                 ablockYfree = ablockYfree - 10
+--             elseif love.keyboard.isDown('a') then
+--                 ablockXfree = ablockXfree + 10
+--             elseif love.keyboard.isDown('d') then
+--                 ablockXfree = ablockXfree - 10
+--             end
+--          end
+--     end
+
+--     -- B block movement
+--     if isBSelected_freeplay == false then
+--     elseif isBSelected_freeplay == true then
+--         if collision == false then
+--             if love.keyboard.isDown('w') then
+--                 bblockYfree = bblockYfree - 3
+--             elseif love.keyboard.isDown('s') then
+--                 bblockYfree = bblockYfree + 3
+--             elseif love.keyboard.isDown('a') then
+--                 bblockXfree = bblockXfree - 3
+--             elseif love.keyboard.isDown('d') then
+--                 bblockXfree = bblockXfree + 3
+--             end
+--         elseif collision == true then
+--             if love.keyboard.isDown('w') then
+--                 bblockYfree = bblockYfree + 10
+--             elseif love.keyboard.isDown('s') then
+--                 bblockYfree = bblockYfree - 10
+--             elseif love.keyboard.isDown('a') then
+--                 bblockXfree = bblockXfree + 10
+--             elseif love.keyboard.isDown('d') then
+--                 bblockXfree = bblockXfree - 10
+--             end
+--         end
+--     end
