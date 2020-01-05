@@ -40,12 +40,22 @@ local zebra = love.graphics.newImage('zebra.png')
 local monkey = love.graphics.newImage('monkey.png')
 
 --set initial animal
-artemisAnimal = cat
-artemisAnimalx = 520
-artemisAnimaly = 100
-artemisAnimalColourR = 0.8
-artemisAnimalColourG = 0.3
-artemisAnimalColourB = 0.3
+local artemisAnimal = cat
+local artemisAnimalx = 520
+local artemisAnimaly = 100
+local artemisAnimalBgColourR = 0.5
+local artemisAnimalBgColourG = 0
+local artemisAnimalBgColourB = 0
+local artemisAnimalTargetColourR = 0.8 
+local artemisAnimalTargetColourG = 0.3
+local artemisAnimalTargetColourB = 0.3
+local targetBlocks = {
+    A = {x=490, y=430}, 
+    B = {x=600, y=430}, 
+    C = {x=710, y=430}
+}
+local artemisText = "I'm thinking of calling it a 'dog'"
+
 
 --blocks
 local blockTemplate = love.graphics.newImage('template.png')
@@ -420,26 +430,8 @@ function love.draw()
         love.graphics.setColor(100, 100, 100)
 
 
-    elseif gameState == 'horse' then
-
-        -- set variables
-        local target1 = {x = 420, y = 430}
-        local target2 = {x = 510, y = 430}
-        local target3 = {x = 600, y = 430}
-        local target4 = {x = 690, y = 430}
-        local target5 = {x = 780, y = 430}
-
-        love.graphics.printf("Ever seen one of these before?", 960, 640, 320, "center")
-
-       
-
     elseif gameState == 'artemisExercise' then
    
-        -- set variables
-        local target1 = {x = 490, y = 430}
-        local target2 = {x = 600, y = 430}
-        local target3 = {x = 710, y = 430}
-
         -- The UI---------------
 
         -- the screen
@@ -448,41 +440,52 @@ function love.draw()
 
         -- draw stage
         love.graphics.rectangle('fill', 320, 00, 640, 640)
+        
+        -- left block
+        love.graphics.rectangle('line', 00, 00, 320, 640)
 
-        -- the blocks and play area
-        love.graphics.setColor(0.5, 0, 0)
-        love.graphics.rectangle('fill', 400, 80, 480, 480)
+        -- right block
+        love.graphics.rectangle('line', 960, 80, 320, 560)
 
         -- menu block
         love.graphics.setColor(100, 100, 100)
         love.graphics.rectangle('line', 960, 00, 320, 80)
         love.graphics.printf("menu", 960, 0, 100, "center")
  
-        -- Fairy block
-        love.graphics.rectangle('line', 960, 80, 320, 560)
-        love.graphics.draw(fairysprite, 960, 120, 0, 1, 1)
-        love.graphics.printf(fairySpeech, 960, 640, 320, "center")
-
         -- bottom area    
         love.graphics.rectangle('line', 0, 640, 1280, 80)
         love.graphics.rectangle('line', 480, 640, 80, 80)
         love.graphics.polygon( 'fill', 480, 680, 560, 640, 560, 720)
         love.graphics.rectangle('line', 720, 640, 80, 80)
-        love.graphics.polygon( 'fill', 800, 680, 720, 640, 720, 720)           
+        love.graphics.polygon( 'fill', 800, 680, 720, 640, 720, 720)  
+ 
+        -- variable area
+
+        -- the blocks and play area
+        love.graphics.setColor(artemisAnimalBgColourR, artemisAnimalBgColourG, artemisAnimalBgColourB)
+        love.graphics.rectangle('fill', 400, 80, 480, 480)
       
         -- draw subject
-        love.graphics.setFont(largeFont)
-
+        love.graphics.setColor(1, 1, 1)
         love.graphics.draw(artemisAnimal, artemisAnimalx, artemisAnimaly, 0, 1, 1)
+        love.graphics.setColor(artemisAnimalBgColourR, artemisAnimalBgColourG, artemisAnimalBgColourB)
+        
+        -- create target blocks
+        for i, targetBlock in pairs(targetBlocks) do
+            love.graphics.setColor(artemisAnimalTargetColourR, artemisAnimalTargetColourG, artemisAnimalTargetColourB)
+            love.graphics.rectangle('fill', targetBlock.x, targetBlock.y, 80, 80)
+            love.graphics.setColor(0, 0, 0)
+            love.graphics.rectangle('line', targetBlock.x, targetBlock.y, 80, 80)
+        end    
+        
+        -- artemis
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.draw(artemis, 0, 140, 0, 1, 1)
+        love.graphics.printf(artemisText, 0, 640, 320, "center")
 
-        love.graphics.setColor(artemisAnimalColourR, artemisAnimalColourG, artemisAnimalColourB)
-        love.graphics.rectangle('fill', target1.x, target1.y, 80, 80)
-        love.graphics.rectangle('fill', target2.x, target2.y, 80, 80)
-        love.graphics.rectangle('fill', target3.x, target3.y, 80, 80)
-        love.graphics.setColor(0, 0, 0)
-        love.graphics.rectangle('line', target1.x, target1.y, 80, 80)
-        love.graphics.rectangle('line', target2.x, target2.y, 80, 80)
-        love.graphics.rectangle('line', target3.x, target3.y, 80, 80)
+        -- Fairy
+        love.graphics.draw(fairysprite, 960, 120, 0, 1, 1)
+        love.graphics.printf(fairySpeech, 960, 640, 320, "center")
 
         local counter = 1
 
@@ -601,13 +604,7 @@ function love.draw()
             end  
         end
 
-        -- left block
-        love.graphics.rectangle('line', 00, 00, 320, 640)
-        love.graphics.setColor(1, 1, 1)
-        love.graphics.draw(artemis, 0, 140, 0, 1, 1)
-
         love.graphics.setFont(smallFont)
-        love.graphics.printf("I'm thinking of calling it a 'dog'", 0, 640, 320, "center")
 
         -- Block movement
         for i, letter in pairs(letters) do
@@ -624,67 +621,86 @@ function love.draw()
             end
         end
 
-        -- for correct letter placement
-        if letters.C.placed == false then
-            if (letters.C.x == target1.x and letters.C.y == target1.y) then
-                letters.C.placed = true
-                fairysprite = fairysetplay003
-                fairySpeech = "So gifted"
-                letters.C.isSelected = false
-            end
-        end
+        -- -- for correct letter placement
+        -- if letters.C.placed == false then
+        --     if (letters.C.x == target1.x and letters.C.y == target1.y) then
+        --         letters.C.placed = true
+        --         fairysprite = fairysetplay003
+        --         fairySpeech = "So gifted"
+        --         letters.C.isSelected = false
+        --     end
+        -- end
 
-        if letters.A.placed == false then
-            if (letters.A.x == target2.x and letters.A.y == target2.y) then
-                letters.A.placed = true
-                fairysprite = fairysetplay003
-                fairySpeech = "So gifted"
-                letters.A.isSelected = false
-            end
-        end
+        -- if letters.A.placed == false then
+        --     if (letters.A.x == target2.x and letters.A.y == target2.y) then
+        --         letters.A.placed = true
+        --         fairysprite = fairysetplay003
+        --         fairySpeech = "So gifted"
+        --         letters.A.isSelected = false
+        --     end
+        -- end
 
-        if letters.T.placed == false then
-            if (letters.T.x == target3.x and letters.T.y == target3.y) then
-                letters.T.placed = true
-                fairysprite = fairysetplay003
-                fairySpeech = "So gifted"
-                letters.T.isSelected = false
-            end
-        end
+        -- if letters.T.placed == false then
+        --     if (letters.T.x == target3.x and letters.T.y == target3.y) then
+        --         letters.T.placed = true
+        --         fairysprite = fairysetplay003
+        --         fairySpeech = "So gifted"
+        --         letters.T.isSelected = false
+        --     end
+        -- end
 
         if (letters.C.placed == true and letters.A.placed == true and letters.T.placed == true) then
             fairySpeech = "Shazam!"            
         end
 
         -- mouse
-function menu_mousehandling_setplay(mx, my, down)
-  
-    -- going through exercises
-    if mx > 480 and mx < 560 and my > 640 and my < 720 and down == true then
-        artemisAnimal = cat
-        artemisAnimalx = 520
-        artemisAnimaly = 100
-    end
+        function menu_mousehandling_setplay(mx, my, down)
+        
+            -- going through exercises
+            if mx > 480 and mx < 560 and my > 640 and my < 720 and down == true then
+                artemisAnimal = cat
+                artemisAnimalx = 520
+                artemisAnimaly = 100
+                artemisAnimalBgColourR = 0.5
+                artemisAnimalBgColourG = 0
+                artemisAnimalBgColourB = 0
+                artemisAnimalTargetColourR = 0.8
+                artemisAnimalTargetColourG = 0.3
+                artemisAnimalTargetColourB = 0.3
+                targetBlocks = {
+                    A = {x=490, y=430}, 
+                    B = {x=600, y=430}, 
+                    C = {x=710, y=430}
+                }  
+                artemisText = "I'm thinking of calling it a 'dog'"
 
-    if mx > 720 and mx < 800 and my > 640 and my < 720 and down == true then
-        artemisAnimal = horse
-        artemisAnimalx = 400
-        artemisAnimaly = 80
-        -- love.graphics.setColor(0.5, 0.5, 0.8)
-        -- love.graphics.rectangle('fill', target1.x, target1.y, 80, 80)
-        -- love.graphics.rectangle('fill', target2.x, target2.y, 80, 80)
-        -- love.graphics.rectangle('fill', target3.x, target3.y, 80, 80)
-        -- love.graphics.rectangle('fill', target4.x, target3.y, 80, 80)
-        -- love.graphics.rectangle('fill', target5.x, target3.y, 80, 80)
-        -- love.graphics.setColor(0, 0, 0)
-        -- love.graphics.rectangle('line', target1.x, target1.y, 80, 80)
-        -- love.graphics.rectangle('line', target2.x, target2.y, 80, 80)
-        -- love.graphics.rectangle('line', target3.x, target3.y, 80, 80)
-        -- love.graphics.rectangle('line', target4.x, target2.y, 80, 80)
-        -- love.graphics.rectangle('line', target5.x, target3.y, 80, 80)
-    end
-end
+            end
 
+            if mx > 720 and mx < 800 and my > 640 and my < 720 and down == true then
+                artemisAnimal = horse
+                artemisAnimalx = 400
+                artemisAnimaly = 80
+                artemisAnimalBgColourR = 0.5
+                artemisAnimalBgColourG = 0.5
+                artemisAnimalBgColourB = 1
+                artemisAnimalTargetColourR = 0.5
+                artemisAnimalTargetColourG = 0.5
+                artemisAnimalTargetColourB = 0.8
+                targetBlocks = {
+                    A = {x=420, y=430}, 
+                    B = {x=510, y=430},   
+                    C = {x=600, y=430}, 
+                    D = {x=690, y=430}, 
+                    E = {x=780, y=430}
+                }        
+                artemisText = "horse text"
+          
+
+
+                --love.graphics.printf("Ever seen one of these before?", 960, 640, 320, "center")
+               
+            end
+        end
 
 
     elseif gameState == 'victory' then
