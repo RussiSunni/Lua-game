@@ -7,6 +7,21 @@ local isBSelected_freeplay = false
 local collision = false
 mouse = {}
 
+
+-- files ---------------------
+
+-- sounds
+sound = love.audio.newSource("bird.mp3", "static") -- the "static" tells LÖVE to load the file into memory, good for short sound effects
+woodblock = love.audio.newSource("woodblock.wav", "static")
+
+--blocks
+local blockTemplate = love.graphics.newImage('template.png')
+local oneDotBlock = love.graphics.newImage('one-dot.png')
+local twoDotBlock = love.graphics.newImage('two-dot.png')
+local threeDotBlock = love.graphics.newImage('three-dot.png')
+local fourDotBlock = love.graphics.newImage('four-dot.png')
+local duckBlock = love.graphics.newImage('duck-block.png')
+
 -- images
 
 -- characters
@@ -21,7 +36,6 @@ local fairysetplay003 = love.graphics.newImage('fairy-setplay003.png')
 local artemisIntro = love.graphics.newImage('artemis-001.png')
 local artemis = love.graphics.newImage('artemis.png')
 local artemisColour = love.graphics.newImage('artemis-colour.png')
-
 
 --map
 local map = love.graphics.newImage('map2.png')
@@ -39,47 +53,9 @@ local wolf = love.graphics.newImage('wolf.png')
 local zebra = love.graphics.newImage('zebra.png')
 local monkey = love.graphics.newImage('monkey.png')
 
---set initial animal
-local artemisAnimal = cat
-local artemisAnimalx = 520
-local artemisAnimaly = 100
-local artemisAnimalBgColourR = 0.5
-local artemisAnimalBgColourG = 0
-local artemisAnimalBgColourB = 0
-local artemisAnimalTargetColourR = 0.8 
-local artemisAnimalTargetColourG = 0.3
-local artemisAnimalTargetColourB = 0.3
-local targetBlocks = {
-    A = {x=490, y=430}, 
-    B = {x=600, y=430}, 
-    C = {x=710, y=430}
-}
-local artemisSpeech = "I'm thinking of calling it a 'dog'"
-local fairySpeech = "Oi, what's this then?"
-
+---------------------------------------------------------------
 
 --blocks
-local blockTemplate = love.graphics.newImage('template.png')
-local oneDotBlock = love.graphics.newImage('one-dot.png')
-local twoDotBlock = love.graphics.newImage('two-dot.png')
-local threeDotBlock = love.graphics.newImage('three-dot.png')
-local fourDotBlock = love.graphics.newImage('four-dot.png')
-local duckBlock = love.graphics.newImage('duck-block.png')
-
-local academy_location_x = 655
-local academy_location_y = 80
-
--- sounds
-sound = love.audio.newSource("bird.mp3", "static") -- the "static" tells LÖVE to load the file into memory, good for short sound effects
-woodblock = love.audio.newSource("woodblock.wav", "static")
-
--- freeplay mode variables (not used currently)
-local ablockXfree = 100
-local ablockYfree = 100
-local bblockXfree = 300
-local bblockYfree = 300
-
-local mouseMode = start
 
 -- letter blocks
 local letters = {
@@ -178,6 +154,49 @@ local switchingBlocks = {
       
 local switchingBlocksOption = 1
 
+-------------------------------------------------------------------------
+
+-- Artemis exercise -------------------------
+
+-- set initial variables -------------------------------------
+
+--set initial animal
+local artemisAnimal = cat
+local artemisAnimalx = 520
+local artemisAnimaly = 100
+local artemisAnimalBgColourR = 0.5
+local artemisAnimalBgColourG = 0
+local artemisAnimalBgColourB = 0
+local artemisAnimalTargetColourR = 0.8 
+local artemisAnimalTargetColourG = 0.3
+local artemisAnimalTargetColourB = 0.3
+
+local artemisSpeech = "I'm thinking of calling it a 'dog'"
+local fairySpeech = "Oi, what's this then?"
+
+local targetBlocks = {
+    A = {x=490, y=430, letterX=letters.C.x}, 
+    B = {x=600, y=430, letter=letters.A.x}, 
+    C = {x=710, y=430, letter=letters.T.x}
+}
+
+---------------------------------------------------------
+
+-- unused global variables
+
+-- freeplay mode variables (not used currently)
+-- local ablockXfree = 100
+-- local ablockYfree = 100
+-- local bblockXfree = 300
+-- local bblockYfree = 300
+
+
+-- local academy_location_x = 655
+-- local academy_location_y = 80
+
+---------------------------------------------
+
+local mouseMode = start
 function love.load()
 
     love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, {
@@ -609,9 +628,9 @@ function love.draw()
             end  
         end
 
-        love.graphics.setFont(smallFont)
 
-        -- Block movement
+        -- Block movement ----------------------------------------------
+
         for i, letter in pairs(letters) do
             if letter.isSelected == true then
                 if love.keyboard.isDown('w') then
@@ -624,9 +643,19 @@ function love.draw()
                     letter.x = letter.x + 2
                 end
             end
+
+            -- for correct block placement
+
+            for j, targetBlock in pairs(targetBlocks) do              
+                if (letter.x == targetBlock.x and letter.y == targetBlock.y) then
+                    fairysprite = fairysetplay003
+                    fairySpeech = "So gifted"
+                    letter.placed = true
+                    letter.isSelected = false              
+                end
+            end
         end
 
-        -- -- for correct letter placement
         -- if letters.C.placed == false then
         --     if (letters.C.x == target1.x and letters.C.y == target1.y) then
         --         letters.C.placed = true
@@ -655,7 +684,13 @@ function love.draw()
         -- end
 
         if (letters.C.placed == true and letters.A.placed == true and letters.T.placed == true) then
-            fairySpeech = "Shazam!"            
+            fairySpeech = "Shazam!"   
+            letters.C.x = 0
+            letters.C.y = 0
+            letters.A.x = 0
+            letters.A.y = 0
+            letters.T.x = 0
+            letters.T.y = 0  
         end
 
         -- mouse handling
@@ -672,13 +707,13 @@ function love.update(dt)
 	local  	down = love.mouse.isDown(1)
 	local 	mx = love.mouse.getX()
 	local	my = love.mouse.getY()
-    menu_mousehandling_freeplay(mx, my, down)
+    -- menu_mousehandling_freeplay(mx, my, down)
     menu_mousehandling(mx, my, down)
-    collision = CheckCollision(ablockXfree, ablockYfree, bblockXfree, bblockYfree, cblockX, cblockY)
+    -- collision = CheckCollision(ablockXfree, ablockYfree, bblockXfree, bblockYfree, cblockX, cblockY)
     print(collision)
 
 
-    ----------------------- Freeplay Collision Detection-------------------------
+    -----------------------  Collision Detection-------------------------
  
     if love.keyboard.isDown('w') then
         for i, letter in pairs(letters) do
@@ -839,28 +874,28 @@ end
 
 -- free play mode
 
-function menu_mousehandling_freeplay(mx, my, down)
+-- function menu_mousehandling_freeplay(mx, my, down)
 
-    -- Selecting
+--     -- Selecting
     
-        -- A block
-        if mx > ablockXfree and mx < ablockXfree + 100 and my > ablockYfree and my < ablockYfree + 100 then
-            aBlock_freeplay.hover=true
-            if down == true then aBlock_freeplay.call() end
-        else
-            aBlock_freeplay.hover=false
-            if down == true then isASelected_freeplay = false end
-        end
-    
-         -- B block
-        if mx > bblockXfree and mx < bblockXfree + 100 and my > bblockYfree and my < bblockYfree + 100 then
-            bBlock_freeplay.hover=true
-            if down == true then bBlock_freeplay.call() end
-        else
-            bBlock_freeplay.hover=false
-            if down == true then isBSelected_freeplay = false end
-        end
-    end
+--     -- A block
+--     if mx > ablockXfree and mx < ablockXfree + 100 and my > ablockYfree and my < ablockYfree + 100 then
+--         aBlock_freeplay.hover=true
+--         if down == true then aBlock_freeplay.call() end
+--     else
+--         aBlock_freeplay.hover=false
+--         if down == true then isASelected_freeplay = false end
+--     end
+
+--         -- B block
+--     if mx > bblockXfree and mx < bblockXfree + 100 and my > bblockYfree and my < bblockYfree + 100 then
+--         bBlock_freeplay.hover=true
+--         if down == true then bBlock_freeplay.call() end
+--     else
+--         bBlock_freeplay.hover=false
+--         if down == true then isBSelected_freeplay = false end
+--     end
+-- end
 
 
 function selectBlockAFreePlay()
@@ -880,12 +915,12 @@ end
 -- Returns true if two boxes overlap, false if they don't;
 -- x1,y1 are the top-left coords of the first box, while w1,h1 are its width and height;
 -- x2,y2,w2 & h2 are the same, but for the second box.
-function CheckCollision(ablockX, ablockY, bblockX, bblockY)
-    return  ablockX < bblockX+100 and
-            bblockX < ablockX+100 and
-            ablockY < bblockY+100 and
-            bblockY < ablockY+100
-end
+-- function CheckCollision(ablockX, ablockY, bblockX, bblockY)
+--     return  ablockX < bblockX+100 and
+--             bblockX < ablockX+100 and
+--             ablockY < bblockY+100 and
+--             bblockY < ablockY+100
+-- end
 
 
 
