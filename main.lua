@@ -35,7 +35,9 @@ local fairysetplay002 = love.graphics.newImage('fairy-setplay002.png')
 local fairysetplay003 = love.graphics.newImage('fairy-setplay003.png')
 local artemisIntro = love.graphics.newImage('artemis-001.png')
 local artemis = love.graphics.newImage('artemis.png')
-local artemisColour = love.graphics.newImage('artemis-colour.png')
+local artemisColour = love.graphics.newImage('artemis-colour2.png')
+local artemisColourBranch = love.graphics.newImage('artemis-colour2-branch.png')
+
 
 --map
 local map = love.graphics.newImage('map2.png')
@@ -175,9 +177,9 @@ local artemisSpeech = "I'm thinking of calling it a 'dog'"
 local fairySpeech = "Oi, what's this then?"
 
 local targetBlocks = {
-    A = {x=490, y=430, letterX=letters.C.x}, 
-    B = {x=600, y=430, letter=letters.A.x}, 
-    C = {x=710, y=430, letter=letters.T.x}
+    A = {x=490, y=430, letterX=letters.C.x, letterY=letters.C.y, letter = letters.C, placed = false}, 
+    B = {x=600, y=430, letterX=letters.A.x, letterY=letters.A.y, letter = letters.A,  placed = false}, 
+    C = {x=710, y=430, letterX=letters.T.x, letterY=letters.T.y, letter = letters.T,  placed = false}
 }
 
 ---------------------------------------------------------
@@ -401,12 +403,7 @@ function love.draw()
         love.graphics.draw(map, 320, 0, 0, 1, 1)
         love.graphics.setColor(100, 100, 100)
 
-        -- stage character
-        --love.graphics.draw(artemis, 0, 140, 0, 1, 1)
-        love.graphics.draw(artemisColour, 0, 140, 0, 1, 1)
-
-        love.graphics.printf("I need your help to name these animals please", 320, 640, 640, "center")
-
+     
         -- menu block
         love.graphics.setColor(100, 100, 100)
         love.graphics.rectangle('line', 960, 00, 320, 80)
@@ -422,32 +419,39 @@ function love.draw()
 
         -- left block
         love.graphics.rectangle('line', 00, 00, 320, 640)
+
+           -- stage character
+        love.graphics.draw(artemisColourBranch, 0, 140, 0, 1, 1)
+           
+        --love.graphics.draw(artemis, 0, 140, 0, 1, 1)
+        love.graphics.draw(artemisColour, 0, 140, 0, 1, 1)
+        love.graphics.printf("I need your help to name these animals please", 320, 640, 640, "center")
         
 
-    elseif gameState == 'storyMode' then
+    -- elseif gameState == 'storyMode' then
 
-        -- the screen
-        love.graphics.rectangle('line', 00, 00, 1280, 720)
+    --     -- the screen
+    --     love.graphics.rectangle('line', 00, 00, 1280, 720)
 
-        love.graphics.draw(dragonStory01, 320, 0, 0, 0.5, 0.5)
+    --     love.graphics.draw(dragonStory01, 320, 0, 0, 0.5, 0.5)
 
-        -- the exercise block
-        love.graphics.rectangle('line', 320, 00, 640, 640)
+    --     -- the exercise block
+    --     love.graphics.rectangle('line', 320, 00, 640, 640)
 
-        love.graphics.setColor(0, 0, 0)
+    --     love.graphics.setColor(0, 0, 0)
 
-        -- menu block
-        love.graphics.setColor(100, 100, 100)
-        love.graphics.rectangle('line', 960, 00, 320, 80)
-        love.graphics.printf("menu", 960, 0, 100, "center")
+    --     -- menu block
+    --     love.graphics.setColor(100, 100, 100)
+    --     love.graphics.rectangle('line', 960, 00, 320, 80)
+    --     love.graphics.printf("menu", 960, 0, 100, "center")
   
-        -- Fairy block
-        love.graphics.rectangle('line', 960, 80, 320, 560)
-        love.graphics.draw(fairysprite, 960, 120, 0, 1, 1) 
+    --     -- Fairy block
+    --     love.graphics.rectangle('line', 960, 80, 320, 560)
+    --     love.graphics.draw(fairysprite, 960, 120, 0, 1, 1) 
  
-        -- audio block    
-        love.graphics.rectangle('line', 0, 640, 1280, 80)
-        love.graphics.setColor(100, 100, 100)
+    --     -- audio block    
+    --     love.graphics.rectangle('line', 0, 640, 1280, 80)
+    --     love.graphics.setColor(100, 100, 100)
 
 
     elseif gameState == 'artemisExercise' then
@@ -645,53 +649,50 @@ function love.draw()
             end
 
             -- for correct block placement
-
-            for j, targetBlock in pairs(targetBlocks) do              
-                if (letter.x == targetBlock.x and letter.y == targetBlock.y) then
+            for j, targetBlock in pairs(targetBlocks) do     
+                print(targetBlock.letter.x)
+                if (targetBlock.letter.x == targetBlock.x and targetBlock.letter.y == targetBlock.y) then
                     fairysprite = fairysetplay003
                     fairySpeech = "So gifted"
-                    letter.placed = true
-                    letter.isSelected = false              
-                end
+                    targetBlock.letter.placed = true
+                    targetBlock.placed = true
+                    targetBlock.letter.isSelected = false              
+                end    
+            end
+
+        
+
+            -- determine if all blocks are placed
+            local count = 0
+            function tablelength(targetBlocks)
+                for targetBlock in pairs(targetBlocks) do count = count + 1 end
+                print(count)
+                return count
+            end
+            tablelength(targetBlocks)
+
+            targetBlocksPlaced = 0
+            for j, targetBlock in pairs(targetBlocks) do              
+                if targetBlock.placed == true then
+                    targetBlocksPlaced = targetBlocksPlaced + 1
+                end   
+                print(targetBlocksPlaced)   
+                if count == targetBlocksPlaced then
+                    print("success")
+                end              
             end
         end
 
-        -- if letters.C.placed == false then
-        --     if (letters.C.x == target1.x and letters.C.y == target1.y) then
-        --         letters.C.placed = true
-        --         fairysprite = fairysetplay003
-        --         fairySpeech = "So gifted"
-        --         letters.C.isSelected = false
-        --     end
+    
+        -- if (letters.C.placed == true and letters.A.placed == true and letters.T.placed == true) then
+        --     fairySpeech = "Shazam!"   
+        --     letters.C.x = 0
+        --     letters.C.y = 0
+        --     letters.A.x = 0
+        --     letters.A.y = 0
+        --     letters.T.x = 0
+        --     letters.T.y = 0  
         -- end
-
-        -- if letters.A.placed == false then
-        --     if (letters.A.x == target2.x and letters.A.y == target2.y) then
-        --         letters.A.placed = true
-        --         fairysprite = fairysetplay003
-        --         fairySpeech = "So gifted"
-        --         letters.A.isSelected = false
-        --     end
-        -- end
-
-        -- if letters.T.placed == false then
-        --     if (letters.T.x == target3.x and letters.T.y == target3.y) then
-        --         letters.T.placed = true
-        --         fairysprite = fairysetplay003
-        --         fairySpeech = "So gifted"
-        --         letters.T.isSelected = false
-        --     end
-        -- end
-
-        if (letters.C.placed == true and letters.A.placed == true and letters.T.placed == true) then
-            fairySpeech = "Shazam!"   
-            letters.C.x = 0
-            letters.C.y = 0
-            letters.A.x = 0
-            letters.A.y = 0
-            letters.T.x = 0
-            letters.T.y = 0  
-        end
 
         -- mouse handling
         mouseMode = mouseModeArtemis
@@ -820,9 +821,9 @@ function menu_mousehandling(mx, my, down)
             artemisAnimalTargetColourG = 0.3
             artemisAnimalTargetColourB = 0.3
             targetBlocks = {
-                A = {x=490, y=430}, 
-                B = {x=600, y=430}, 
-                C = {x=710, y=430}
+                A = {x=490, y=430, letterX=letters.C.x, letterY=letters.C.y}, 
+                B = {x=600, y=430, letterX=letters.A.x, letterY=letters.A.y}, 
+                C = {x=710, y=430, letterX=letters.T.x, letterY=letters.T.y}
             }  
             artemisSpeech = "I'm thinking of calling it a 'dog'"
             fairySpeech = "Oi, what's this then?"
@@ -839,11 +840,11 @@ function menu_mousehandling(mx, my, down)
             artemisAnimalTargetColourG = 0.5
             artemisAnimalTargetColourB = 0.8
             targetBlocks = {
-                A = {x=420, y=430}, 
-                B = {x=510, y=430},   
-                C = {x=600, y=430}, 
-                D = {x=690, y=430}, 
-                E = {x=780, y=430}
+                A = {x=420, y=430, letterX=letters.H.x, letterY=letters.H.y}, 
+                B = {x=510, y=430, letterX=letters.O.x, letterY=letters.O.y},   
+                C = {x=600, y=430, letterX=letters.R.x, letterY=letters.R.y}, 
+                D = {x=690, y=430, letterX=letters.S.x, letterY=letters.S.y}, 
+                E = {x=780, y=430, letterX=letters.E.x, letterY=letters.E.y}
             }        
             artemisSpeech = "horse text"  
             fairySpeech = "Ever seen one of these before?"               
