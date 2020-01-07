@@ -6,6 +6,9 @@ local isASelected_freeplay = false
 local isBSelected_freeplay = false
 local collision = false
 mouse = {}
+local next = false
+local numberOfTargetBlocksPlaced = 0
+
 
 
 -- files ---------------------
@@ -163,6 +166,7 @@ local switchingBlocksOption = 1
 -- set initial variables -------------------------------------
 
 --set initial animal
+local questionNumber = 1
 local artemisAnimal = cat
 local artemisAnimalx = 520
 local artemisAnimaly = 100
@@ -177,10 +181,14 @@ local artemisSpeech = "I'm thinking of calling it a 'dog'"
 local fairySpeech = "Oi, what's this then?"
 
 local targetBlocks = {
-    A = {x=490, y=430, letterX=letters.C.x, letterY=letters.C.y, letter = letters.C, placed = false}, 
-    B = {x=600, y=430, letterX=letters.A.x, letterY=letters.A.y, letter = letters.A,  placed = false}, 
-    C = {x=710, y=430, letterX=letters.T.x, letterY=letters.T.y, letter = letters.T,  placed = false}
+    {x=490, y=430, letterX=letters.C.x, letterY=letters.C.y, letter = letters.C}, 
+    {x=600, y=430, letterX=letters.A.x, letterY=letters.A.y, letter = letters.A}, 
+    {x=710, y=430, letterX=letters.T.x, letterY=letters.T.y, letter = letters.T}
 }
+
+local questionNumberAction = "nothing"
+local targetBlockCount = 3
+local question = 1
 
 ---------------------------------------------------------
 
@@ -217,7 +225,7 @@ function love.load()
     fairysprite = fairysetplay001
 
     -- animation
-    animation = newAnimation(love.graphics.newImage("fairy-wave-spritesheet-small.png"), 320, 480, 2)
+    animation = newAnimation(love.graphics.newImage("fairy-wave-spritesheet-small-colour.png"), 320, 480, 2)
 
 end
 
@@ -455,6 +463,57 @@ function love.draw()
 
 
     elseif gameState == 'artemisExercise' then
+
+        if (questions) then
+            if (questions[questionNumber].completed) then
+                questionNumber = questionNumber + 1
+            end
+        end
+
+        print(questionNumber)
+
+        local questions = {
+            {   artemisAnimal = cat,
+                artemisAnimalx = 520,
+                artemisAnimaly = 100,
+                artemisAnimalBgColourR = 0.5,
+                artemisAnimalBgColourG = 0,
+                artemisAnimalBgColourB = 0,
+                artemisAnimalTargetColourR = 0.8,
+                artemisAnimalTargetColourG = 0.3,
+                artemisAnimalTargetColourB = 0.3,
+                targetBlocks = {
+                    {x=490, y=430, letterX=letters.C.x, letterY=letters.C.y, letter=letters.C}, 
+                    {x=600, y=430, letterX=letters.A.x, letterY=letters.A.y, letter=letters.A}, 
+                    {x=710, y=430, letterX=letters.T.x, letterY=letters.T.y, letter=letters.T}
+                },  
+                targetBlockCount = 3,
+                artemisSpeech = "I'm thinking of calling it a 'dog'",
+                fairySpeech = "Oi, what's this then?",
+                completed = false
+            },
+            {   artemisAnimal = horse,
+                artemisAnimalx = 400,
+                artemisAnimaly = 80,
+                artemisAnimalBgColourR = 0.5,
+                artemisAnimalBgColourG = 0.5,
+                artemisAnimalBgColourB = 1,
+                artemisAnimalTargetColourR = 0.5,
+                artemisAnimalTargetColourG = 0.5,
+                artemisAnimalTargetColourB = 0.8,
+                targetBlocks = {
+                    {x=420, y=430, letterX=letters.H.x, letterY=letters.H.y, letter=letters.H}, 
+                    {x=510, y=430, letterX=letters.O.x, letterY=letters.O.y, letter=letters.O},   
+                    {x=600, y=430, letterX=letters.R.x, letterY=letters.R.y, letter=letters.R}, 
+                    {x=690, y=430, letterX=letters.S.x, letterY=letters.S.y, letter=letters.S}, 
+                    {x=780, y=430, letterX=letters.E.x, letterY=letters.E.y, letter=letters.E}
+                }, 
+                targetBlockCount = 5,       
+                artemisSpeech = "horse text",
+                fairySpeech = "Ever seen one of these before?",
+                completed = false
+            }  
+        }
    
         -- The UI-------------------------------------------------------
 
@@ -493,7 +552,7 @@ function love.draw()
       
         -- subject
         love.graphics.setColor(1, 1, 1)
-        love.graphics.draw(artemisAnimal, artemisAnimalx, artemisAnimaly, 0, 1, 1)
+        love.graphics.draw(questions[1].artemisAnimal, artemisAnimalx, artemisAnimaly, 0, 1, 1)
         love.graphics.setColor(artemisAnimalBgColourR, artemisAnimalBgColourG, artemisAnimalBgColourB)
         
         -- target blocks
@@ -632,7 +691,7 @@ function love.draw()
             end  
         end
 
-
+    
         -- Block movement ----------------------------------------------
 
         for i, letter in pairs(letters) do
@@ -647,52 +706,38 @@ function love.draw()
                     letter.x = letter.x + 2
                 end
             end
+         
 
+            count = 0
             -- for correct block placement
             for j, targetBlock in pairs(targetBlocks) do     
-                print(targetBlock.letter.x)
                 if (targetBlock.letter.x == targetBlock.x and targetBlock.letter.y == targetBlock.y) then
                     fairysprite = fairysetplay003
                     fairySpeech = "So gifted"
                     targetBlock.letter.placed = true
-                    targetBlock.placed = true
                     targetBlock.letter.isSelected = false              
                 end    
-            end
+                if not (targetBlocks[j].letter.placed) then
 
-        
+                else
+                    count = count + 1
+                end
+            end   
 
-            -- determine if all blocks are placed
-            local count = 0
-            function tablelength(targetBlocks)
-                for targetBlock in pairs(targetBlocks) do count = count + 1 end
-                print(count)
-                return count
-            end
-            tablelength(targetBlocks)
-
-            targetBlocksPlaced = 0
-            for j, targetBlock in pairs(targetBlocks) do              
-                if targetBlock.placed == true then
-                    targetBlocksPlaced = targetBlocksPlaced + 1
-                end   
-                print(targetBlocksPlaced)   
-                if count == targetBlocksPlaced then
-                    print("success")
-                end              
+            -- clear blocks
+            if(questions[questionNumber].targetBlockCount == count) then
+                for j, targetBlock in pairs(targetBlocks) do     
+                    targetBlock.letter.x = 0
+                    targetBlock.letter.y = 0
+                end
+                questions[questionNumber].completed = true     
             end
         end
 
+        if (questions[questionNumber].completed) then
+            questionNumber = questionNumber + 1
+        end
     
-        -- if (letters.C.placed == true and letters.A.placed == true and letters.T.placed == true) then
-        --     fairySpeech = "Shazam!"   
-        --     letters.C.x = 0
-        --     letters.C.y = 0
-        --     letters.A.x = 0
-        --     letters.A.y = 0
-        --     letters.T.x = 0
-        --     letters.T.y = 0  
-        -- end
 
         -- mouse handling
         mouseMode = mouseModeArtemis
@@ -711,8 +756,6 @@ function love.update(dt)
     -- menu_mousehandling_freeplay(mx, my, down)
     menu_mousehandling(mx, my, down)
     -- collision = CheckCollision(ablockXfree, ablockYfree, bblockXfree, bblockYfree, cblockX, cblockY)
-    print(collision)
-
 
     -----------------------  Collision Detection-------------------------
  
@@ -811,43 +854,46 @@ function menu_mousehandling(mx, my, down)
 
         -- going through exercises
         if mx > 480 and mx < 560 and my > 640 and my < 720 and down == true then
-            artemisAnimal = cat
-            artemisAnimalx = 520
-            artemisAnimaly = 100
-            artemisAnimalBgColourR = 0.5
-            artemisAnimalBgColourG = 0
-            artemisAnimalBgColourB = 0
-            artemisAnimalTargetColourR = 0.8
-            artemisAnimalTargetColourG = 0.3
-            artemisAnimalTargetColourB = 0.3
-            targetBlocks = {
-                A = {x=490, y=430, letterX=letters.C.x, letterY=letters.C.y}, 
-                B = {x=600, y=430, letterX=letters.A.x, letterY=letters.A.y}, 
-                C = {x=710, y=430, letterX=letters.T.x, letterY=letters.T.y}
-            }  
-            artemisSpeech = "I'm thinking of calling it a 'dog'"
-            fairySpeech = "Oi, what's this then?"
+            -- questionNumberAction="decrease"
+            -- artemisAnimal = cat
+            -- artemisAnimalx = 520
+            -- artemisAnimaly = 100
+            -- artemisAnimalBgColourR = 0.5
+            -- artemisAnimalBgColourG = 0
+            -- artemisAnimalBgColourB = 0
+            -- artemisAnimalTargetColourR = 0.8
+            -- artemisAnimalTargetColourG = 0.3
+            -- artemisAnimalTargetColourB = 0.3
+            -- targetBlocks = {
+            --     A = {x=490, y=430, letterX=letters.C.x, letterY=letters.C.y, letter=letters.C}, 
+            --     B = {x=600, y=430, letterX=letters.A.x, letterY=letters.A.y, letter=letters.A}, 
+            --     C = {x=710, y=430, letterX=letters.T.x, letterY=letters.T.y, letter=letters.T}
+            -- }  
+            -- artemisSpeech = "I'm thinking of calling it a 'dog'"
+            -- fairySpeech = "Oi, what's this then?"
         end
-
+        
         if mx > 720 and mx < 800 and my > 640 and my < 720 and down == true then
-            artemisAnimal = horse
-            artemisAnimalx = 400
-            artemisAnimaly = 80
-            artemisAnimalBgColourR = 0.5
-            artemisAnimalBgColourG = 0.5
-            artemisAnimalBgColourB = 1
-            artemisAnimalTargetColourR = 0.5
-            artemisAnimalTargetColourG = 0.5
-            artemisAnimalTargetColourB = 0.8
-            targetBlocks = {
-                A = {x=420, y=430, letterX=letters.H.x, letterY=letters.H.y}, 
-                B = {x=510, y=430, letterX=letters.O.x, letterY=letters.O.y},   
-                C = {x=600, y=430, letterX=letters.R.x, letterY=letters.R.y}, 
-                D = {x=690, y=430, letterX=letters.S.x, letterY=letters.S.y}, 
-                E = {x=780, y=430, letterX=letters.E.x, letterY=letters.E.y}
-            }        
-            artemisSpeech = "horse text"  
-            fairySpeech = "Ever seen one of these before?"               
+            -- questionNumberAction="increase"
+
+            -- artemisAnimal = horse
+            -- artemisAnimalx = 400
+            -- artemisAnimaly = 80
+            -- artemisAnimalBgColourR = 0.5
+            -- artemisAnimalBgColourG = 0.5
+            -- artemisAnimalBgColourB = 1
+            -- artemisAnimalTargetColourR = 0.5
+            -- artemisAnimalTargetColourG = 0.5
+            -- artemisAnimalTargetColourB = 0.8
+            -- targetBlocks = {
+            --     A = {x=420, y=430, letterX=letters.H.x, letterY=letters.H.y, letter=letters.H}, 
+            --     B = {x=510, y=430, letterX=letters.O.x, letterY=letters.O.y, letter=letters.O},   
+            --     C = {x=600, y=430, letterX=letters.R.x, letterY=letters.R.y, letter=letters.R}, 
+            --     D = {x=690, y=430, letterX=letters.S.x, letterY=letters.S.y, letter=letters.S}, 
+            --     E = {x=780, y=430, letterX=letters.E.x, letterY=letters.E.y, letter=letters.E}
+            -- }        
+            -- artemisSpeech = "horse text"  
+            -- fairySpeech = "Ever seen one of these before?"               
         end  
     end
 end
