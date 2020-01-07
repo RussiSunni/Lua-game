@@ -547,16 +547,16 @@ function love.draw()
         -- variable area ---------------------------------------------------------------
 
         -- background
-        love.graphics.setColor(artemisAnimalBgColourR, artemisAnimalBgColourG, artemisAnimalBgColourB)
+        love.graphics.setColor(questions[questionNumber].artemisAnimalBgColourR, questions[questionNumber].artemisAnimalBgColourG, questions[questionNumber].artemisAnimalBgColourB)
         love.graphics.rectangle('fill', 400, 80, 480, 480)
       
         -- subject
         love.graphics.setColor(1, 1, 1)
-        love.graphics.draw(questions[1].artemisAnimal, artemisAnimalx, artemisAnimaly, 0, 1, 1)
-        love.graphics.setColor(artemisAnimalBgColourR, artemisAnimalBgColourG, artemisAnimalBgColourB)
+        love.graphics.draw(questions[questionNumber].artemisAnimal, questions[questionNumber].artemisAnimalx, questions[questionNumber].artemisAnimaly, 0, 1, 1)
+        love.graphics.setColor(questions[questionNumber].artemisAnimalBgColourR, questions[questionNumber].artemisAnimalBgColourG, questions[questionNumber].artemisAnimalBgColourB)
         
         -- target blocks
-        for i, targetBlock in pairs(targetBlocks) do
+        for i, targetBlock in pairs(questions[questionNumber].targetBlocks) do
             love.graphics.setColor(artemisAnimalTargetColourR, artemisAnimalTargetColourG, artemisAnimalTargetColourB)
             love.graphics.rectangle('fill', targetBlock.x, targetBlock.y, 80, 80)
             love.graphics.setColor(0, 0, 0)
@@ -566,11 +566,11 @@ function love.draw()
         -- artemis
         love.graphics.setColor(1, 1, 1)
         love.graphics.draw(artemis, 0, 140, 0, 1, 1)
-        love.graphics.printf(artemisSpeech, 0, 640, 320, "center")
+        love.graphics.printf(questions[questionNumber].artemisSpeech, 0, 640, 320, "center")
 
         -- Fairy
         love.graphics.draw(fairysprite, 960, 120, 0, 1, 1)
-        love.graphics.printf(fairySpeech, 960, 640, 320, "center")
+        love.graphics.printf(questions[questionNumber].fairySpeech, 960, 640, 320, "center")
 
         local counter = 1
 
