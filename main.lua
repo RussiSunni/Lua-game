@@ -154,7 +154,7 @@ local pictureBlocks = {
 local switchingBlocks = {
     letters = {char="letters", isSelected = false, x=240, y=0, placed = false},
     numbersAndSymbols = {char="num & sym", isSelected = false, x=320, y=0, placed = false},
-    pictures = {char="pictures", isSelected = false, x=320, y=80, placed = false}
+    pictures = {char="pictures and words", isSelected = false, x=320, y=80, placed = false}
 }
       
 local switchingBlocksOption = 1
@@ -166,7 +166,7 @@ local switchingBlocksOption = 1
 -- set initial variables -------------------------------------
 
 --set initial animal
-local questionNumber = 3
+local questionNumber = 1
 -- local artemisAnimal = cat
 -- local artemisAnimalx = 520
 -- local artemisAnimaly = 100
@@ -224,9 +224,9 @@ function love.load()
 
     fairysprite = fairysetplay001
 
-    -- animation
+    -- animations
     animation = newAnimation(love.graphics.newImage("fairy-wave-spritesheet-small-colour.png"), 320, 480, 2)
-
+    animationBird = newAnimationBird(love.graphics.newImage("bird-spritesheet-small.png"), 320, 320, 1)
 end
 
 
@@ -245,16 +245,14 @@ function love.keypressed(key)
             gameState = 'intro3'
         elseif gameState == 'intro3' then    
             gameState = 'map'    
-        elseif gameState == 'map' then           
+        elseif gameState == 'map' then       
+            gameState = 'map2'    
+        elseif gameState == 'map2' then           
             gameState = 'artemisIntro'    
         elseif gameState == 'artemisIntro' then                      
             gameState = 'artemisExercise'
         elseif gameState == 'artemisExercise' then
-            gameState = 'horse'             
-        elseif gameState == 'horse' then
-            gameState = 'wolf'
-        elseif gameState == 'wolf' then   
-
+ 
         end
     end
 end
@@ -375,6 +373,38 @@ function love.draw()
     
     elseif gameState == 'map' then
 
+        -- left block
+
+        -- Bird flying animation
+        local spriteNumBird = math.floor(animation.currentTime / animation.duration * #animation.quads) + 1
+        love.graphics.draw(animationBird.spriteSheet, animationBird.quads[spriteNumBird], 0, 0, 0, 1) 
+
+        -- the exercise block
+        love.graphics.rectangle('line', 320, 00, 640, 640)
+
+        -- map
+        love.graphics.draw(map, 320, 0, 0, 1, 1)
+        love.graphics.setColor(100, 100, 100)
+
+        -- menu block
+        love.graphics.setColor(100, 100, 100)
+        love.graphics.rectangle('line', 960, 00, 320, 80)
+        love.graphics.printf("menu", 960, 0, 100, "center")
+
+        -- Fairy block
+        love.graphics.rectangle('line', 960, 80, 320, 560)
+        love.graphics.draw(fairyWave, 960, 120, 0, 1, 1) 
+
+        -- audio block    
+        love.graphics.rectangle('line', 0, 640, 1280, 80)
+        love.graphics.setColor(100, 100, 100)
+
+        -- left block
+        love.graphics.rectangle('line', 00, 00, 320, 640)
+
+    elseif gameState == 'map2' then
+
+        -- left block
         love.graphics.draw(bird, 10, 10, 0, 1, 1)
         love.graphics.printf("Fairy, Artemis is asking for help.", 0, 350, 320, "center")
 
@@ -580,7 +610,7 @@ function love.draw()
                 
         -- artemis
         love.graphics.setColor(1, 1, 1)
-        love.graphics.draw(artemis, 0, 140, 0, 1, 1)
+        -- love.graphics.draw(artemis, 0, 140, 0, 1, 1)
         love.graphics.printf(questions[questionNumber].artemisSpeech, 0, 640, 320, "center")
 
         -- Fairy
@@ -644,6 +674,9 @@ function love.draw()
                 -- love.graphics.draw(letter.image, letter.x, letter.y, 0, 1, 1)
             end  
         end
+
+        love.graphics.draw(artemisColour, 0, 140, 0, 1, 1)
+
             
         if switchingBlocksOption == 2 then
              -- draw switching block buttons
@@ -771,6 +804,45 @@ function love.update(dt)
     -- menu_mousehandling_freeplay(mx, my, down)
     menu_mousehandling(mx, my, down)
     -- collision = CheckCollision(ablockXfree, ablockYfree, bblockXfree, bblockYfree, cblockX, cblockY)
+  
+    
+
+        for i, letter in pairs(letters) do
+            if letter.isSelected == true then
+                if letter.x < mx then
+                    letter.x = letter.x + (20 * 2.5 * dt)
+                end
+                if letter.x > mx then
+                    letter.x = letter.x - (20 * 2.5 * dt)
+                end
+                if letter.y < my then
+                    letter.y = letter.y + (20 * 2.5 * dt)
+                end
+                if letter.y > my then
+                    letter.y = letter.y - (20 * 2.5 * dt)
+                end
+
+            end
+        end
+     
+    --     -- If the circle is to the right of the mouse:
+    --     if circle.x > mouse.x then
+    --     circle.x = circle.x - (circle.speed * 2.5 * dt)
+    --     end
+     
+    --     -- If the circle is above the mouse:
+    --     if circle.y < mouse.y then
+    --     circle.y = circle.y + (circle.speed * 2.5 * dt)
+    --     end
+     
+    --     -- If the circle is below the mouse:
+    --     if circle.y > mouse.y then
+    --     circle.y = circle.y - (circle.speed * 2.5 * dt)
+    --     end
+  
+
+
+
 
     -----------------------  Collision Detection-------------------------
  
@@ -860,7 +932,10 @@ function menu_mousehandling(mx, my, down)
                     fairysprite = fairysetplay002
                     fairySpeech = "Go on then"
                     woodblock:play()
+                      
                 end
+            
+               
             else
                 letter.hover=false
                 if down == true then letter.isSelected = false end
@@ -887,6 +962,22 @@ function newAnimation(image, width, height, duration)
     animation.duration = 3
     animation.currentTime = 0
     return animation
+end
+
+function newAnimationBird(image, width, height, duration)
+    local animationBird = {}
+    animationBird.spriteSheet = image;
+    animationBird.quads = {};
+
+    for y = 0, image:getHeight() - height, height do
+        for x = 0, image:getWidth() - width, width do
+            table.insert(animationBird.quads, love.graphics.newQuad(x, y, width, height, image:getDimensions()))
+        end
+    end
+
+    animationBird.duration = 1
+    animationBird.currentTime = 0
+    return animationBird
 end
 
 
