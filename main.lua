@@ -27,6 +27,8 @@ local duckBlock = love.graphics.newImage('duck-block.png')
 
 -- images
 
+local scrollImage = love.graphics.newImage('scroll.png')
+
 -- characters
 local secretary = love.graphics.newImage('secretary.png')
 local teacher = love.graphics.newImage('teacher.png')
@@ -64,32 +66,32 @@ local monkey = love.graphics.newImage('monkey.png')
 
 -- letter blocks
 local letters = {
-    A = {char="A", isSelected = false, x=400, y=0, placed = false}, 
-    B = {char="B", isSelected = false, x=480, y=0, placed = false}, 
-    C = {char="C", isSelected = false, x=560, y=0, placed = false}, 
-    D = {char="D", isSelected = false, x=640, y=0, placed = false}, 
-    E = {char="E", isSelected = false, x=720, y=0, placed = false}, 
-    F = {char="F", isSelected = false, x=800, y=0, placed = false}, 
-    G = {char="G", isSelected = false, x=880, y=0, placed = false}, 
-    H = {char="H", isSelected = false, x=880, y=80, placed = false}, 
-    I = {char="I", isSelected = false, x=880, y=160, placed = false}, 
-    J = {char="J", isSelected = false, x=880, y=240, placed = false}, 
-    K = {char="K", isSelected = false, x=880, y=320, placed = false},
-    L = {char="L", isSelected = false, x=880, y=400, placed = false}, 
-    M = {char="M", isSelected = false, x=880, y=480, placed = false}, 
-    N = {char="N", isSelected = false, x=880, y=560, placed = false}, 
-    O = {char="O", isSelected = false, x=800, y=560, placed = false}, 
-    P = {char="P", isSelected = false, x=720, y=560, placed = false}, 
-    Q = {char="Q", isSelected = false, x=640, y=560, placed = false}, 
-    R = {char="R", isSelected = false, x=560, y=560, placed = false}, 
-    S = {char="S", isSelected = false, x=480, y=560, placed = false}, 
-    T = {char="T", isSelected = false, x=400, y=560, placed = false}, 
-    U = {char="U", isSelected = false, x=320, y=560, placed = false}, 
-    V = {char="V", isSelected = false, x=320, y=480, placed = false}, 
-    W = {char="W", isSelected = false, x=320, y=400, placed = false}, 
-    X = {char="X", isSelected = false, x=320, y=320, placed = false}, 
-    Y = {char="Y", isSelected = false, x=320, y=240, placed = false}, 
-    Z = {char="Z", isSelected = false, x=320, y=160, placed = false}
+    A = {char="A", isSelected = false, x=400, y=0, positionX = 400, positionY = 0, width = 80, height = 80, placed = false}, 
+    B = {char="B", isSelected = false, x=480, y=0, positionX = 480, positionY = 0, width = 80, height = 80, placed = false}, 
+    C = {char="C", isSelected = false, x=560, y=0, positionX = 560, positionY = 0, width = 80, height = 80,  placed = false}, 
+    D = {char="D", isSelected = false, x=640, y=0, positionX = 640, positionY = 0, width = 80, height = 80,  placed = false}, 
+    E = {char="E", isSelected = false, x=720, y=0, positionX = 720, positionY = 0, width = 80, height = 80,  placed = false}, 
+    F = {char="F", isSelected = false, x=800, y=0, positionX = 800, positionY = 0, width = 80, height = 80,  placed = false}, 
+    G = {char="G", isSelected = false, x=880, y=0, positionX = 880, positionY = 0, width = 80, height = 80,  placed = false}, 
+    H = {char="H", isSelected = false, x=880, y=80, positionX = 880, positionY = 80, width = 80, height = 80,  placed = false}, 
+    I = {char="I", isSelected = false, x=880, y=160, positionX = 880, positionY = 160, width = 80, height = 80,  placed = false}, 
+    J = {char="J", isSelected = false, x=880, y=240, positionX = 880, positionY = 240, width = 80, height = 80,  placed = false}, 
+    K = {char="K", isSelected = false, x=880, y=320, positionX = 880, positionY = 320, width = 80, height = 80,  placed = false},
+    L = {char="L", isSelected = false, x=880, y=400, positionX = 880, positionY = 400, width = 80, height = 80,  placed = false}, 
+    M = {char="M", isSelected = false, x=880, y=480, positionX = 880, positionY = 480, width = 80, height = 80,  placed = false}, 
+    N = {char="N", isSelected = false, x=880, y=560, positionX = 880, positionY = 560, width = 80, height = 80,  placed = false}, 
+    O = {char="O", isSelected = false, x=800, y=560, positionX = 880, positionY = 560, width = 80, height = 80,  placed = false}, 
+    P = {char="P", isSelected = false, x=720, y=560, positionX = 720, positionY = 560, width = 80, height = 80,  placed = false}, 
+    Q = {char="Q", isSelected = false, x=640, y=560, positionX = 640, positionY = 560, width = 80, height = 80,  placed = false}, 
+    R = {char="R", isSelected = false, x=560, y=560, positionX = 560, positionY = 560, width = 80, height = 80,  placed = false}, 
+    S = {char="S", isSelected = false, x=480, y=560, positionX = 480, positionY = 560, width = 80, height = 80,  placed = false}, 
+    T = {char="T", isSelected = false, x=400, y=560, positionX = 400, positionY = 560, width = 80, height = 80,  placed = false}, 
+    U = {char="U", isSelected = false, x=320, y=560, positionX = 320, positionY = 560, width = 80, height = 80,  placed = false}, 
+    V = {char="V", isSelected = false, x=320, y=480, positionX = 320, positionY = 480, width = 80, height = 80,  placed = false}, 
+    W = {char="W", isSelected = false, x=320, y=400, positionX = 320, positionY = 400, width = 80, height = 80,  placed = false}, 
+    X = {char="X", isSelected = false, x=320, y=320, positionX = 320, positionY = 320, width = 80, height = 80,  placed = false}, 
+    Y = {char="Y", isSelected = false, x=320, y=240, positionX = 320, positionY = 240, width = 80, height = 80,  placed = false}, 
+    Z = {char="Z", isSelected = false, x=320, y=160, positionX = 320, positionY = 160, width = 80, height = 80,  placed = false}
 }
 
 local numbersAndSymbolBlocks = {
@@ -158,6 +160,12 @@ local switchingBlocks = {
 }
       
 local switchingBlocksOption = 1
+
+-- scroll
+
+scroll = {
+    words = {}
+}
 
 -------------------------------------------------------------------------
 
@@ -471,7 +479,8 @@ function love.draw()
                 targetBlockCount = 3,
                 artemisSpeech = "I'm thinking of calling it a 'dog'",
                 fairySpeech = "Oi, what's this then?",
-                completed = false
+                completed = false,
+                word = "cat"
             },
             {   artemisAnimal = horse,
                 artemisAnimalx = 400,
@@ -492,7 +501,8 @@ function love.draw()
                 targetBlockCount = 5,       
                 artemisSpeech = "horse text",
                 fairySpeech = "Ever seen one of these before?",
-                completed = false
+                completed = false,
+                word = "horse"
             },
             {   artemisAnimal = wolf,
                 artemisAnimalx = 400,
@@ -512,7 +522,8 @@ function love.draw()
                 targetBlockCount = 4,       
                 artemisSpeech = "wolf text",
                 fairySpeech = "Ever seen one of these before?",
-                completed = false
+                completed = false,
+                word = "wolf"
             }    
         }
    
@@ -535,6 +546,12 @@ function love.draw()
         love.graphics.setColor(100, 100, 100)
         love.graphics.rectangle('line', 960, 00, 320, 80)
         love.graphics.printf("menu", 960, 0, 100, "center")
+
+        -- scroll --- 
+        love.graphics.rectangle('line', 1120, 00, 160, 80)
+        love.graphics.printf("scroll", 960, 0, 320, "right")
+        love.graphics.draw(scrollImage, 1120, 0, 0, 1, 1)
+
  
         -- bottom area    
         love.graphics.rectangle('line', 0, 640, 1280, 80)
@@ -593,6 +610,7 @@ function love.draw()
             love.graphics.printf(switchingBlocks.numbersAndSymbols.char, switchingBlocks.numbersAndSymbols.x, switchingBlocks.numbersAndSymbols.y, 80, "center")
             love.graphics.printf(switchingBlocks.pictures.char, switchingBlocks.pictures.x, switchingBlocks.pictures.y, 80, "center")
 
+            -- draw letter blocks
             love.graphics.setFont(largeFont)
 
             for i, letter in pairs(letters) do
@@ -601,35 +619,33 @@ function love.draw()
 
                 if letter.char == "A" or letter.char == "E" or letter.char == "I" or letter.char == "M" or letter.char == "Q" or letter.char == "U" or letter.char == "Y" then
                     love.graphics.setColor(0, 1, 0)
-                    love.graphics.rectangle('fill', letter.x, letter.y, 80, 80)
+                    love.graphics.rectangle('fill', letter.x, letter.y, letter.width, letter.height)
                 end
 
                 if letter.char == "B" or letter.char == "F" or letter.char == "J" or letter.char == "N" or letter.char == "R" or letter.char == "V" or letter.char == "Z" then
                     love.graphics.setColor(0.9, 0.9, 0)
-                    love.graphics.rectangle('fill', letter.x, letter.y, 80, 80)
+                    love.graphics.rectangle('fill', letter.x, letter.y, letter.width, letter.height)
                 end
 
                 if letter.char == "C" or letter.char == "G" or letter.char == "K" or letter.char == "O" or letter.char == "S" or letter.char == "W" then
                     love.graphics.setColor(1, 0, 0)
-                    love.graphics.rectangle('fill', letter.x, letter.y, 80, 80)
+                    love.graphics.rectangle('fill', letter.x, letter.y, letter.width, letter.height)
                 end
 
                 if letter.char == "D" or letter.char == "H" or letter.char == "L" or letter.char == "P" or letter.char == "T" or letter.char == "X" then
                     love.graphics.setColor(0, 0, 1)
-                    love.graphics.rectangle('fill', letter.x, letter.y, 80, 80)
+                    love.graphics.rectangle('fill', letter.x, letter.y, letter.width, letter.height)
                 end
 
                 love.graphics.setColor(0, 0, 0)
-                love.graphics.rectangle('line', letter.x, letter.y, 80, 80)
+                love.graphics.rectangle('line', letter.x, letter.y, letter.width, letter.height)
                 
                 love.graphics.setColor(1, 1, 1)
-                love.graphics.printf(letter.char, letter.x, letter.y, 80, "center")
+                love.graphics.printf(letter.char, letter.x, letter.y, letter.width, "center")
                 -- love.graphics.draw(letter.image, letter.x, letter.y, 0, 1, 1)
             end  
         end
 
-        love.graphics.draw(artemisColour, 0, 140, 0, 1, 1)
-            
         if switchingBlocksOption == 2 then
              -- draw switching block buttons
              love.graphics.setColor(1, 1, 1)
@@ -691,46 +707,60 @@ function love.draw()
             end  
         end
 
+        -- draw overlapping image of left character
+        love.graphics.draw(artemisColour, 0, 140, 0, 1, 1)
     
         -- Block movement ----------------------------------------------
 
         for i, letter in pairs(letters) do
+           
             if letter.isSelected == true then
                 if love.keyboard.isDown('w') then
-                    letter.y = letter.y - 2
+                    letter.y = letter.y - 3
                 elseif love.keyboard.isDown('s') then
-                    letter.y = letter.y + 2
+                    letter.y = letter.y + 3
                 elseif love.keyboard.isDown('a') then
-                    letter.x = letter.x - 2
+                    letter.x = letter.x - 3
                 elseif love.keyboard.isDown('d') then
-                    letter.x = letter.x + 2
+                    letter.x = letter.x + 3
                 end
             end
          
-            
-
             count = 0
-            -- for correct block placement ------------------
+         
             for j, targetBlock in pairs(questions[questionNumber].targetBlocks) do  
                 
                 -- snapping to targetblocks
                 if letter.isSelected == true then
                     if targetBlock.occupied == false then
-                        if letter.x > targetBlock.x - 4 and letter.y > targetBlock.y - 4 then
-                            if letter.x < targetBlock.x + 4 and letter.y < targetBlock.y + 4 then
+                        if letter.x > targetBlock.x - 5 and letter.y > targetBlock.y - 5 then
+                            if letter.x < targetBlock.x + 5 and letter.y < targetBlock.y + 5 then
                                 letter.x = targetBlock.x
                                 letter.y = targetBlock.y
+
+                                if letter == targetBlock.letter then
+                                    targetBlock.occupied = true   
+                                else
+                                    -- letter blocks go back tp starting position
+                                    letter.x = letter.positionX
+                                    letter.y = letter.positionY
+                                end
                             end
                         end
                     end
                 end
 
+                -- for correct block placement ------------------
+
+                -- could make it so that if wrong letters, they go back to sides?
+
                 if (targetBlock.letter.x == targetBlock.x and targetBlock.letter.y == targetBlock.y) then
                     fairysprite = fairysetplay003
                     fairySpeech = "So gifted"
                     targetBlock.letter.placed = true
-                    targetBlock.letter.isSelected = false      
-                    targetBlock.occupied = true        
+                    targetBlock.letter.isSelected = false            
+                else
+                    
                 end    
                 if not (questions[questionNumber].targetBlocks[j].letter.placed) then
 
@@ -739,11 +769,20 @@ function love.draw()
                 end
             end   
 
+            -- correct words move to scroll
+
+            -- incorrect letters go back to origanl place
+
             -- clear blocks
             if(questions[questionNumber].targetBlockCount == count) then
                 for j, targetBlock in pairs(questions[questionNumber].targetBlocks) do     
+                    targetBlock.letter.isSelected = false
                     targetBlock.letter.x = 0
                     targetBlock.letter.y = 0
+                    targetBlock.letter.width = 0
+                    targetBlock.letter.height = 0
+                    targetBlock.letter.char = ""
+                    scroll.words[questionNumber] = questions[questionNumber].word   
                 end
                 questions[questionNumber].completed = true     
             end
@@ -899,16 +938,20 @@ function menu_mousehandling(mx, my, down)
                 if down == true then letter.isSelected = true
                     fairysprite = fairysetplay002
                     fairySpeech = "Go on then"
-                    woodblock:play()
-                      
+                    woodblock:play()        
                 end
-            
-               
             else
                 letter.hover=false
                 if down == true then letter.isSelected = false end
             end            
-        end      
+        end 
+
+        -- scroll button
+        if mx > 1120 and mx < 1280 and my > 0 and my < 80 and down == true then
+            for i, word in pairs(scroll.words) do
+                print(word)        
+            end
+        end
     end
 end
 
