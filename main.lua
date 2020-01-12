@@ -238,7 +238,9 @@ function love.keypressed(key)
             gameState = 'artemisExercise'
         elseif gameState == 'artemisExercise' then
             gameState = 'victory'
-        elseif gameState == 'victory' then
+        elseif gameState == 'scroll' then
+            gameState = 'artemisExercise'
+
         end
     end
 end
@@ -800,7 +802,17 @@ function love.draw()
     elseif gameState == 'victory' then
         local spriteNum = math.floor(animation.currentTime / animation.duration * #animation.quads) + 1
         love.graphics.draw(animation.spriteSheet, animation.quads[spriteNum])
+  
+
+    elseif gameState == 'scroll' then
+        love.graphics.setColor(1, 1, 1)
+
+       
+        for i, word in pairs(scroll.words) do
+            love.graphics.printf(word, 0, 0 , 200, "center")
+        end
     end
+
 end
 
 function love.update(dt)
@@ -948,9 +960,7 @@ function menu_mousehandling(mx, my, down)
 
         -- scroll button
         if mx > 1120 and mx < 1280 and my > 0 and my < 80 and down == true then
-            for i, word in pairs(scroll.words) do
-                print(word)        
-            end
+            gameState = "scroll"
         end
     end
 end
