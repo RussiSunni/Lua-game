@@ -167,28 +167,6 @@ local switchingBlocksOption = 1
 
 --set initial animal
 local questionNumber = 1
--- local artemisAnimal = cat
--- local artemisAnimalx = 520
--- local artemisAnimaly = 100
--- local artemisAnimalBgColourR = 0.5
--- local artemisAnimalBgColourG = 0
--- local artemisAnimalBgColourB = 0
--- local artemisAnimalTargetColourR = 0.8 
--- local artemisAnimalTargetColourG = 0.3
--- local artemisAnimalTargetColourB = 0.3
-
--- local artemisSpeech = "I'm thinking of calling it a 'dog'"
--- local fairySpeech = "Oi, what's this then?"
-
--- local targetBlocks = {
---     {x=490, y=430, letterX=letters.C.x, letterY=letters.C.y, letter = letters.C}, 
---     {x=600, y=430, letterX=letters.A.x, letterY=letters.A.y, letter = letters.A}, 
---     {x=710, y=430, letterX=letters.T.x, letterY=letters.T.y, letter = letters.T}
--- }
-
--- local questionNumberAction = "nothing"
--- local targetBlockCount = 3
--- local question = 3
 
 ---------------------------------------------------------
 
@@ -226,14 +204,13 @@ function love.load()
 
     -- animations
     animation = newAnimation(love.graphics.newImage("fairy-wave-spritesheet-small-colour.png"), 320, 480, 2)
-    animationBird = newAnimationBird(love.graphics.newImage("bird-spritesheet-small.png"), 320, 320, 1)
+    animationBird = newAnimation(love.graphics.newImage("bird-spritesheet-small.png"), 320, 320, 1)
 end
 
 
 function love.keypressed(key)
     if key == 'escape' then
         love.event.quit()
-
     elseif key == 'enter' or key == 'return' then
         if gameState == 'screen1' then
             gameState = 'screen2'
@@ -252,7 +229,8 @@ function love.keypressed(key)
         elseif gameState == 'artemisIntro' then                      
             gameState = 'artemisExercise'
         elseif gameState == 'artemisExercise' then
- 
+            gameState = 'victory'
+        elseif gameState == 'victory' then
         end
     end
 end
@@ -406,7 +384,8 @@ function love.draw()
 
         -- left block
         love.graphics.draw(bird, 10, 10, 0, 1, 1)
-        love.graphics.printf("Fairy, Artemis is asking for help.", 0, 350, 320, "center")
+        love.graphics.printf("Huff, puff", 0, 350, 320, "center")
+        love.graphics.printf("Fairy, Artemis is asking for help.", 0, 410, 320, "center")
 
         -- the exercise block
         love.graphics.rectangle('line', 320, 00, 640, 640)
@@ -466,32 +445,6 @@ function love.draw()
         love.graphics.printf("I need your help to name these animals please", 320, 640, 640, "center")
         
 
-    -- elseif gameState == 'storyMode' then
-
-    --     -- the screen
-    --     love.graphics.rectangle('line', 00, 00, 1280, 720)
-
-    --     love.graphics.draw(dragonStory01, 320, 0, 0, 0.5, 0.5)
-
-    --     -- the exercise block
-    --     love.graphics.rectangle('line', 320, 00, 640, 640)
-
-    --     love.graphics.setColor(0, 0, 0)
-
-    --     -- menu block
-    --     love.graphics.setColor(100, 100, 100)
-    --     love.graphics.rectangle('line', 960, 00, 320, 80)
-    --     love.graphics.printf("menu", 960, 0, 100, "center")
-  
-    --     -- Fairy block
-    --     love.graphics.rectangle('line', 960, 80, 320, 560)
-    --     love.graphics.draw(fairysprite, 960, 120, 0, 1, 1) 
- 
-    --     -- audio block    
-    --     love.graphics.rectangle('line', 0, 640, 1280, 80)
-    --     love.graphics.setColor(100, 100, 100)
-
-
     elseif gameState == 'artemisExercise' then
 
         if (questions) then
@@ -511,9 +464,9 @@ function love.draw()
                 artemisAnimalTargetColourG = 0.3,
                 artemisAnimalTargetColourB = 0.3,
                 targetBlocks = {
-                    {x=490, y=430, letterX=letters.C.x, letterY=letters.C.y, letter=letters.C}, 
-                    {x=600, y=430, letterX=letters.A.x, letterY=letters.A.y, letter=letters.A}, 
-                    {x=710, y=430, letterX=letters.T.x, letterY=letters.T.y, letter=letters.T}
+                    {x=490, y=430, letterX=letters.C.x, letterY=letters.C.y, letter=letters.C, occupied=false}, 
+                    {x=600, y=430, letterX=letters.A.x, letterY=letters.A.y, letter=letters.A, occupied=false}, 
+                    {x=710, y=430, letterX=letters.T.x, letterY=letters.T.y, letter=letters.T, occupied=false}
                 },  
                 targetBlockCount = 3,
                 artemisSpeech = "I'm thinking of calling it a 'dog'",
@@ -530,11 +483,11 @@ function love.draw()
                 artemisAnimalTargetColourG = 0.5,
                 artemisAnimalTargetColourB = 0.8,
                 targetBlocks = {
-                    {x=420, y=430, letterX=letters.H.x, letterY=letters.H.y, letter=letters.H}, 
-                    {x=510, y=430, letterX=letters.O.x, letterY=letters.O.y, letter=letters.O},   
-                    {x=600, y=430, letterX=letters.R.x, letterY=letters.R.y, letter=letters.R}, 
-                    {x=690, y=430, letterX=letters.S.x, letterY=letters.S.y, letter=letters.S}, 
-                    {x=780, y=430, letterX=letters.E.x, letterY=letters.E.y, letter=letters.E}
+                    {x=420, y=430, letterX=letters.H.x, letterY=letters.H.y, letter=letters.H, occupied=false}, 
+                    {x=510, y=430, letterX=letters.O.x, letterY=letters.O.y, letter=letters.O, occupied=false},   
+                    {x=600, y=430, letterX=letters.R.x, letterY=letters.R.y, letter=letters.R, occupied=false}, 
+                    {x=690, y=430, letterX=letters.S.x, letterY=letters.S.y, letter=letters.S, occupied=false}, 
+                    {x=780, y=430, letterX=letters.E.x, letterY=letters.E.y, letter=letters.E, occupied=false}
                 }, 
                 targetBlockCount = 5,       
                 artemisSpeech = "horse text",
@@ -551,10 +504,10 @@ function love.draw()
                 artemisAnimalTargetColourG = 0.5,
                 artemisAnimalTargetColourB = 0.8,
                 targetBlocks = {
-                    {x=420, y=430, letterX=letters.W.x, letterY=letters.W.y, letter=letters.W}, 
-                    {x=510, y=430, letterX=letters.O.x, letterY=letters.O.y, letter=letters.O},   
-                    {x=600, y=430, letterX=letters.L.x, letterY=letters.L.y, letter=letters.L}, 
-                    {x=690, y=430, letterX=letters.F.x, letterY=letters.F.y, letter=letters.F} 
+                    {x=420, y=430, letterX=letters.W.x, letterY=letters.W.y, letter=letters.W, occupied=false}, 
+                    {x=510, y=430, letterX=letters.O.x, letterY=letters.O.y, letter=letters.O, occupied=false},   
+                    {x=600, y=430, letterX=letters.L.x, letterY=letters.L.y, letter=letters.L, occupied=false}, 
+                    {x=690, y=430, letterX=letters.F.x, letterY=letters.F.y, letter=letters.F, occupied=false} 
                 }, 
                 targetBlockCount = 4,       
                 artemisSpeech = "wolf text",
@@ -676,7 +629,6 @@ function love.draw()
         end
 
         love.graphics.draw(artemisColour, 0, 140, 0, 1, 1)
-
             
         if switchingBlocksOption == 2 then
              -- draw switching block buttons
@@ -755,15 +707,30 @@ function love.draw()
                 end
             end
          
+            
 
             count = 0
-            -- for correct block placement
-            for j, targetBlock in pairs(questions[questionNumber].targetBlocks) do     
+            -- for correct block placement ------------------
+            for j, targetBlock in pairs(questions[questionNumber].targetBlocks) do  
+                
+                -- snapping to targetblocks
+                if letter.isSelected == true then
+                    if targetBlock.occupied == false then
+                        if letter.x > targetBlock.x - 4 and letter.y > targetBlock.y - 4 then
+                            if letter.x < targetBlock.x + 4 and letter.y < targetBlock.y + 4 then
+                                letter.x = targetBlock.x
+                                letter.y = targetBlock.y
+                            end
+                        end
+                    end
+                end
+
                 if (targetBlock.letter.x == targetBlock.x and targetBlock.letter.y == targetBlock.y) then
                     fairysprite = fairysetplay003
                     fairySpeech = "So gifted"
                     targetBlock.letter.placed = true
-                    targetBlock.letter.isSelected = false              
+                    targetBlock.letter.isSelected = false      
+                    targetBlock.occupied = true        
                 end    
                 if not (questions[questionNumber].targetBlocks[j].letter.placed) then
 
@@ -805,25 +772,26 @@ function love.update(dt)
     menu_mousehandling(mx, my, down)
     -- collision = CheckCollision(ablockXfree, ablockYfree, bblockXfree, bblockYfree, cblockX, cblockY)
   
-    
 
-        for i, letter in pairs(letters) do
-            if letter.isSelected == true then
-                if letter.x < mx then
-                    letter.x = letter.x + (20 * 2.5 * dt)
-                end
-                if letter.x > mx then
-                    letter.x = letter.x - (20 * 2.5 * dt)
-                end
-                if letter.y < my then
-                    letter.y = letter.y + (20 * 2.5 * dt)
-                end
-                if letter.y > my then
-                    letter.y = letter.y - (20 * 2.5 * dt)
-                end
+    -- mouse move blocks
 
-            end
-        end
+        -- for i, letter in pairs(letters) do
+        --     if letter.isSelected == true then
+        --         if letter.x < mx then
+        --             letter.x = letter.x + (20 * 5 * dt)
+        --         end
+        --         if letter.x > mx then
+        --             letter.x = letter.x - (20 * 5 * dt)
+        --         end
+        --         if letter.y < my then
+        --             letter.y = letter.y + (20 * 5 * dt)
+        --         end
+        --         if letter.y > my then
+        --             letter.y = letter.y - (20 * 5 * dt)
+        --         end
+
+        --     end
+        -- end
      
     --     -- If the circle is to the right of the mouse:
     --     if circle.x > mouse.x then
@@ -959,26 +927,12 @@ function newAnimation(image, width, height, duration)
         end
     end
 
-    animation.duration = 3
+    animation.duration = 1.5
     animation.currentTime = 0
     return animation
 end
 
-function newAnimationBird(image, width, height, duration)
-    local animationBird = {}
-    animationBird.spriteSheet = image;
-    animationBird.quads = {};
 
-    for y = 0, image:getHeight() - height, height do
-        for x = 0, image:getWidth() - width, width do
-            table.insert(animationBird.quads, love.graphics.newQuad(x, y, width, height, image:getDimensions()))
-        end
-    end
-
-    animationBird.duration = 1
-    animationBird.currentTime = 0
-    return animationBird
-end
 
 
 -- free play mode
