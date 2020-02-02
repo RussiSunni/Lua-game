@@ -1,7 +1,9 @@
 
 -- variables
-WINDOW_WIDTH = 1280
-WINDOW_HEIGHT = 720
+-- WINDOW_WIDTH = 1280
+-- WINDOW_HEIGHT = 720
+WINDOW_WIDTH = 480
+WINDOW_HEIGHT = 320
 local isASelected_freeplay = false
 local isBSelected_freeplay = false
 local collision = false
@@ -82,7 +84,7 @@ local letters = {
     L = {char="L", isSelected = false, x=880, y=400, positionX = 880, positionY = 400, width = 80, height = 80,  placed = false}, 
     M = {char="M", isSelected = false, x=880, y=480, positionX = 880, positionY = 480, width = 80, height = 80,  placed = false}, 
     N = {char="N", isSelected = false, x=880, y=560, positionX = 880, positionY = 560, width = 80, height = 80,  placed = false}, 
-    O = {char="O", isSelected = false, x=800, y=560, positionX = 880, positionY = 560, width = 80, height = 80,  placed = false}, 
+    O = {char="O", isSelected = false, x=800, y=560, positionX = 800, positionY = 560, width = 80, height = 80,  placed = false}, 
     P = {char="P", isSelected = false, x=720, y=560, positionX = 720, positionY = 560, width = 80, height = 80,  placed = false}, 
     Q = {char="Q", isSelected = false, x=640, y=560, positionX = 640, positionY = 560, width = 80, height = 80,  placed = false}, 
     R = {char="R", isSelected = false, x=560, y=560, positionX = 560, positionY = 560, width = 80, height = 80,  placed = false}, 
@@ -176,7 +178,7 @@ scroll = {
 -- set initial variables -------------------------------------
 
 --set initial animal
-local questionNumber = 1
+local questionNumber = 4
 
 ---------------------------------------------------------
 
@@ -200,7 +202,7 @@ function love.load()
     love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, {
         fullscreen = false,
         vsync = true,
-        resizable = true
+        resizable = false
     })
     tinyFont = love.graphics.newFont('Solway.ttf', 16)
     smallFont = love.graphics.newFont('Solway.ttf', 32)
@@ -559,19 +561,107 @@ function love.draw()
                 artemisAnimalTargetColourG = 0.5,
                 artemisAnimalTargetColourB = 0.8,
                 targetBlocks = {
-                    {x=420, y=430, letterX=letters.W.x, letterY=letters.W.y, letter=letters.W, occupied=false}, 
-                    {x=510, y=430, letterX=letters.O.x, letterY=letters.O.y, letter=letters.O, occupied=false},   
-                    {x=600, y=430, letterX=letters.L.x, letterY=letters.L.y, letter=letters.L, occupied=false}, 
-                    {x=690, y=430, letterX=letters.F.x, letterY=letters.F.y, letter=letters.F, occupied=false} 
+                    {x=435, y=430, letterX=letters.W.x, letterY=letters.W.y, letter=letters.W, occupied=false}, 
+                    {x=545, y=430, letterX=letters.O.x, letterY=letters.O.y, letter=letters.O, occupied=false},   
+                    {x=655, y=430, letterX=letters.L.x, letterY=letters.L.y, letter=letters.L, occupied=false}, 
+                    {x=765, y=430, letterX=letters.F.x, letterY=letters.F.y, letter=letters.F, occupied=false} 
                 }, 
                 targetBlockCount = 4,       
-                artemisSpeech = "wolf text",
+                artemisSpeech = "is this another 'dog'",
                 fairySpeech = "Ever seen one of these before?",
                 completed = false,
                 word = "wolf"
-            }    
+            },
+            {   artemisAnimal = bear,
+                artemisAnimalx = 400,
+                artemisAnimaly = 80,
+                artemisAnimalBgColourR = 0.5,
+                artemisAnimalBgColourG = 0.5,
+                artemisAnimalBgColourB = 1,
+                artemisAnimalTargetColourR = 0.5,
+                artemisAnimalTargetColourG = 0.5,
+                artemisAnimalTargetColourB = 0.8,
+                targetBlocks = {
+                    {x=435, y=430, letterX=letters.B.x, letterY=letters.B.y, letter=letters.B, occupied=false}, 
+                    {x=545, y=430, letterX=letters.E.x, letterY=letters.E.y, letter=letters.E, occupied=false},   
+                    {x=655, y=430, letterX=letters.A.x, letterY=letters.A.y, letter=letters.A, occupied=false}, 
+                    {x=765, y=430, letterX=letters.R.x, letterY=letters.R.y, letter=letters.R, occupied=false} 
+                }, 
+                targetBlockCount = 4,       
+                artemisSpeech = "",
+                fairySpeech = "Careful",
+                completed = false,
+                word = "bear"
+            },
+            {   artemisAnimal = lion,
+                artemisAnimalx = 400,
+                artemisAnimaly = 80,
+                artemisAnimalBgColourR = 0.5,
+                artemisAnimalBgColourG = 0.5,
+                artemisAnimalBgColourB = 1,
+                artemisAnimalTargetColourR = 0.5,
+                artemisAnimalTargetColourG = 0.5,
+                artemisAnimalTargetColourB = 0.8,
+                targetBlocks = {
+                    {x=435, y=430, letterX=letters.L.x, letterY=letters.L.y, letter=letters.L, occupied=false}, 
+                    {x=545, y=430, letterX=letters.I.x, letterY=letters.I.y, letter=letters.I, occupied=false},   
+                    {x=655, y=430, letterX=letters.O.x, letterY=letters.O.y, letter=letters.O, occupied=false}, 
+                    {x=765, y=430, letterX=letters.N.x, letterY=letters.N.y, letter=letters.N, occupied=false} 
+                }, 
+                targetBlockCount = 4,       
+                artemisSpeech = "",
+                fairySpeech = "Careful",
+                completed = false,
+                word = "lion"
+            },
+            {   artemisAnimal = zebra,
+                artemisAnimalx = 400,
+                artemisAnimaly = 80,
+                artemisAnimalBgColourR = 0.5,
+                artemisAnimalBgColourG = 0.5,
+                artemisAnimalBgColourB = 1,
+                artemisAnimalTargetColourR = 0.5,
+                artemisAnimalTargetColourG = 0.5,
+                artemisAnimalTargetColourB = 0.8,
+                targetBlocks = {
+                    {x=420, y=430, letterX=letters.Z.x, letterY=letters.Z.y, letter=letters.Z, occupied=false}, 
+                    {x=510, y=430, letterX=letters.E.x, letterY=letters.E.y, letter=letters.E, occupied=false},   
+                    {x=600, y=430, letterX=letters.B.x, letterY=letters.B.y, letter=letters.B, occupied=false}, 
+                    {x=690, y=430, letterX=letters.R.x, letterY=letters.R.y, letter=letters.R, occupied=false}, 
+                    {x=780, y=430, letterX=letters.A.x, letterY=letters.A.y, letter=letters.A, occupied=false}
+                }, 
+                targetBlockCount = 5,       
+                artemisSpeech = "striped horse?",
+                fairySpeech = "Careful",
+                completed = false,
+                word = "zebra"
+            },
+            {   artemisAnimal = monkey,
+                artemisAnimalx = 400,
+                artemisAnimaly = 80,
+                artemisAnimalBgColourR = 0.5,
+                artemisAnimalBgColourG = 0.5,
+                artemisAnimalBgColourB = 1,
+                artemisAnimalTargetColourR = 0.5,
+                artemisAnimalTargetColourG = 0.5,
+                artemisAnimalTargetColourB = 0.8,
+                targetBlocks = {
+                    {x=420, y=430, letterX=letters.M.x, letterY=letters.M.y, letter=letters.M, occupied=false}, 
+                    {x=510, y=430, letterX=letters.O.x, letterY=letters.O.y, letter=letters.O, occupied=false},   
+                    {x=600, y=430, letterX=letters.N.x, letterY=letters.N.y, letter=letters.N, occupied=false}, 
+                    {x=690, y=430, letterX=letters.K.x, letterY=letters.K.y, letter=letters.K, occupied=false},
+                    {x=600, y=430, letterX=letters.E.x, letterY=letters.E.y, letter=letters.E, occupied=false},
+                    {x=600, y=430, letterX=letters.Y.x, letterY=letters.Y.y, letter=letters.Y, occupied=false}                                        
+                }, 
+                targetBlockCount = 6,       
+                artemisSpeech = "...",
+                fairySpeech = "Careful",
+                completed = false,
+                word = "monkey"
+            }     
         }
    
+        print(questionNumber)
         -- The UI-------------------------------------------------------
 
         -- the screen
@@ -932,53 +1022,53 @@ function love.update(dt)
 
     -----------------------  Collision Detection-------------------------
  
-    if love.keyboard.isDown('w') then
-        for i, letter in pairs(letters) do
-            for i, currentLetter in pairs(letters) do
-                if letter ~= currentLetter then
-                    if currentLetter.x < letter.x + 80 and letter.x < currentLetter.x + 80 and currentLetter.y < letter.y + 80 and letter.y < currentLetter.y + 80 then
-                        currentLetter.y = currentLetter.y + 5 
-                    end
-                end
-            end
-        end  
-    end
+    -- if love.keyboard.isDown('w') then
+    --     for i, letter in pairs(letters) do
+    --         for i, currentLetter in pairs(letters) do
+    --             if letter ~= currentLetter then
+    --                 if currentLetter.x < letter.x + 80 and letter.x < currentLetter.x + 80 and currentLetter.y < letter.y + 80 and letter.y < currentLetter.y + 80 then
+    --                     currentLetter.y = currentLetter.y + 5 
+    --                 end
+    --             end
+    --         end
+    --     end  
+    -- end
 
-    if love.keyboard.isDown('s') then
-        for i, letter in pairs(letters) do
-            for i, currentLetter in pairs(letters) do
-                if letter ~= currentLetter then
-                    if currentLetter.x < letter.x + 80 and letter.x < currentLetter.x + 80 and currentLetter.y < letter.y + 80 and letter.y < currentLetter.y + 80 then
-                        currentLetter.y = currentLetter.y - 5 
-                    end
-                end
-            end
-        end  
-    end
+    -- if love.keyboard.isDown('s') then
+    --     for i, letter in pairs(letters) do
+    --         for i, currentLetter in pairs(letters) do
+    --             if letter ~= currentLetter then
+    --                 if currentLetter.x < letter.x + 80 and letter.x < currentLetter.x + 80 and currentLetter.y < letter.y + 80 and letter.y < currentLetter.y + 80 then
+    --                     currentLetter.y = currentLetter.y - 1 
+    --                 end
+    --             end
+    --         end
+    --     end  
+    -- end
 
-    if love.keyboard.isDown('a') then
-        for i, letter in pairs(letters) do
-            for i, currentLetter in pairs(letters) do
-                if letter ~= currentLetter then
-                    if currentLetter.x < letter.x + 80 and letter.x < currentLetter.x + 80 and currentLetter.y < letter.y + 80 and letter.y < currentLetter.y + 80 then
-                        currentLetter.x = currentLetter.x + 5 
-                    end
-                end
-            end
-        end  
-    end
+    -- if love.keyboard.isDown('a') then
+    --     for i, letter in pairs(letters) do
+    --         for i, currentLetter in pairs(letters) do
+    --             if letter ~= currentLetter then
+    --                 if currentLetter.x < letter.x + 80 and letter.x < currentLetter.x + 80 and currentLetter.y < letter.y + 80 and letter.y < currentLetter.y + 80 then
+    --                     currentLetter.x = currentLetter.x + 5 
+    --                 end
+    --             end
+    --         end
+    --     end  
+    -- end
 
-    if love.keyboard.isDown('d') then
-        for i, letter in pairs(letters) do
-            for i, currentLetter in pairs(letters) do
-                if letter ~= currentLetter then
-                    if currentLetter.x < letter.x + 80 and letter.x < currentLetter.x + 80 and currentLetter.y < letter.y + 80 and letter.y < currentLetter.y + 80 then
-                        currentLetter.x = currentLetter.x - 5 
-                    end
-                end
-            end
-        end  
-    end
+    -- if love.keyboard.isDown('d') then
+    --     for i, letter in pairs(letters) do
+    --         for i, currentLetter in pairs(letters) do
+    --             if letter ~= currentLetter then
+    --                 if currentLetter.x < letter.x + 80 and letter.x < currentLetter.x + 80 and currentLetter.y < letter.y + 80 and letter.y < currentLetter.y + 80 then
+    --                     currentLetter.x = currentLetter.x - 5 
+    --                 end
+    --             end
+    --         end
+    --     end  
+    -- end
 
     -- animation
     animation.currentTime = animation.currentTime + dt
