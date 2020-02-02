@@ -42,7 +42,9 @@ local artemisIntro = love.graphics.newImage('artemis-001.png')
 local artemis = love.graphics.newImage('artemis.png')
 local artemisColour = love.graphics.newImage('artemis-colour2.png')
 local artemisColourBranch = love.graphics.newImage('artemis-colour2-branch.png')
-
+local artemisIntroAnimationWatched = false
+local birdAnimationWatched = false
+local fairyIntroAnimationWatched = false
 
 --map
 local map = love.graphics.newImage('map2.png')
@@ -197,7 +199,8 @@ function love.load()
 
     love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, {
         fullscreen = false,
-        vsync = true
+        vsync = true,
+        resizable = true
     })
     tinyFont = love.graphics.newFont('Solway.ttf', 16)
     smallFont = love.graphics.newFont('Solway.ttf', 32)
@@ -212,7 +215,9 @@ function love.load()
 
     -- animations
     animation = newAnimation(love.graphics.newImage("fairy-wave-spritesheet-small-colour.png"), 320, 480, 2)
-    animationBird = newAnimation(love.graphics.newImage("bird-spritesheet-small.png"), 320, 320, 1)
+    animationBird = newAnimation(love.graphics.newImage("bird-spritesheet-small.png"), 320, 320, 5)
+    animationArtemis = newAnimation(love.graphics.newImage("artemis-spritesheet.png"), 484, 480, 5)
+
 end
 
 
@@ -246,6 +251,9 @@ function love.keypressed(key)
 end
 
 function love.draw()
+
+    love.graphics.push()
+    love.graphics.scale(1, 1)   -- reduce everything by 50% in both X and Y coordinates
              
     love.graphics.setFont(smallFont)
     love.graphics.clear(0, 0, 0, 255)
@@ -284,8 +292,16 @@ function love.draw()
 
        -- Fairy block
        love.graphics.rectangle('line', 960, 80, 320, 560)
-       local spriteNum = math.floor(animation.currentTime / animation.duration * #animation.quads) + 1
-       love.graphics.draw(animation.spriteSheet, animation.quads[spriteNum], 960, 160, 0, 1)
+       -- Fairy Wave Animation
+       local spriteNumFairyIntro = math.floor(animation.currentTime / animation.duration * #animation.quads) + 1
+       if (fairyIntroAnimationWatched == false) then
+           love.graphics.draw(animation.spriteSheet, animation.quads[spriteNumFairyIntro], 960, 160, 0, 1)
+       else
+           love.graphics.draw(animation.spriteSheet, animation.quads[1], 960, 160, 0, 1)
+       end
+       if (spriteNumFairyIntro == 7) then
+           fairyIntroAnimationWatched = true
+       end
 
        -- audio block    
        love.graphics.rectangle('line', 0, 640, 1280, 80)
@@ -315,8 +331,8 @@ function love.draw()
 
        -- Fairy block
        love.graphics.rectangle('line', 960, 80, 320, 560)
-       local spriteNum = math.floor(animation.currentTime / animation.duration * #animation.quads) + 1
-       love.graphics.draw(animation.spriteSheet, animation.quads[spriteNum], 960, 160, 0, 1)
+       love.graphics.draw(fairyWave, 960, 160, 0, 1, 1)
+       
 
        -- audio block    
        love.graphics.rectangle('line', 0, 640, 1280, 80)
@@ -350,8 +366,7 @@ function love.draw()
  
        -- Fairy block
        love.graphics.rectangle('line', 960, 80, 320, 560)
-       local spriteNum = math.floor(animation.currentTime / animation.duration * #animation.quads) + 1
-       love.graphics.draw(animation.spriteSheet, animation.quads[spriteNum], 960, 160, 0, 1)   
+       love.graphics.draw(fairyWave, 960, 160, 0, 1, 1)
              
        -- audio block    
        love.graphics.rectangle('line', 0, 640, 1280, 80)
@@ -365,8 +380,21 @@ function love.draw()
 
         -- Bird flying animation
         local spriteNumBird = math.floor(animation.currentTime / animation.duration * #animation.quads) + 1
-        love.graphics.draw(animationBird.spriteSheet, animationBird.quads[spriteNumBird], 0, 0, 0, 1) 
 
+
+        if (birdAnimationWatched == false) then
+            love.graphics.draw(animationBird.spriteSheet, animationBird.quads[spriteNumBird], 0, 0, 0, 1) 
+        else
+            love.graphics.draw(bird, 10, 10, 0, 1, 1)
+            love.graphics.printf("Huff, puff", 0, 350, 320, "center")
+            love.graphics.printf("Fairy, Artemis is asking for help.", 0, 410, 320, "center")
+        end
+        
+        if (spriteNumBird == 18) then
+            birdAnimationWatched = true
+        end
+
+ 
         -- the exercise block
         love.graphics.rectangle('line', 320, 00, 640, 640)
 
@@ -378,10 +406,11 @@ function love.draw()
         love.graphics.setColor(100, 100, 100)
         love.graphics.rectangle('line', 960, 00, 320, 80)
         love.graphics.printf("menu", 960, 0, 100, "center")
+        love.graphics.printf("room", 960, 0, 320, "right")
 
         -- Fairy block
         love.graphics.rectangle('line', 960, 80, 320, 560)
-        love.graphics.draw(fairyWave, 960, 120, 0, 1, 1) 
+        love.graphics.draw(fairyWave, 960, 160, 0, 1, 1) 
 
         -- audio block    
         love.graphics.rectangle('line', 0, 640, 1280, 80)
@@ -408,10 +437,12 @@ function love.draw()
         love.graphics.setColor(100, 100, 100)
         love.graphics.rectangle('line', 960, 00, 320, 80)
         love.graphics.printf("menu", 960, 0, 100, "center")
+        love.graphics.printf("room", 960, 0, 320, "right")
+
 
         -- Fairy block
         love.graphics.rectangle('line', 960, 80, 320, 560)
-        love.graphics.draw(fairyWave, 960, 120, 0, 1, 1) 
+        love.graphics.draw(fairyWave, 960, 160, 0, 1, 1) 
 
         -- audio block    
         love.graphics.rectangle('line', 0, 640, 1280, 80)
@@ -438,7 +469,7 @@ function love.draw()
 
         -- Fairy block
         love.graphics.rectangle('line', 960, 80, 320, 560)
-        love.graphics.draw(fairyWave, 960, 120, 0, 1, 1) 
+        love.graphics.draw(fairyWave, 960, 160, 0, 1, 1) 
 
         -- audio block    
         love.graphics.rectangle('line', 0, 640, 1280, 80)
@@ -447,13 +478,25 @@ function love.draw()
         -- left block
         love.graphics.rectangle('line', 00, 00, 320, 640)
 
-           -- stage character
-        love.graphics.draw(artemisColourBranch, 0, 140, 0, 1, 1)
-           
-        --love.graphics.draw(artemis, 0, 140, 0, 1, 1)
-        love.graphics.draw(artemisColour, 0, 140, 0, 1, 1)
+        -- stage character
+
         love.graphics.printf("I need your help to name these animals please", 320, 640, 640, "center")
+
+
+        -- Artemis Intro animation
+
+        local spriteNumArtemis = math.floor(animation.currentTime / animation.duration * 13) + 1
+
+        if (artemisIntroAnimationWatched == false) then
+            love.graphics.draw(animationArtemis.spriteSheet, animationArtemis.quads[spriteNumArtemis], 0, 160, 0, 1) 
+        else
+            love.graphics.draw(animationArtemis.spriteSheet, animationArtemis.quads[13], 0, 160, 0, 1) 
+        end
         
+        if (spriteNumArtemis == 13) then
+            artemisIntroAnimationWatched = true
+        end
+
 
     elseif gameState == 'artemisExercise' then
 
@@ -555,10 +598,6 @@ function love.draw()
         love.graphics.draw(scrollImage, 1120, 0, 0, 1, 1)
 
  
-        -- bottom area    
-        love.graphics.rectangle('line', 0, 640, 1280, 80)
-
-
         -- variable area ---------------------------------------------------------------
 
         -- background
@@ -583,12 +622,10 @@ function love.draw()
         -- artemis
         love.graphics.setColor(1, 1, 1)
         -- love.graphics.draw(artemis, 0, 140, 0, 1, 1)
-        love.graphics.printf(questions[questionNumber].artemisSpeech, 0, 640, 320, "center")
-
+      
         -- Fairy
         love.graphics.draw(fairysprite, 960, 120, 0, 1, 1)
-        love.graphics.printf(questions[questionNumber].fairySpeech, 960, 640, 320, "center")
-
+       
         local counter = 1
 
         ---------------------------------------------------------------------------
@@ -710,7 +747,24 @@ function love.draw()
         end
 
         -- draw overlapping image of left character
-        love.graphics.draw(artemisColour, 0, 140, 0, 1, 1)
+        love.graphics.draw(artemisColour, 0, 160, 0, 1, 1)
+         -- Artemis animation
+        --  local spriteNumArtemis = math.floor(animation.currentTime / animation.duration * 13) + 1
+        --  love.graphics.draw(animationArtemis.spriteSheet, animationArtemis.quads[spriteNumArtemis], 0, 160, 0, 1) 
+
+
+
+
+
+         -- bottom area   
+         love.graphics.setFont(smallFont)   
+         love.graphics.setColor(0, 0, 0)
+         love.graphics.rectangle('fill', 0, 640, 1280, 80)
+         love.graphics.setColor(1, 1, 1)
+         love.graphics.rectangle('line', 0, 640, 1280, 80)
+         love.graphics.printf(questions[questionNumber].artemisSpeech, 0, 640, 320, "center") 
+         love.graphics.printf(questions[questionNumber].fairySpeech, 960, 640, 320, "center")
+
     
         -- Block movement ----------------------------------------------
 
@@ -773,22 +827,34 @@ function love.draw()
 
             -- correct words move to scroll
 
-            -- incorrect letters go back to origanl place
+            -- incorrect letters go back to original place
 
             -- clear blocks
             if(questions[questionNumber].targetBlockCount == count) then
                 for j, targetBlock in pairs(questions[questionNumber].targetBlocks) do     
                     targetBlock.letter.isSelected = false
-                    targetBlock.letter.x = 0
-                    targetBlock.letter.y = 0
-                    targetBlock.letter.width = 0
-                    targetBlock.letter.height = 0
-                    targetBlock.letter.char = ""
+              
+                    print(targetBlock.letter.char)
+                    targetBlock.letter.x = targetBlock.letter.positionX
+                    targetBlock.letter.y = targetBlock.letter.positionY
+                    
+                    --to make blocks disappear
+                    -- targetBlock.letter.y = 0
+                    -- targetBlock.letter.width = 0
+                    -- targetBlock.letter.height = 0
+                    -- targetBlock.letter.char = ""
+
+                 
                     scroll.words[questionNumber] = questions[questionNumber].word   
                 end
                 questions[questionNumber].completed = true     
             end
         end
+
+
+
+
+        
 
         if (questions[questionNumber].completed) then
             questionNumber = questionNumber + 1
@@ -809,10 +875,11 @@ function love.draw()
 
        
         for i, word in pairs(scroll.words) do
-            love.graphics.printf(word, 0, 0 , 200, "center")
+            love.graphics.printf(word, 0, i * 80 , 200, "center")
         end
     end
 
+    love.graphics.pop()
 end
 
 function love.update(dt)
