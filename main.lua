@@ -1,9 +1,18 @@
 
+--choose one
+--UI = "phone"
+UI = "other"
+
+
 -- variables
--- WINDOW_WIDTH = 1280
--- WINDOW_HEIGHT = 720
-WINDOW_WIDTH = 480
-WINDOW_HEIGHT = 320
+if UI == "phone" then
+    WINDOW_WIDTH = 480
+    WINDOW_HEIGHT = 320
+else
+    WINDOW_WIDTH = 1280
+    WINDOW_HEIGHT = 720
+end
+
 local isASelected_freeplay = false
 local isBSelected_freeplay = false
 local collision = false
@@ -178,7 +187,7 @@ scroll = {
 -- set initial variables -------------------------------------
 
 --set initial animal
-local questionNumber = 4
+local questionNumber = 1
 
 ---------------------------------------------------------
 
@@ -210,23 +219,24 @@ function love.load()
     gameState = 'screen1'
 
     -- for selecting
-    aBlock_freeplay = 	{hover = false, text = "A", x = 520, y = 100, call = selectBlockAFreePlay}
-    bBlock_freeplay = 	{hover = false, text = "B", x = 520, y = 100, call = selectBlockBFreePlay}
+    -- aBlock_freeplay = 	{hover = false, text = "A", x = 520, y = 100, call = selectBlockAFreePlay}
+    -- bBlock_freeplay = 	{hover = false, text = "B", x = 520, y = 100, call = selectBlockBFreePlay}
 
     fairysprite = fairysetplay001
 
     -- animations
     animation = newAnimation(love.graphics.newImage("fairy-wave-spritesheet-small-colour.png"), 320, 480, 2)
     animationBird = newAnimation(love.graphics.newImage("bird-spritesheet-small.png"), 320, 320, 5)
-    animationArtemis = newAnimation(love.graphics.newImage("artemis-spritesheet.png"), 484, 480, 5)
+    animationArtemis = newAnimation(love.graphics.newImage("artemis-spritesheet.png"), 485, 480, 5)
 
 end
 
-
+-- game states
 function love.keypressed(key)
     if key == 'escape' then
         love.event.quit()
     elseif key == 'enter' or key == 'return' then
+
         if gameState == 'screen1' then
             gameState = 'screen2'
         elseif gameState == 'screen2' then
@@ -255,8 +265,13 @@ end
 function love.draw()
 
     love.graphics.push()
-    love.graphics.scale(1, 1)   -- reduce everything by 50% in both X and Y coordinates
-             
+
+    if UI == "phone" then
+        love.graphics.scale(0.375, 0.375)   
+    else    
+        love.graphics.scale(1, 1)   
+    end
+
     love.graphics.setFont(smallFont)
     love.graphics.clear(0, 0, 0, 255)
 
@@ -334,7 +349,6 @@ function love.draw()
        -- Fairy block
        love.graphics.rectangle('line', 960, 80, 320, 560)
        love.graphics.draw(fairyWave, 960, 160, 0, 1, 1)
-       
 
        -- audio block    
        love.graphics.rectangle('line', 0, 640, 1280, 80)
@@ -487,15 +501,15 @@ function love.draw()
 
         -- Artemis Intro animation
 
-        local spriteNumArtemis = math.floor(animation.currentTime / animation.duration * 13) + 1
+        local spriteNumArtemis = math.floor(animation.currentTime / animation.duration * 14) + 1
 
         if (artemisIntroAnimationWatched == false) then
             love.graphics.draw(animationArtemis.spriteSheet, animationArtemis.quads[spriteNumArtemis], 0, 160, 0, 1) 
         else
-            love.graphics.draw(animationArtemis.spriteSheet, animationArtemis.quads[13], 0, 160, 0, 1) 
+            love.graphics.draw(animationArtemis.spriteSheet, animationArtemis.quads[14], 0, 160, 0, 1) 
         end
         
-        if (spriteNumArtemis == 13) then
+        if (spriteNumArtemis == 14) then
             artemisIntroAnimationWatched = true
         end
 
@@ -660,8 +674,7 @@ function love.draw()
                 word = "monkey"
             }     
         }
-   
-        print(questionNumber)
+
         -- The UI-------------------------------------------------------
 
         -- the screen
@@ -924,7 +937,6 @@ function love.draw()
                 for j, targetBlock in pairs(questions[questionNumber].targetBlocks) do     
                     targetBlock.letter.isSelected = false
               
-                    print(targetBlock.letter.char)
                     targetBlock.letter.x = targetBlock.letter.positionX
                     targetBlock.letter.y = targetBlock.letter.positionY
                     
@@ -1265,3 +1277,22 @@ end
 --             end
 --         end
 --     end
+
+easy_unlocked = true
+medium_unlocked = false
+
+function saveGame()
+    local save = ""
+    if(easy_unlocked) then
+          save = save.."easy_unlocked = true;"
+    end
+    if(medium_unlocked) then
+           save = save.."medium_unlocked = true;"
+    end
+    love.filesystem.write("save.txt",save)
+end
+
+function loadGame()
+   toload = love.filesystem.load("save.txt")
+   toload()
+end
