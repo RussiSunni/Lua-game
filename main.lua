@@ -25,16 +25,16 @@ local numberOfTargetBlocksPlaced = 0
 -- files ---------------------
 
 -- sounds
-sound = love.audio.newSource("bird.mp3", "static") -- the "static" tells LÖVE to load the file into memory, good for short sound effects
-woodblock = love.audio.newSource("woodblock.wav", "static")
+sound = love.audio.newSource("Audio/bird.mp3", "static") -- the "static" tells LÖVE to load the file into memory, good for short sound effects
+woodblock = love.audio.newSource("Audio/woodblock.wav", "static")
 
 --blocks
-local blockTemplate = love.graphics.newImage('template.png')
-local oneDotBlock = love.graphics.newImage('one-dot.png')
-local twoDotBlock = love.graphics.newImage('two-dot.png')
-local threeDotBlock = love.graphics.newImage('three-dot.png')
-local fourDotBlock = love.graphics.newImage('four-dot.png')
-local duckBlock = love.graphics.newImage('duck-block.png')
+local blockTemplate = love.graphics.newImage('Blocks/template.png')
+local oneDotBlock = love.graphics.newImage('Blocks/one-dot.png')
+local twoDotBlock = love.graphics.newImage('Blocks/two-dot.png')
+local threeDotBlock = love.graphics.newImage('Blocks/three-dot.png')
+local fourDotBlock = love.graphics.newImage('Blocks/four-dot.png')
+local duckBlock = love.graphics.newImage('Blocks/duck-block.png')
 
 -- images
 
@@ -49,8 +49,6 @@ local fairyWave = love.graphics.newImage('fairy-wave.png')
 local fairysetplay001 = love.graphics.newImage('fairy-setplay001.png')
 local fairysetplay002 = love.graphics.newImage('fairy-setplay002.png')
 local fairysetplay003 = love.graphics.newImage('fairy-setplay003.png')
-local artemisIntro = love.graphics.newImage('artemis-001.png')
-local artemis = love.graphics.newImage('artemis.png')
 local artemisColour = love.graphics.newImage('artemis-colour2.png')
 local artemisColourBranch = love.graphics.newImage('artemis-colour2-branch.png')
 local artemisIntroAnimationWatched = false
@@ -58,20 +56,20 @@ local birdAnimationWatched = false
 local fairyIntroAnimationWatched = false
 
 --map
-local map = love.graphics.newImage('map2.png')
-local map2 = love.graphics.newImage('map3.png')
-local globe = love.graphics.newImage('globe.jpg')
+local globe = love.graphics.newImage('map01.jpg')
+local map2 = love.graphics.newImage('map02.png')
+local map = love.graphics.newImage('map03.png')
 
 --animals
-local cat = love.graphics.newImage('cat-3.png')
-local horse = love.graphics.newImage('horse.png')
-local bear = love.graphics.newImage('bear.png')
-local lion = love.graphics.newImage('lion.png')
-local dog = love.graphics.newImage('dog.png')
-local alligator = love.graphics.newImage('alligator.png')
-local wolf = love.graphics.newImage('wolf.png')
-local zebra = love.graphics.newImage('zebra.png')
-local monkey = love.graphics.newImage('monkey.png')
+local cat = love.graphics.newImage('Animals/cat-3.png')
+local horse = love.graphics.newImage('Animals/horse.png')
+local bear = love.graphics.newImage('Animals/bear.png')
+local lion = love.graphics.newImage('Animals/lion.png')
+local dog = love.graphics.newImage('Animals/dog.png')
+local alligator = love.graphics.newImage('Animals/alligator.png')
+local wolf = love.graphics.newImage('Animals/wolf.png')
+local zebra = love.graphics.newImage('Animals/zebra.png')
+local monkey = love.graphics.newImage('Animals/monkey.png')
 
 ---------------------------------------------------------------
 
@@ -225,9 +223,9 @@ function love.load()
     fairysprite = fairysetplay001
 
     -- animations
-    animation = newAnimation(love.graphics.newImage("fairy-wave-spritesheet-small-colour.png"), 320, 480, 2)
-    animationBird = newAnimation(love.graphics.newImage("bird-spritesheet-small.png"), 320, 320, 5)
-    animationArtemis = newAnimation(love.graphics.newImage("artemis-spritesheet.png"), 485, 480, 5)
+    animation = newAnimation(love.graphics.newImage("Spritesheets/fairy-wave-spritesheet-small-colour.png"), 320, 480, 2)
+    animationBird = newAnimation(love.graphics.newImage("Spritesheets/bird-spritesheet-small.png"), 320, 320, 5)
+    animationArtemis = newAnimation(love.graphics.newImage("Spritesheets/artemis-spritesheet.png"), 485, 480, 5)
 
 end
 
