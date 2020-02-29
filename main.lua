@@ -20,7 +20,7 @@ mouse = {}
 local next = false
 local numberOfTargetBlocksPlaced = 0
 
-
+fairySpeechNumber = 1
 
 -- files ---------------------
 
@@ -537,7 +537,11 @@ function love.draw()
                 },  
                 targetBlockCount = 3,
                 artemisSpeech = "I'm thinking of calling it a 'dog'",
-                fairySpeech = "Oi, what's this then?",
+                fairySpeech = {
+                    {"Oi, what's this then?"},
+                    {"Go on then"},
+                    {"So gifted"}
+                },
                 completed = false,
                 word = "cat"
             },
@@ -559,7 +563,11 @@ function love.draw()
                 }, 
                 targetBlockCount = 5,       
                 artemisSpeech = "horse text",
-                fairySpeech = "Ever seen one of these before?",
+                fairySpeech = {
+                    {"Ever seen one of these before?"},
+                    {"Go on then"},
+                    {"So gifted"}
+                },
                 completed = false,
                 word = "horse"
             },
@@ -580,7 +588,7 @@ function love.draw()
                 }, 
                 targetBlockCount = 4,       
                 artemisSpeech = "is this another 'dog'",
-                fairySpeech = "Ever seen one of these before?",
+                fairySpeech01 = "Ever seen one of these before?",
                 completed = false,
                 word = "wolf"
             },
@@ -601,7 +609,7 @@ function love.draw()
                 }, 
                 targetBlockCount = 4,       
                 artemisSpeech = "",
-                fairySpeech = "Careful",
+                fairySpeech01 = "Careful",
                 completed = false,
                 word = "bear"
             },
@@ -622,7 +630,7 @@ function love.draw()
                 }, 
                 targetBlockCount = 4,       
                 artemisSpeech = "",
-                fairySpeech = "Careful",
+                fairySpeech01 = "Careful",
                 completed = false,
                 word = "lion"
             },
@@ -644,7 +652,7 @@ function love.draw()
                 }, 
                 targetBlockCount = 5,       
                 artemisSpeech = "striped horse?",
-                fairySpeech = "Careful",
+                fairySpeech01 = "Careful",
                 completed = false,
                 word = "zebra"
             },
@@ -667,7 +675,7 @@ function love.draw()
                 }, 
                 targetBlockCount = 6,       
                 artemisSpeech = "...",
-                fairySpeech = "Careful",
+                fairySpeech01 = "Careful",
                 completed = false,
                 word = "monkey"
             }     
@@ -864,7 +872,7 @@ function love.draw()
          love.graphics.setColor(1, 1, 1)
          love.graphics.rectangle('line', 0, 640, 1280, 80)
          love.graphics.printf(questions[questionNumber].artemisSpeech, 0, 640, 320, "center") 
-         love.graphics.printf(questions[questionNumber].fairySpeech, 960, 640, 320, "center")
+         love.graphics.printf(questions[questionNumber].fairySpeech[fairySpeechNumber], 960, 640, 320, "center")
 
     
         -- Block movement ----------------------------------------------
@@ -912,10 +920,12 @@ function love.draw()
                 -- could make it so that if wrong letters, they go back to sides?
 
                 if (targetBlock.letter.x == targetBlock.x and targetBlock.letter.y == targetBlock.y) then
-                    fairysprite = fairysetplay003
-                    fairySpeech = "So gifted"
+                    if (targetBlock.letter.isSelected == true) then
+                        fairysprite = fairysetplay002
+                        fairySpeechNumber = 2
+                    end
                     targetBlock.letter.placed = true
-                    targetBlock.letter.isSelected = false            
+                    targetBlock.letter.isSelected = false          
                 else
                     
                 end    
@@ -951,12 +961,9 @@ function love.draw()
             end
         end
 
-
-
-
-        
-
         if (questions[questionNumber].completed) then
+            fairysprite = fairysetplay003
+            fairySpeechNumber = 3
             questionNumber = questionNumber + 1
         end
     
@@ -1086,9 +1093,7 @@ function love.update(dt)
         animation.currentTime = animation.currentTime - animation.duration
     end
 
-    if (letters.C.placed == true and down == true) then
-        fairysprite = fairysetplay001
-    end
+
 end
 
 -- mouse
@@ -1115,8 +1120,9 @@ function menu_mousehandling(mx, my, down)
             if mx > letter.x and mx < letter.x + 80 and my > letter.y and my < letter.y + 80 then
                 letter.hover=true
                 if down == true then letter.isSelected = true
-                    fairysprite = fairysetplay002
-                    fairySpeech = "Go on then"
+                    fairysprite = fairysetplay001
+                    fairySpeechNumber = 1
+
                     woodblock:play()        
                 end
             else
