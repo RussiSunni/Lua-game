@@ -1,4 +1,4 @@
-# v2.0
+# Drag-and-drop Spelling Game Lua version
 Simple move the blocks to spell game,  
 made in Love2D game engine, with Lua language.  
   
